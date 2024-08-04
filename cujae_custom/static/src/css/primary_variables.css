@@ -1,0 +1,15 @@
+/* Cambiar el color de fondo del encabezado */
+.o_main_navbar {
+    background-color: #77dd77 !important; /* Verde pastel */
+}
+
+/* Cambiar el color de los botones */
+.btn-primary {
+    background-color: #77dd77 !important; /* Verde pastel */
+    border-color: #77dd77 !important;
+}
+
+/* Cambiar el color de los menús */
+.o_menu_header, .o_menu_sections {
+    background-color: #77dd77 !important; /* Verde pastel */
+}

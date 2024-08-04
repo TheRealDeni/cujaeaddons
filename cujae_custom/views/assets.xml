@@ -1,0 +1,7 @@
+<odoo>
+    <template id="assets_backend" name="cujae_custom assets" inherit_id="websites.assets">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="/cujae_custom/static/src/css/custom.css"/>
+        </xpath>
+    </template>
+</odoo>
