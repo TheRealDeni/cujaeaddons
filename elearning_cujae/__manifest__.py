@@ -26,6 +26,7 @@
     # always loaded
     'data': [        
         'views/survey_question.xml',
+        'static/description/icon.png',
         'security/security.xml'
         
     ],
