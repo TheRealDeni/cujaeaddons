@@ -8,7 +8,7 @@
     'sequence': 1,
 
     'description': """
-        Este módulo es para la impartición de cursos digitales
+        Este módulo es para impartir cursos digitales
     """,
 
     'author': "Reinaldo y Keila",
@@ -26,6 +26,7 @@
     # always loaded
     'data': [        
         'views/survey_question.xml',
+        'static/description/icon.png',
         
     ],
     # only loaded in demonstration mode
