@@ -26,6 +26,7 @@
     # always loaded
     'data': [        
         'views/survey_question.xml',
+        'security/security.xml'
         
     ],
     # only loaded in demonstration mode
