@@ -26,8 +26,10 @@
     # always loaded
     'data': [        
         'views/survey_question.xml',
-        'static/description/icon.png',
         
+    ],
+    'images':[
+        'static/description/icon.png',
     ],
     # only loaded in demonstration mode
     'demo': [
