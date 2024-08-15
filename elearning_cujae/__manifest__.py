@@ -31,6 +31,13 @@
         'views/survey_survey_views.xml',
         #'views/res_config_settings_views.xml',
         'views/website_slides_menu_views.xml',
+        'views/website_slide_templates_course.xml',
+        'views/website_slides_templates_lesson.xml',
+        'views/website_slides_templates_utils.xml',
+        'views/website_slides_templates_lesson_fullscreen.xml',
+        'views/website_slides_templates_homepage.xml',
+        'views/website_profile.xml',
+        'views/survey_templates.xml',
         'security/security.xml'
         
     ],
@@ -40,9 +47,11 @@
     ],
 
     # 'assets': {
-    # 'web.assets_tests': [
-    #     'l10n_cu_cxc/static/tests/tours/my_tour.js',
-    # ],
+     'web.assets_tests': [
+        'elearning_cujae/static/src/xml/website_slides_upload.xml',
+        'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
+
+     ],
     'installable': True,
     'application': True,
     'license': 'LGPL-3',

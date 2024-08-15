@@ -1,5 +1,26 @@
 from odoo import models, fields, api
+class SlidePartnerRelation(models.Model):
+    _inherit = 'slide.slide.partner'
 
+    user_input_ids = fields.One2many('survey.user_input', 'slide_partner_id', 'Exam attempts')
+    survey_scoring_success = fields.Boolean('Exam Succeeded', compute='_compute_survey_scoring_success', store=True)
+
+    @api.depends('partner_id', 'user_input_ids.scoring_success')
+    def _compute_survey_scoring_success(self):
+        succeeded_user_inputs = self.env['survey.user_input'].sudo().search([
+            ('slide_partner_id', 'in', self.ids),
+            ('scoring_success', '=', True)
+        ])
+        succeeded_slide_partners = succeeded_user_inputs.mapped('slide_partner_id')
+        for record in self:
+            record.survey_scoring_success = record in succeeded_slide_partners
+
+    def _compute_field_value(self, field):
+        super()._compute_field_value(field)
+        if field.name == 'survey_scoring_success':
+            self.filtered('survey_scoring_success').write({
+                'completed': True
+            })
 class Slide(models.Model):
     _inherit = 'slide.slide'
 
@@ -89,6 +110,7 @@ class Slide(models.Model):
         """
         exam_urls = {}
         for slide in self.filtered(lambda slide: slide.slide_category == 'exam' and slide.survey_id):
+            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
             if slide.channel_id.is_member:
                 user_membership_id_sudo = slide.user_membership_id.sudo()
                 if user_membership_id_sudo.user_input_ids:
@@ -116,4 +138,5 @@ class Slide(models.Model):
                     }
                 )
                 exam_urls[slide.id] = user_input.get_start_url()
+                print(exam_urls)
         return exam_urls
