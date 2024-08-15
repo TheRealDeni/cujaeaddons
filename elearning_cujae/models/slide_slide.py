@@ -34,7 +34,6 @@ class Slide(models.Model):
         ('exam', 'Exam')
     ], ondelete={'exam': 'set null'})
     exam_id = fields.Many2one('survey.survey', 'Examen')
-    survey_id = fields.Many2one('survey.survey', 'Certification')
     nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)
     # small override of 'is_preview' to uncheck it automatically for slides of type 'exam'
     is_preview = fields.Boolean(compute='_compute_is_preview', readonly=False, store=True)
@@ -98,18 +97,12 @@ class Slide(models.Model):
             exam_challenges = self.survey_id.certification_badge_id.challenge_ids
             exam_challenges.write({'challenge_category': 'slides'})
 
-    def _generate_exam_url(self):
-        """ get a map of certification url for certification slide from `self`. The url will come from the survey user input:
-                1/ existing and not done user_input for member of the course
-                2/ create a new user_input for member
-                3/ for no member, a test user_input is created and the url is returned
-            Note: the slide.slides.partner should already exist
-
-            We have to generate a new invite_token to differentiate pools of attempts since the
-            course can be enrolled multiple times.
-        """
+    def _generate_exam_url(self,slide):        
         exam_urls = {}
-        for slide in self.filtered(lambda slide: slide.slide_category == 'exam' and slide.survey_id):
+        print("generando url")
+        print(slide.slide_category)
+        print(slide.survey_id)
+        for slide in slide.filtered(lambda slide: slide.slide_category == 'exam' and slide.exam_id):
             print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
             if slide.channel_id.is_member:
                 user_membership_id_sudo = slide.user_membership_id.sudo()
@@ -119,7 +112,7 @@ class Slide(models.Model):
                     ))
                     exam_urls[slide.id] = last_user_input.get_start_url()
                 else:
-                    user_input = slide.survey_id.sudo()._create_answer(
+                    user_input = slide.exam_id.sudo()._create_answer(
                         partner=self.env.user.partner_id,
                         check_attempts=False,
                         **{
@@ -130,7 +123,7 @@ class Slide(models.Model):
                     )
                     exam_urls[slide.id] = user_input.get_start_url()
             else:
-                user_input = slide.survey_id.sudo()._create_answer(
+                user_input = slide.exam_id.sudo()._create_answer(
                     partner=self.env.user.partner_id,
                     check_attempts=False,
                     test_entry=True, **{

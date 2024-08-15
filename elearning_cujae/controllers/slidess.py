@@ -22,15 +22,21 @@ class WebsiteSlidesSurveyExam(WebsiteSlidesSurvey):
         print("el controlador")
 
         fetch_res = self._fetch_slide(slide_id)
+        print(fetch_res)
         if fetch_res.get('error'):
             raise werkzeug.exceptions.NotFound()
+            print("error1")
         slide = fetch_res['slide']
+        print(slide.name)
         if slide.channel_id.is_member:
             slide.action_set_viewed()
-        exam_url = slide._generate_certification_url().get(slide.id)
+            print(slide)
 
+        exam_url = slide._generate_exam_url(slide).get(slide.id)
+        print(slide.slide_category)
         if not exam_url:
             raise werkzeug.exceptions.NotFound()
+            print("error3")
         return request.redirect(exam_url)
 
     @http.route(['/slides_survey/exam/search_read'], type='json', auth='user', methods=['POST'], website=True)

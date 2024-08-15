@@ -46,12 +46,21 @@
         # 'demo/account_move_demo.xml',
     ],
 
-    # 'assets': {
-     'web.assets_tests': [
-        'elearning_cujae/static/src/xml/website_slides_upload.xml',
-        'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
+     'assets': {
+        'web.assets_frontend': [
+          'elearning_cujae/static/src/scss/website_slides_survey.scss',
+       #   'elearning_cujae/static/src/js/slides_upload.js',
+          'elearning_cujae/static/src/js/slides_course_fullscreen_player.js',
+        #  'elearning_cujae/static/src/xml/website_slides_uploadd.xml',
+          'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
 
      ],
+        'survey.survey_assets': [
+          'elearning_cujae/static/src/js/survey_form.js',
+          'elearning_cujae/static/src/scss/website_slides_survey_result.scss',
+        ],
+     },
+
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
