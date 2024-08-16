@@ -38,7 +38,7 @@
         'views/website_slides_templates_homepage.xml',
         'views/website_profile.xml',
         'views/survey_templates.xml',
-        'security/security.xml'
+        'security/security.xml',
         
     ],
     # only loaded in demonstration mode
@@ -49,11 +49,10 @@
      'assets': {
         'web.assets_frontend': [
           'elearning_cujae/static/src/scss/website_slides_survey.scss',
-       #   'elearning_cujae/static/src/js/slides_upload.js',
+          'elearning_cujae/static/src/js/slides_upload.js',
           'elearning_cujae/static/src/js/slides_course_fullscreen_player.js',
-        #  'elearning_cujae/static/src/xml/website_slides_uploadd.xml',
+         # 'elearning_cujae/static/src/xml/website_slides_upload.xml',
           'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
-
      ],
         'survey.survey_assets': [
           'elearning_cujae/static/src/js/survey_form.js',

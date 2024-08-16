@@ -23,7 +23,7 @@ SlidesUpload.SlideUploadDialog.include({
     _onChangeexam: function (ev) {
         const $inputElement = this.$("input#name");
         if (ev.added) {
-            this.$('.o_error_no_exam').addClass('d-none');
+            this.$('.o_error_no_certification').addClass('d-none');
             this.$('#exam_id').parent().find('.select2-container').removeClass('is-invalid');
             if (ev.added.text && !$inputElement.val().trim()) {
                 $inputElement.val(ev.added.text);
