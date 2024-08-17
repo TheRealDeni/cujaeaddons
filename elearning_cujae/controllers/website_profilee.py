@@ -3,13 +3,13 @@
 
 from odoo.http import request
 from odoo.osv import expression
-from odoo.addons.website_slides_survey.controllers.website_profile import WebsiteSlidesSurvey
+from odoo.addons.website_profile.controllers.main import WebsiteProfile
 
 
-class WebsiteSlidesSurveyExam(WebsiteSlidesSurvey):
+class WebsiteSlidesSurveyExam(WebsiteProfile):
     def _prepare_user_profile_values_ex(self, user, **kwargs):
         """Loads all data required to display the exam attempts of the given user"""
-        values = super(WebsiteSlidesSurvey, self)._prepare_user_profile_values(user, **kwargs)
+        values = super(WebsiteSlidesSurveyExam, self)._prepare_user_profile_values(user, **kwargs)
         values['show_exam_tab'] = ('user' in values) and (
             values['user'].id == request.env.user.id or \
             request.env.user.has_group('survey.group_survey_manager')
@@ -19,7 +19,7 @@ class WebsiteSlidesSurveyExam(WebsiteSlidesSurvey):
             return values
 
         domain = expression.AND([
-            [('survey_id.exam', '=', True)],
+            [('exam_id.exam', '=', True)],
             [('state', '=', 'done')],
             expression.OR([
                 [('email', '=', values['user'].email)],
@@ -32,7 +32,7 @@ class WebsiteSlidesSurveyExam(WebsiteSlidesSurvey):
             values['active_tab'] = 'exam'
             values['exam_search_terms'] = kwargs['exam_search']
             domain = expression.AND([domain,
-                [('survey_id.title', 'ilike', kwargs['exam_search'])]
+                [('exam_id.title', 'ilike', kwargs['exam_search'])]
             ])
 
         UserInputSudo = request.env['survey.user_input'].sudo()

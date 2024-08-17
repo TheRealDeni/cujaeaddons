@@ -3,7 +3,7 @@ odoo.define('elearning_cujae.upload_modal', function (require) {
 
 var core = require('web.core');
 var _t = core._t;
-var SlidesUpload = require('@website_slides/js/slides_upload')[Symbol.for("default")];
+var SlidesUpload = require('@website_slides_survey/js/slides_upload')[Symbol.for("default")];
 
 /**
  * Management of the new 'exam' slide_category
@@ -11,6 +11,7 @@ var SlidesUpload = require('@website_slides/js/slides_upload')[Symbol.for("defau
 SlidesUpload.SlideUploadDialog.include({
     events: _.extend({}, SlidesUpload.SlideUploadDialog.prototype.events || {}, {
         'change input#exam_id': '_onChangeExam'
+        
     }),
 
     //--------------------------------------------------------------------------
@@ -20,10 +21,10 @@ SlidesUpload.SlideUploadDialog.include({
    /**
     * Will automatically set the title of the slide to the title of the chosen exam
     */
-    _onChangeexam: function (ev) {
+    _onChangeExam: function (ev) {
         const $inputElement = this.$("input#name");
         if (ev.added) {
-            this.$('.o_error_no_certification').addClass('d-none');
+            this.$('.o_error_no_exam').addClass('d-none');
             this.$('#exam_id').parent().find('.select2-container').removeClass('is-invalid');
             if (ev.added.text && !$inputElement.val().trim()) {
                 $inputElement.val(ev.added.text);
@@ -46,7 +47,7 @@ SlidesUpload.SlideUploadDialog.include({
         this.slide_category_data['exam'] = {
             icon: 'fa-trophy',
             label: _t('Exam'),
-            template: 'website.slide.upload.modal.certification',
+            template: 'website.slide.upload.modal.another_template',
         };
     },
     /**

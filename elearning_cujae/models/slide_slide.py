@@ -40,11 +40,11 @@ class Slide(models.Model):
 
   
 
-    @api.depends('survey_id')
+    @api.depends('exam_id')
     def _compute_name(self):
         for slide in self:
-            if not slide.name and slide.survey_id:
-                slide.name = slide.survey_id.title
+            if not slide.name and slide.exam_id:
+                slide.name = slide.exam_id.title
 
     def _compute_mark_complete_actions(self):
         slides_exam = self.filtered(lambda slide: slide.slide_category == 'exam')
@@ -68,20 +68,20 @@ class Slide(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         slides = super().create(vals_list)
-        slides_with_survey = slides.filtered('survey_id')
+        slides_with_survey = slides.filtered('exam_id')
         slides_with_survey.slide_category = 'exam'
         slides_with_survey._ensure_challenge_category()
         return slides
 
     def write(self, values):
-        old_surveys = self.mapped('survey_id')
+        old_surveys = self.mapped('exam_id')
         result = super(Slide, self).write(values)
-        if 'survey_id' in values:
-            self._ensure_challenge_category(old_surveys=old_surveys - self.mapped('survey_id'))
+        if 'exam_id' in values:
+            self._ensure_challenge_category(old_surveys=old_surveys - self.mapped('exam_id'))
         return result
 
     def unlink(self):
-        old_surveys = self.mapped('survey_id')
+        old_surveys = self.mapped('exam_id')
         result = super(Slide, self).unlink()
         self._ensure_challenge_category(old_surveys=old_surveys, unlink=True)
         return result
@@ -102,8 +102,16 @@ class Slide(models.Model):
         print("generando url")
         print(slide.slide_category)
         print(slide.survey_id)
-        for slide in slide.filtered(lambda slide: slide.slide_category == 'exam' and slide.exam_id):
+        print(slide.exam_id)
+
+        if slide.survey_id == False:
+             print("No hay un examen asociado a este slide")
+
+        for slide in slide.filtered(lambda slide: slide.slide_category == 'exam' and slide.exam_id or slide.survey_id ):
             print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+            if slide['survey_id']:
+                slide.exam_id= slide.survey_id            
+            
             if slide.channel_id.is_member:
                 user_membership_id_sudo = slide.user_membership_id.sudo()
                 if user_membership_id_sudo.user_input_ids:
