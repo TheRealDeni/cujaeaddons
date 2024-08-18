@@ -3,7 +3,7 @@ odoo.define('elearning_cujae.upload_modal', function (require) {
 
 var core = require('web.core');
 var _t = core._t;
-var SlidesUpload = require('@website_slides_survey/js/slides_upload')[Symbol.for("default")];
+var SlidesUpload = require('@website_slides/js/slides_upload')[Symbol.for("default")];
 
 /**
  * Management of the new 'exam' slide_category

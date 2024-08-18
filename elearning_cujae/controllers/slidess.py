@@ -15,6 +15,7 @@ from odoo.osv import expression
 from odoo.addons.website_slides.controllers.main import WebsiteSlides
 
 
+
 class WebsiteSlidesSurveyExam(WebsiteSlides):
 
     @http.route(route='/slides_survey/slide/get_exam_url', type='http', auth='user', website=True,)
@@ -57,6 +58,7 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
         linked_exam_id = int(post.get('survey', {}).get('id') or 0)
 
         print("entro al slide create")
+        print(post['slide_category'])
         if create_new_survey:
             # If user cannot create a new survey, no need to create the slide either.
             if not request.env['survey.survey'].check_access_rights('create', raise_exception=False):
