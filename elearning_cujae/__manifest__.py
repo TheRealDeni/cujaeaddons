@@ -26,6 +26,20 @@
     # always loaded
     'data': [        
         'views/survey_question.xml',
+        #'static/description/icon.png',
+        'views/slide_slide_views.xml',
+        'views/survey_survey_views.xml',
+        #'views/res_config_settings_views.xml',
+        'views/website_slides_menu_views.xml',
+        'views/website_slide_templates_course.xml',
+        'views/website_slides_templates_lesson.xml',
+        'views/website_slides_templates_utils.xml',
+        'views/website_slides_templates_lesson_fullscreen.xml',
+        'views/website_slides_templates_homepage.xml',
+        'views/website_profile.xml',
+        'views/survey_templates.xml',
+
+        'security/security.xml',
         
     ],
     'images':[
@@ -36,10 +50,25 @@
         # 'demo/account_move_demo.xml',
     ],
 
-    # 'assets': {
-    # 'web.assets_tests': [
-    #     'l10n_cu_cxc/static/tests/tours/my_tour.js',
-    # ],
+     'assets': {
+        'web.assets_frontend': [
+          'elearning_cujae/static/src/scss/website_slides_survey.scss',
+          'elearning_cujae/static/src/js/slides_upload.js',
+         # 'elearning_cujae/static/src/js/slides_upload_copy.js',    
+          'elearning_cujae/static/src/js/slides_course_fullscreen_player.js',
+          'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
+          'elearning_cujae/static/src/xml/website_slide_upload.xml',
+          'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
+      #    'elearning_cujae/static/src/xml/website_slides_fullscreen_copy.xml',
+
+
+     ],
+        'survey.survey_assets': [
+          'elearning_cujae/static/src/js/survey_form.js',
+          'elearning_cujae/static/src/scss/website_slides_survey_result.scss',
+        ],
+     },
+
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
