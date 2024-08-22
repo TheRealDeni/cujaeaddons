@@ -68,7 +68,7 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
                     return {'error': _('You are not allowed to create a survey.')}
 
                 # Create survey first as exam slide needs a exam_id (constraint)
-                post['survey_id'] = request.env['survey.survey'].create({
+                post['exam_id'] = request.env['survey.survey'].create({
                     'title': post['survey']['title'],
                     'questions_layout': 'page_per_question',
                     'is_attempts_limited': True,
@@ -77,7 +77,7 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
                     'scoring_type': 'scoring_without_answers',
                     'exam': True,
                     'scoring_success_min': 70.0,
-                    'exam_mail_template_id': request.env.ref('survey.mail_template_exam').id,
+                    #'exam_mail_template_id': request.env.ref('survey.mail_template_exam').id,
                 }).id
             elif linked_exam_id:
                 try:
