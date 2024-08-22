@@ -13,6 +13,7 @@ from odoo.http import request
 from odoo.osv import expression
 
 from odoo.addons.website_slides.controllers.main import WebsiteSlides
+from odoo.addons.website_slides_survey.controllers.slides import WebsiteSlidesSurvey
 
 
 
@@ -26,7 +27,6 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
         print(fetch_res)
         if fetch_res.get('error'):
             raise werkzeug.exceptions.NotFound()
-            print("error1")
         slide = fetch_res['slide']
         print(slide.name)
         if slide.channel_id.is_member:
@@ -54,44 +54,50 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
 
     @http.route(['/slides/add_slide'], type='json', auth='user', methods=['POST'], website=True)
     def create_slide(self, *args, **post):
-        create_new_survey = post['slide_category'] == "exam" and post.get('survey') and not post['survey']['id']
-        linked_exam_id = int(post.get('survey', {}).get('id') or 0)
+        print("aaaaaaaaaaaaaaaaaaa")
+        if post['slide_category']=='certification':
+            asd= WebsiteSlidesSurvey.create_slide(self,*args,**post)
+            print("luego del asd if")
+            return asd
+        elif post['slide_category']=='exam':
+            create_new_survey = post['slide_category'] == "exam" and post.get('survey') and not post['survey']['id']
+            linked_exam_id = int(post.get('survey', {}).get('id') or 0)
+            if create_new_survey:
+                # If user cannot create a new survey, no need to create the slide either.
+                if not request.env['survey.survey'].check_access_rights('create', raise_exception=False):
+                    return {'error': _('You are not allowed to create a survey.')}
 
-        print("entro al slide create")
-        print(post['slide_category'])
-        if create_new_survey:
-            # If user cannot create a new survey, no need to create the slide either.
-            if not request.env['survey.survey'].check_access_rights('create', raise_exception=False):
-                return {'error': _('You are not allowed to create a survey.')}
+                # Create survey first as exam slide needs a exam_id (constraint)
+                post['survey_id'] = request.env['survey.survey'].create({
+                    'title': post['survey']['title'],
+                    'questions_layout': 'page_per_question',
+                    'is_attempts_limited': True,
+                    'attempts_limit': 1,
+                    'is_time_limited': False,
+                    'scoring_type': 'scoring_without_answers',
+                    'exam': True,
+                    'scoring_success_min': 70.0,
+                    'exam_mail_template_id': request.env.ref('survey.mail_template_exam').id,
+                }).id
+            elif linked_exam_id:
+                try:
+                    request.env['survey.survey'].browse([linked_exam_id]).read(['title'])
+                except AccessError:
+                    return {'error': _('You are not allowed to link a exam.')}
+                post['exam_id'] = post['survey']['id']
+                post['survey_id']= post['exam_id']
 
-            # Create survey first as exam slide needs a exam_id (constraint)
-            post['exam_id'] = request.env['survey.survey'].create({
-                'title': post['survey']['title'],
-                'questions_layout': 'page_per_question',
-                'is_attempts_limited': True,
-                'attempts_limit': 1,
-                'is_time_limited': False,
-                'scoring_type': 'scoring_without_answers',
-                'exam': True,
-                'scoring_success_min': 70.0,
-                'exam_mail_template_id': request.env.ref('survey.mail_template_exam').id,
-            }).id
-        elif linked_exam_id:
-            try:
-                request.env['survey.survey'].browse([linked_exam_id]).read(['title'])
-            except AccessError:
-                return {'error': _('You are not allowed to link a exam.')}
+            # Then create the slide
+            result = super(WebsiteSlidesSurveyExam, self).create_slide(*args, **post)
+            if post['slide_category'] == "exam":
+                # Set the url to redirect the user to the survey
+                result['url'] = '/slides/slide/%s?fullscreen=1' % (slug(request.env['slide.slide'].browse(result['slide_id']))),
+            return result
+        else:
+            result = super(WebsiteSlidesSurveyExam, self).create_slide(*args, **post)
+            return result
 
-            post['exam_id'] = post['survey']['id']
 
-        # Then create the slide
-        result = super(WebsiteSlidesSurveyExam, self).create_slide(*args, **post)
-
-        if post['slide_category'] == "exam":
-            # Set the url to redirect the user to the survey
-            result['url'] = '/slides/slide/%s?fullscreen=1' % (slug(request.env['slide.slide'].browse(result['slide_id']))),
-
-        return result
 
     # Utils
     # ---------------------------------------------------
@@ -145,7 +151,7 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
     def _prepare_ranks_badges_values(self, **kwargs):
         """ Extract exam badges, to render them in ranks/badges page in another section.
         Order them by number of granted users desc and show only badges linked to opened exams."""
-        values = super(WebsiteSlidesSurveyExam, self)._prepare_ranks_badges_values(**kwargs)
+        values = super(WebsiteSlidesSurvey, self)._prepare_ranks_badges_values(**kwargs)
 
         # 1. Getting all exam badges, sorted by granted user desc
         domain = expression.AND([[('exam_id', '!=', False)], self._prepare_badges_domain(**kwargs)])
