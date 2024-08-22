@@ -25,8 +25,7 @@
 
     # always loaded
     'data': [        
-        'views/survey_question.xml',
-        #'static/description/icon.png',
+        #'views/survey_question.xml',
         'views/slide_slide_views.xml',
         'views/survey_survey_views.xml',
         #'views/res_config_settings_views.xml',
