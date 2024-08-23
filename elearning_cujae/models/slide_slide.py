@@ -109,8 +109,8 @@ class Slide(models.Model):
 
         for slide in slide.filtered(lambda slide: slide.slide_category == 'exam' and slide.exam_id or slide.survey_id ):
             print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-            if slide['survey_id']:
-                slide.exam_id= slide.survey_id            
+            #if slide['survey_id']:
+           #     slide.exam_id= slide.survey_id            
             
             if slide.channel_id.is_member:
                 user_membership_id_sudo = slide.user_membership_id.sudo()
