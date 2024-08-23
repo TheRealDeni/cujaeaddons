@@ -25,6 +25,7 @@
 
     # always loaded
     'data': [        
+        'data/gamification_data.xml',
         'views/survey_question.xml',
         #'static/description/icon.png',
         'views/slide_slide_views.xml',

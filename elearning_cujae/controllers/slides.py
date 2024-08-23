@@ -154,7 +154,7 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
         values = super(WebsiteSlidesSurvey, self)._prepare_ranks_badges_values(**kwargs)
 
         # 1. Getting all exam badges, sorted by granted user desc
-        domain = expression.AND([[('exam_id', '!=', False)], self._prepare_badges_domain(**kwargs)])
+        domain = expression.AND([[('survey_id', '!=', False)], self._prepare_badges_domain(**kwargs)])
         exam_badges = request.env['gamification.badge'].sudo().search(domain)
         # keep only the badge with challenge category = slides (the rest will be displayed under 'normal badges' section
         exam_badges = exam_badges.filtered(
