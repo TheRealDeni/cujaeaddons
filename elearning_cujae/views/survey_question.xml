@@ -10,7 +10,7 @@
                     <attribute name="attrs">{'invisible': False}</attribute>
                 </xpath>                
                  <xpath expr="//group[contains(@attrs, 'scoring_type')]" position="attributes">
-                    <attribute name="attrs">{'invisible': ['|', ('scoring_type', '=', 'no_scoring'), ('question_type', 'not in', ['numerical_box', 'date', 'datetime', 'text_box'])]}</attribute>
+                    <attribute name="attrs">{'invisible': ['|', ('scoring_type', '=', 'no_scoring'), ('question_type', 'not in', ['numerical_box', 'date', 'datetime', 'text_box','upload_file'])]}</attribute>
                 </xpath>   
             </field>
         </record>
