@@ -4,12 +4,12 @@
 from odoo.http import request
 from odoo.osv import expression
 from odoo.addons.website_profile.controllers.main import WebsiteProfile
+#from odoo.addons.website_slides_survey.controllers.website_profile import WebsiteProfile
 
-
-class WebsiteSlidesSurveyExam(WebsiteProfile):
-    def _prepare_user_profile_values_ex(self, user, **kwargs):
-        """Loads all data required to display the exam attempts of the given user"""
-        values = super(WebsiteSlidesSurveyExam, self)._prepare_user_profile_values(user, **kwargs)
+class WebsiteSlidesSurvey(WebsiteProfile):
+     def _prepare_user_profile_values(self, user, **kwargs):
+        """Loads all data required to display the certification attempts of the given user"""
+        values = super(WebsiteSlidesSurvey, self)._prepare_user_profile_values(user, **kwargs)
         values['show_exam_tab'] = ('user' in values) and (
             values['user'].id == request.env.user.id or \
             request.env.user.has_group('survey.group_survey_manager')
@@ -19,7 +19,8 @@ class WebsiteSlidesSurveyExam(WebsiteProfile):
             return values
 
         domain = expression.AND([
-            [('exam_id.exam', '=', True)],
+            [('survey_id.exam', '=', True)],
+ #           [('survey_id.certification', '=', True)],
             [('state', '=', 'done')],
             expression.OR([
                 [('email', '=', values['user'].email)],
@@ -28,11 +29,11 @@ class WebsiteSlidesSurveyExam(WebsiteProfile):
                 [('partner_id', '=', values['user'].partner_id.id)]
         ])
 
-        if 'exam_search' in kwargs:
-            values['active_tab'] = 'exam'
-            values['exam_search_terms'] = kwargs['exam_search']
+        if 'certification_search' in kwargs:
+            values['active_tab'] = 'certification'
+            values['certification_search_terms'] = kwargs['certification_search']
             domain = expression.AND([domain,
-                [('exam_id.title', 'ilike', kwargs['exam_search'])]
+                [('survey_id.title', 'ilike', kwargs['certification_search'])]
             ])
 
         UserInputSudo = request.env['survey.user_input'].sudo()

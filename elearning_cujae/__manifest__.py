@@ -31,6 +31,7 @@
         'views/slide_slide_views.xml',
         'views/survey_survey_views.xml',
         #'views/res_config_settings_views.xml',
+        'views/slide_slide_partner_views.xml',
         'views/website_slides_menu_views.xml',
         'views/website_slide_templates_course.xml',
         'views/website_slides_templates_lesson.xml',

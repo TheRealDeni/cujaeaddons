@@ -54,10 +54,8 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
 
     @http.route(['/slides/add_slide'], type='json', auth='user', methods=['POST'], website=True)
     def create_slide(self, *args, **post):
-        print("aaaaaaaaaaaaaaaaaaa")
         if post['slide_category']=='certification':
             asd= WebsiteSlidesSurvey.create_slide(self,*args,**post)
-            print("luego del asd if")
             return asd
         elif post['slide_category']=='exam':
             create_new_survey = post['slide_category'] == "exam" and post.get('survey') and not post['survey']['id']
@@ -116,7 +114,7 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
     def _prepare_user_slides_profile(self, user):
         values = super(WebsiteSlidesSurveyExam, self)._prepare_user_slides_profile(user)
         values.update({
-            'certificates': self._get_users_certificates(user)[user.id]
+            'completed_ex': self._get_users_completed_ex(user)[user.id]
         })
         return values
 
@@ -124,27 +122,27 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
     # ---------------------------------------------------
     def _prepare_all_users_values(self, users):
         result = super(WebsiteSlidesSurveyExam, self)._prepare_all_users_values(users)
-        certificates_per_user = self._get_users_certificates(users)
+        completed_ex_per_user = self._get_users_completed_ex(users)
         for index, user in enumerate(users):
             result[index].update({
-                'exam_count': len(certificates_per_user.get(user.id, []))
+                'exam_count': len(completed_ex_per_user.get(user.id, []))
             })
         return result
 
-    def _get_users_certificates(self, users):
+    def _get_users_completed_ex(self, users):
         partner_ids = [user.partner_id.id for user in users]
         domain = [
             ('slide_partner_id.partner_id', 'in', partner_ids),
             ('scoring_success', '=', True),
             ('slide_partner_id.survey_scoring_success', '=', True)
         ]
-        certificates = request.env['survey.user_input'].sudo().search(domain)
-        users_certificates = {
+        completed_ex = request.env['survey.user_input'].sudo().search(domain)
+        users_completed_ex = {
             user.id: [
-                certificate for certificate in certificates if certificate.partner_id == user.partner_id
+                completed_ex for completed_ex in completed_ex if completed_ex.partner_id == user.partner_id
             ] for user in users
         }
-        return users_certificates
+        return users_completed_ex
 
     # Badges & Ranks Page
     # ---------------------------------------------------

@@ -10,7 +10,7 @@
             <div class="o_checkbox_optional_field" attrs="{'invisible': [('scoring_type', '=', 'no_scoring')]}">
                 <field name="exam" nolabel="1" attrs="{'readonly':[('certification', '=', True)]}"/>
             </div>
-            <xpath expr="//div[@class='o_checkbox_optional_field'][1]" position="inside">
+            <xpath expr="//div[hasclass('o_checkbox_optional_field')]" position="inside">
                 <field name="certification" attrs="{'invisible': [('scoring_type', '=', 'no_scoring')],'readonly': [('exam', '=', True)]}"/>
             </xpath>
         </xpath>
@@ -18,3 +18,4 @@
 </record>
 </data>
 </odoo>
+
