@@ -3,7 +3,7 @@ class SlidePartnerRelation(models.Model):
     _inherit = 'slide.slide.partner'
 
     user_input_ids = fields.One2many('survey.user_input', 'slide_partner_id', 'Exam attempts')
-    survey_scoring_success = fields.Boolean('Exam Succeeded', compute='_compute_survey_scoring_success', store=True)
+    exam_scoring_success = fields.Boolean('Exam Succeeded', compute='_compute_survey_scoring_success', store=True)
 
     @api.depends('partner_id', 'user_input_ids.scoring_success')
     def _compute_survey_scoring_success(self):
@@ -13,7 +13,7 @@ class SlidePartnerRelation(models.Model):
         ])
         succeeded_slide_partners = succeeded_user_inputs.mapped('slide_partner_id')
         for record in self:
-            record.survey_scoring_success = record in succeeded_slide_partners
+            record.exam_scoring_success = record in succeeded_slide_partners
 
     def _compute_field_value(self, field):
         super()._compute_field_value(field)
@@ -109,8 +109,8 @@ class Slide(models.Model):
 
         for slide in slide.filtered(lambda slide: slide.slide_category == 'exam' and slide.exam_id or slide.survey_id ):
             print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-            if slide['survey_id']:
-                slide.exam_id= slide.survey_id            
+            #if slide['survey_id']:
+           #     slide.exam_id= slide.survey_id            
             
             if slide.channel_id.is_member:
                 user_membership_id_sudo = slide.user_membership_id.sudo()
