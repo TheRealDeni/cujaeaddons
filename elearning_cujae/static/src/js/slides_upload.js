@@ -3,7 +3,7 @@ odoo.define('elearning_cujae.upload_modal', function (require) {
 
 var core = require('web.core');
 var _t = core._t;
-var SlidesUpload = require('@website_slides_survey/js/slides_upload')[Symbol.for("default")];
+var SlidesUpload = require('@website_slides/js/slides_upload')[Symbol.for("default")];
 
 /**
  * Management of the new 'exam' slide_category
@@ -110,16 +110,32 @@ SlidesUpload.SlideUploadDialog.include({
         var result = this._super.apply(this, arguments);
 
         var certificateValue = this.$('#exam_id').select2('data');
+        var certificateValue2 = this.$('#certification_id').select2('data');
         var survey = {};
+        var asd=1;
         if (certificateValue) {
+            console.log("primer IF")
+            asd=2;
             if (certificateValue.create) {
                 survey.id = false;
                 survey.title = certificateValue.text;
             } else {
                 survey.id = certificateValue.id;
             }
+            console.log(survey.id)
         }
-        result['survey'] = survey;
+        console.log(survey)        
+        if (survey.id === undefined) {           
+            console.log("segundo IF")
+            if (certificateValue2.create) {
+                survey.id = false;
+                survey.title = certificateValue2.text;
+            } else {
+                survey.id = certificateValue2.id;
+            }
+        }     
+        result['survey'] = survey;   
+        console.log(survey)
         return result;
     },
 });
