@@ -16,7 +16,7 @@ class SurveyQuestion(models.Model):
         """
         for question in self:
             print(question.question_type)
-            if question.question_type=='text_box':
+            if question.question_type=='text_box' or question.question_type=='upload_file':
                 question.is_scored_question = True
                 question.scoring_type= 'scoring_with_answers'
                 print("hello")
