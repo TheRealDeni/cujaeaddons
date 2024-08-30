@@ -6,7 +6,7 @@ class SlidePartnerRelation(models.Model):
     exam_scoring_success = fields.Boolean('Exam Succeeded', compute='_compute_survey_scoring_success', store=True)
 
     @api.depends('partner_id', 'user_input_ids.scoring_success')
-    def _compute_survey_scoring_success(self):
+    def _compute_exam_scoring_success(self):
         succeeded_user_inputs = self.env['survey.user_input'].sudo().search([
             ('slide_partner_id', 'in', self.ids),
             ('scoring_success', '=', True)
@@ -17,8 +17,8 @@ class SlidePartnerRelation(models.Model):
 
     def _compute_field_value(self, field):
         super()._compute_field_value(field)
-        if field.name == 'survey_scoring_success':
-            self.filtered('survey_scoring_success').write({
+        if field.name == 'exam_scoring_success':
+            self.filtered('exam_scoring_success').write({
                 'completed': True
             })
 class Slide(models.Model):
@@ -107,11 +107,7 @@ class Slide(models.Model):
         if slide.survey_id == False:
              print("No hay un examen asociado a este slide")
 
-        for slide in slide.filtered(lambda slide: slide.slide_category == 'exam' and slide.exam_id or slide.survey_id ):
-            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-            #if slide['survey_id']:
-           #     slide.exam_id= slide.survey_id            
-            
+        for slide in slide.filtered(lambda slide: slide.slide_category == 'exam' and slide.exam_id or slide.survey_id ):            
             if slide.channel_id.is_member:
                 user_membership_id_sudo = slide.user_membership_id.sudo()
                 if user_membership_id_sudo.user_input_ids:
@@ -139,5 +135,4 @@ class Slide(models.Model):
                     }
                 )
                 exam_urls[slide.id] = user_input.get_start_url()
-                print(exam_urls)
         return exam_urls
