@@ -37,6 +37,6 @@ class WebsiteSlidesSurvey(WebsiteProfile):
             ])
 
         UserInputSudo = request.env['survey.user_input'].sudo()
-        values['user_inputs'] = UserInputSudo.search(domain, order='create_date desc')
+        values['user_exam_inputs'] = UserInputSudo.search(domain, order='create_date desc')
 
         return values

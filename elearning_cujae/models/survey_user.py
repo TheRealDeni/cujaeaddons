@@ -10,6 +10,10 @@ class SurveyUserInput(models.Model):
     slide_partner_id = fields.Many2one('slide.slide.partner', 'Subscriber information',
         help="Slide membership information for the logged in user",
         index='btree_not_null') # index useful for deletions in comodel
+    
+    slide_exam = fields.Boolean('Examen completado', compute='_compute_exam_input', store=True)
+
+
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -22,6 +26,11 @@ class SurveyUserInput(models.Model):
         if 'state' in vals:
             self._check_for_failed_attempt()
         return res
+
+    def _compute_exam_input(self):
+        if self.slide_id.exam_id.exam==True:
+            self.slide_exam=True
+            
 
     def _check_for_failed_attempt(self):
         """

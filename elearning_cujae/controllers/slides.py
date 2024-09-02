@@ -129,12 +129,16 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
             })
         return result
 
+
     def _get_users_completed_ex(self, users):
         partner_ids = [user.partner_id.id for user in users]
+        
         domain = [
             ('slide_partner_id.partner_id', 'in', partner_ids),
             ('scoring_success', '=', True),
-            ('slide_partner_id.survey_scoring_success', '=', True)
+            ('slide_partner_id.survey_scoring_success', '=', True),
+            ('slide_id.exam_id.exam', '=', True)
+
         ]
         completed_ex = request.env['survey.user_input'].sudo().search(domain)
         users_completed_ex = {
@@ -178,3 +182,4 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
             'exam_badge_urls': exam_badge_urls
         })
         return values
+
