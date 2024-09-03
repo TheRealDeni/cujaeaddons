@@ -129,6 +129,22 @@ class WebsiteSlidesSurveyExam(WebsiteSlides):
             })
         return result
 
+    def _get_users_certificates(self, users):
+        partner_ids = [user.partner_id.id for user in users]
+        domain = [
+            ('slide_partner_id.partner_id', 'in', partner_ids),
+            ('scoring_success', '=', True),
+            ('slide_partner_id.survey_scoring_success', '=', True),
+            ('slide_id.slide_category', '=', 'certification')
+
+        ]
+        certificates = request.env['survey.user_input'].sudo().search(domain)
+        users_certificates = {
+            user.id: [
+                certificate for certificate in certificates if certificate.partner_id == user.partner_id
+            ] for user in users
+        }
+        return users_certificates
 
     def _get_users_completed_ex(self, users):
         partner_ids = [user.partner_id.id for user in users]
