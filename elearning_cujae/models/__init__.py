@@ -5,4 +5,3 @@ from .import survey_survey
 from .import badge
 from .import survey_survey
 from .import survey_user
-

@@ -5,4 +5,19 @@
         parent="website_slides.website_slides_menu_courses"
         sequence="4"
         action="survey_survey_action_slides_exam"/>
+    <menuitem name="Revisión respuestas"
+        id="survey_menu_questions_inherit_answers"
+        parent="website_slides.website_slides_menu_root"
+        sequence="90"
+        action="survey.survey_user_input_line_action"/>
+    <menuitem name="Banco de preguntas"
+        id="survey_menu_questions_inherit"
+        parent="website_slides.website_slides_menu_root"
+        sequence="91"
+        action="survey.action_survey_question_form"/>
+    <menuitem name="Intentos de prueba de asistentes"
+        id="survey_menu_questions_inherit_attempts"
+        parent="website_slides.website_slides_menu_report"
+        sequence="20"
+        action="survey.action_survey_user_input"/> 
 </odoo>
