@@ -7,4 +7,4 @@ from odoo import fields, models
 class Channel(models.Model):
     _inherit = 'slide.channel'
 
-    nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)
+    nbr_exam = fields.Integer("Número de exámenes", compute='_compute_slides_statistics', store=True)

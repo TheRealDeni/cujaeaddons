@@ -17,6 +17,7 @@ Fullscreen.include({
         var def = this._super.apply(this, arguments);
         var $content = this.$('.o_wslides_fs_content');
         if (this.get('slide').category === "exam"){
+            console.log(this.get('slide'))
             $content.html(QWeb.render('website.slides.fullscreen.exam',{widget: this}));
         }
         return Promise.all([def]);

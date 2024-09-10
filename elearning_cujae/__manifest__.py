@@ -40,6 +40,7 @@
         'views/website_slides_templates_homepage.xml',
         'views/website_profile.xml',
         'views/survey_templates.xml',
+        'views/survey_template_form.xml',
 
         'security/security.xml',
         
@@ -61,7 +62,6 @@
           'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
           'elearning_cujae/static/src/xml/website_slide_upload.xml',
           'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
-      #    'elearning_cujae/static/src/xml/website_slides_fullscreen_copy.xml',
 
 
      ],

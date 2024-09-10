@@ -5,7 +5,7 @@
             <xpath expr="//a[hasclass('o_wslides_home_all_slides')]" position="after">
                 <a class="nav-link nav-link d-flex" href="/slides/all?slide_category=exam">
                     <t t-call="website_slides_survey.o_wss_certification_icon"/>
-                    <span class="ms-1">Exams</span>
+                    <span class="ms-1">Exámenes</span>
                 </a>
             </xpath>
         </template>

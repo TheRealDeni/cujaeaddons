@@ -6,7 +6,7 @@
                 <t t-if="channel_id">
                     <a role="button" class="me-2 mt-2 mt-md-0 btn btn-secondary btn-lg" href="#" data-bs-toggle="modal" t-attf-data-bs-target="#slideShareModal_{{channel_id.id}}">
                         <i class="fa fa-share-alt" aria-label="Share exam" title="Share exam"/>
-                        Share your exam
+                        Comparte tu examen
                     </a>
                     <t t-call="website_slides.slide_share_modal">
                         <t t-set="record" t-value="channel_id"/>

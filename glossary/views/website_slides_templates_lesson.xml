@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="slide_content_detailed_glossary" inherit_id="website_slides.slide_content_detailed">
+            <xpath expr="//div[hasclass('o_wslides_lesson_content_type')]" position="inside">
+                <div t-if="slide.slide_category == 'glossary' " class="col mt32 mb8 text-center">
+                     <a class="btn btn-primary" t-att-href="'/slide/get_glossary_url?slide_id=' + widget.get('slide').id" target="_blank">
+                         <i class="fa fa-graduation-cap"/>
+                    <span t-if="widget.get('slide').isMember"> Abrir glosario</span>
+                </a>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

@@ -2,10 +2,10 @@ from odoo import models, fields, api
 
 class Survey(models.Model):
     _inherit="survey.survey"
-    exam = fields.Boolean('Is an Exam', compute='_compute_exam',readonly=False, store=True, precompute=True)
-    exam_give_badge = fields.Boolean('Give exam Badge', compute='_compute_exam_give_badge',readonly=False, store=True, copy=False)
-    exam_badge_id = fields.Many2one('gamification.badge', 'Exam Badge', copy=False)
-    exam_badge_id_dummy = fields.Many2one(related='exam_badge_id', string='Exam Badge ')
+    exam = fields.Boolean('¿Es un examen?', compute='_compute_exam',readonly=False, store=True, precompute=True)
+    exam_give_badge = fields.Boolean('Dar insignia de examen', compute='_compute_exam_give_badge',readonly=False, store=True, copy=False)
+    exam_badge_id = fields.Many2one('gamification.badge', 'Insignia de examen', copy=False)
+    exam_badge_id_dummy = fields.Many2one(related='exam_badge_id', string='Insignia de examen ')
     @api.depends('scoring_type')
     def _compute_exam(self):
         for survey in self:

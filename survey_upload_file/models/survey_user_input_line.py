@@ -33,7 +33,7 @@ class SurveyUserInputLine(models.Model):
     _inherit = "survey.user_input.line"
 
     answer_type = fields.Selection(
-        selection_add=[('upload_file', 'Upload File')],
+        selection_add=[('upload_file', 'Subir archivo')],
         help="The type of answer for this question (upload_file if the user "
              "is uploading a file).")
     value_file_data_ids = fields.Many2many('ir.attachment',

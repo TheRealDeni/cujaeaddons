@@ -2,8 +2,8 @@ from odoo import models, fields, api
 class SlidePartnerRelation(models.Model):
     _inherit = 'slide.slide.partner'
 
-    user_input_ids = fields.One2many('survey.user_input', 'slide_partner_id', 'Exam attempts')
-    exam_scoring_success = fields.Boolean('Exam Succeeded', compute='_compute_survey_scoring_success', store=True)
+    user_input_ids = fields.One2many('survey.user_input', 'slide_partner_id', 'Intentos de examen')
+    exam_scoring_success = fields.Boolean('Examen completado', compute='_compute_survey_scoring_success', store=True)
 
     @api.depends('partner_id', 'user_input_ids.scoring_success')
     def _compute_exam_scoring_success(self):
@@ -28,10 +28,10 @@ class Slide(models.Model):
     has_certification = fields.Boolean(string="Lleva certificación")
     certification = fields.Boolean(string="Es certificación?")
     slide_category = fields.Selection(selection_add=[
-        ('exam', 'Exam')
+        ('exam', 'Examen')
     ], ondelete={'exam': 'set default'})
     slide_type = fields.Selection(selection_add=[
-        ('exam', 'Exam')
+        ('exam', 'Examen')
     ], ondelete={'exam': 'set null'})
     exam_id = fields.Many2one('survey.survey', 'Examen')
     nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)

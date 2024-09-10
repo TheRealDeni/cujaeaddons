@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Exams"
+    <menuitem name="Exámenes"
         id="website_slides_menu_courses_exam"
         parent="website_slides.website_slides_menu_courses"
         sequence="4"

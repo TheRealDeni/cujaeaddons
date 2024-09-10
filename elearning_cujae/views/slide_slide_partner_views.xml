@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="website_slides.slide_slide_partner_view_search"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='filter_completed']" position="after">
-                <filter string="Exam Passed" name="filter_exam_scoring_success" domain="[('exam_scoring_success', '=', True)]"/>
+                <filter string="Examen completado" name="filter_exam_scoring_success" domain="[('exam_scoring_success', '=', True)]"/>
             </xpath>
         </field>
     </record>
@@ -18,7 +18,7 @@
         <field name="inherit_id" ref="website_slides.slide_slide_partner_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='completed']" position="after">
-                <field name="exam_scoring_success" string="Exam Passed"/>
+                <field name="exam_scoring_success" string="Examen completado"/>
             </xpath>
         </field>
     </record>

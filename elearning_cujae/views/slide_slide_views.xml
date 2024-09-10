@@ -18,18 +18,18 @@
 
   
     <record id="survey_survey_action_slides_exam" model="ir.actions.act_window">
-        <field name="name">Exams</field>
+        <field name="name">Exámenes</field>
         <field name="res_model">survey.survey</field>
         <field name="view_mode">kanban,tree,pivot,graph,form</field>
         <field name="domain">[('exam', '=', True)]</field>
         <field name="context">{'default_certification': False, 'default_scoring_type': 'scoring_with_answers'}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create an exam
+                Crea un examen
             </p>
             <p>
-                Assess the level of understanding of your attendees
-                <br/>and send them a document if they pass the test.
+               Evalúa el nivel de comprensión de tus asistentes
+                <br/>y enviarles un documento si pasan la prueba.
             </p>
         </field>
     </record>

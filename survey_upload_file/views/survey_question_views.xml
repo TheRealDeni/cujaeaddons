@@ -9,7 +9,7 @@
             <xpath expr="//div[hasclass('o_preview_questions')]"
                    position="inside">
                 <div attrs="{'invisible': [('question_type', '!=', 'upload_file')]}">
-                    <p class="o_upload_file">Upload Files
+                    <p class="o_upload_file">Subir archivo
                         <i class="fa fa-upload"/>
                     </p>
                 </div>

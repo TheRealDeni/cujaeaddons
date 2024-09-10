@@ -30,9 +30,9 @@ class SurveyQuestion(models.Model):
     _inherit = 'survey.question'
 
     question_type = fields.Selection(
-        selection_add=[('upload_file', 'Upload File')],
+        selection_add=[('upload_file', 'Subir archivo')],
         help='Select the type of question to create.')
-    upload_multiple_file = fields.Boolean(string='Upload Multiple File',
+    upload_multiple_file = fields.Boolean(string='Subir múltiples archivos',
                                           help='Check this box if you want to '
                                                'allow users to upload '
                                                'multiple files')

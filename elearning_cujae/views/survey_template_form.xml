@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <template id="survey_fill_form_start_inherit" inherit_id="survey.survey_fill_form_start">
+            <xpath expr="//button[@type='submit']" position="replace">
+                <button type="submit" value="start" class="btn btn-primary btn-lg disabled">
+                    <t t-if="survey.certification">
+                        <t t-if="survey.exam">
+                            Empezar Examen
+                        </t>
+                        <t t-else="">
+                            Start Certification
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <t t-if="survey.exam">
+                            Empezar Examen
+                        </t>
+                        <t t-else="">
+                            Start Survey
+                        </t>
+                    </t>
+                </button>
+            </xpath>
+        </template>
+    </data>
+</odoo>
