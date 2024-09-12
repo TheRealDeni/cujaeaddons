@@ -15,6 +15,8 @@ class Slide(models.Model):
     nbr_glossary = fields.Integer("Número de glosarios", compute='_compute_slides_statistics', store=True)
 
 
+   
+    
     @api.depends('glossary_id')
     def _compute_name(self):
         for slide in self:

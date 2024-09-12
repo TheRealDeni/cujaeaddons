@@ -1,9 +1,15 @@
 <templates>
     <t t-name="website.slides.fullscreen.glossary">
-        <div class="glossary-container ">            
-
+        <div class="glossary-container">
             <h3 t-esc="glossary.name"/>  <!-- Mostrar el nombre del glosario -->
-            <table class="table table-bordered">
+            
+            <div class="alphabet-filter">
+                <t t-foreach="['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']" t-as="letter">
+                    <span class="alphabet-letter" t-att-data-letter="letter" t-esc="letter"/>
+                </t>
+            </div>
+
+            <table class="table table-bordered" id="glossary-table">
                 <thead>
                     <tr>
                         <th>Término</th>
@@ -12,7 +18,7 @@
                 </thead>
                 <tbody>
                     <t t-foreach="terms" t-as="term">
-                        <tr>
+                        <tr class="term-row" t-att-data-letter="term.name.charAt(0).toUpperCase()">
                             <td><t t-esc="term.name"/></td>
                             <td class="description-cell"><t t-esc="term.description"/></td> 
                         </tr>

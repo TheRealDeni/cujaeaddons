@@ -7,3 +7,4 @@ class Glossary(models.Model):
     name = fields.Char(string='Nombre', required=True)
     description = fields.Text(string='Descripción')
     term_ids = fields.One2many('glossary.term', 'glossary_id', string='Términos')
+    

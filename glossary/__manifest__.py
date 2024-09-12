@@ -23,10 +23,13 @@
     ],
     'assets': {
         'web.assets_frontend': [
-          'glossary/static/src/js/search_terms.js',
+      #    'glossary/static/src/js/completion.js',
           'glossary/static/src/js/slides_course_fullscreen_player.js',
+          'glossary/static/src/js/slides_upload.js',
           'glossary/static/src/scss/glossary.scss',
           'glossary/static/src/xml/website_slides_fullscreen.xml',
+          'glossary/static/src/xml/website_slide_upload.xml',
+
 
 
 

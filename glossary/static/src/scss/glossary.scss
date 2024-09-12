@@ -56,3 +56,17 @@
   padding: 8px; /* Espaciado interno */
   text-align: left; /* Alineación del texto */
 }
+.alphabet-filter {
+  margin-bottom: 10px;
+}
+
+.alphabet-letter {
+  cursor: pointer;
+  margin-right: 5px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.alphabet-letter:hover {
+  text-decoration: underline;
+}

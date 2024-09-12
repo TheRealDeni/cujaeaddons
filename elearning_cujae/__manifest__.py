@@ -41,6 +41,7 @@
         'views/website_profile.xml',
         'views/survey_templates.xml',
         'views/survey_template_form.xml',
+        'views/gamification_menu.xml',
 
         'security/security.xml',
         

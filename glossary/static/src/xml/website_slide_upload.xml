@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates >
+            
+    <t t-name="website.slide.upload.modal.glossary">
+        <div>
+            <form class="clearfix">
+                <div class="row">
+                    <div id="o_wslides_js_slide_upload_left_column" class="col-md-6">
+                        <div class="mb-3">
+                            <label for="glossary_id" class="col-form-label">Glosario</label>
+                            <input class="form-control" id="glossary_id" required="required"/>
+                            <span class="o_error_no_certification text-danger d-none">Selecciona un glosario.</span>
+                        </div>
+                        <t t-call="website.slide.upload.modal.common"/>
+                        <canvas id="data_canvas" class="d-none"></canvas>
+                    </div>
+ 
+                    <div id="o_wslides_js_slide_upload_preview_column" class="col-md-6">
+                        <div class="img-thumbnail h-100">
+                            <div class="o_slide_tutorial p-3">
+                                <div class="h5">Como subir un glosario</div>
+                                <div class="my-4">Puedes crear tu glosario desde aqui, para editarlo confíguralo en el  backend.</div>
+                            </div>
+                        </div>
+                    </div>        
+                </div>  
+            </form>
+        </div>
+    </t>
+</templates>
