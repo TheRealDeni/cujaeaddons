@@ -86,5 +86,5 @@ class WebsiteSlidesGlossary(WebsiteSlides):
     def complete_slide(self, slide_id):
         slide = http.request.env['slide.slide'].browse(slide_id)
         if slide:
-            slide.user_membership_id.completed = True  # O cualquier lógica adicional que necesites
+            slide.user_membership_id.sudo().completed = True  # O cualquier lógica adicional que necesites
         return {'success': True}

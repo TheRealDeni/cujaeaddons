@@ -14,19 +14,25 @@ class SlidePartnerRelation(models.Model):
         succeeded_slide_partners = succeeded_user_inputs.mapped('slide_partner_id')
         for record in self:
             record.exam_scoring_success = record in succeeded_slide_partners
+            
 
     def _compute_field_value(self, field):
         super()._compute_field_value(field)
-        if field.name == 'exam_scoring_success':
-            self.filtered('exam_scoring_success').write({
+        if field.name == 'survey_scoring_success':
+            self.filtered('survey_scoring_success').write({
                 'completed': True
             })
+            if self.completed==True:
+                self.slide_id.env.user.sudo().add_karma(self.slide_id.karma_for_completion)
+            
+
+            
+
+            
 class Slide(models.Model):
     _inherit = 'slide.slide'
 
     name = fields.Char(compute='_compute_name', readonly=False, store=True)
-    has_certification = fields.Boolean(string="Lleva certificación")
-    certification = fields.Boolean(string="Es certificación?")
     slide_category = fields.Selection(selection_add=[
         ('exam', 'Examen')
     ], ondelete={'exam': 'set default'})
@@ -37,7 +43,7 @@ class Slide(models.Model):
     nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)
     # small override of 'is_preview' to uncheck it automatically for slides of type 'exam'
     is_preview = fields.Boolean(compute='_compute_is_preview', readonly=False, store=True)
-
+    karma_for_completion=fields.Integer("Karma ganado al completar", compute='_compute_karma_gain_slide',readonly=False, store=True)
   
 
     @api.depends('exam_id')
@@ -51,6 +57,34 @@ class Slide(models.Model):
         slides_exam.can_self_mark_uncompleted = False
         slides_exam.can_self_mark_completed = False
         super(Slide, self - slides_exam)._compute_mark_complete_actions()
+    
+    
+    def _action_mark_completed(self):
+        
+        uncompleted_slides = self.filtered(lambda slide: not slide.user_has_completed)
+        self.env.user.sudo().add_karma(self.karma_for_completion)
+        target_partner = self.env.user.partner_id
+        uncompleted_slides._action_set_quiz_done()
+        SlidePartnerSudo = self.env['slide.slide.partner'].sudo()
+        existing_sudo = SlidePartnerSudo.search([
+            ('slide_id', 'in', uncompleted_slides.ids),
+            ('partner_id', '=', target_partner.id)
+        ])
+        existing_sudo.write({'completed': True})
+
+        new_slides = uncompleted_slides.sudo() - existing_sudo.mapped('slide_id')
+        SlidePartnerSudo.create([{
+            'slide_id': new_slide.id,
+            'channel_id': new_slide.channel_id.id,
+            'partner_id': target_partner.id,
+            'vote': 0,
+            'completed': True} for new_slide in new_slides])
+
+            
+
+     
+
+     
 
     @api.depends('slide_category')
     def _compute_is_preview(self):

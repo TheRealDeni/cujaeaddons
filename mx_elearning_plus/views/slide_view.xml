@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//sheet" position="before">
                     <header>
-                        <button name="action_publish" type="object" string="Publish" class="oe_highlight" attrs="{'invisible':[('is_published','=',True)]}"/>
-                        <button name="action_unpublish" type="object" string="Unpublish" class="oe_highlight" attrs="{'invisible':[('is_published','=',False)]}"/>
+                        <button name="action_publish" type="object" string="Publicar" class="oe_highlight" attrs="{'invisible':[('is_published','=',True)]}"/>
+                        <button name="action_unpublish" type="object" string="Ocultar" class="oe_highlight" attrs="{'invisible':[('is_published','=',False)]}"/>
                     </header>
                 </xpath>
                 <!-- <field name="slide_resource_downloadable" position="after">

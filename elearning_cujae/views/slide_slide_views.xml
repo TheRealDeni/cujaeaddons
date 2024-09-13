@@ -16,7 +16,19 @@
         </field>
     </record>
 
-  
+      <record id="slide_slide_view_form_karma" model="ir.ui.view">
+        <field name="name">slide.slide.view.form.inherit.karma</field>
+        <field name="model">slide.slide</field>
+        <field name="inherit_id" ref="website_slides.view_slide_slide_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="karma_for_completion" String="Karma al completar"/>
+            </xpath>            
+        </field>
+    </record>
+   
+    
+
     <record id="survey_survey_action_slides_exam" model="ir.actions.act_window">
         <field name="name">Exámenes</field>
         <field name="res_model">survey.survey</field>
