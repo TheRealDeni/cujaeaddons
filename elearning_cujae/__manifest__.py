@@ -24,6 +24,7 @@
     'depends': ['base', 'website_slides','survey','website_slides_survey'],
 
     # always loaded
+    # xd
     'data': [        
         'data/gamification_data.xml',
         'views/survey_question.xml',
