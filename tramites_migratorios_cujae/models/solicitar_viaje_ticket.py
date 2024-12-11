@@ -4,4 +4,3 @@ from odoo.exceptions import AccessError
 
 class SolicitarViaje(models.Model):
     _inherit = "helpdesk.ticket"
-nb
