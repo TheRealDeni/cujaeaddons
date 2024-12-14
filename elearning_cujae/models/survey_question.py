@@ -1,8 +1,25 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class SurveyQuestion(models.Model):
     _inherit= 'survey.question'
+
+    # Nuevos tipos de preguntas
+    question_type = fields.Selection(
+        selection_add=[
+            ('true_false', 'Verdadero o Falso'),
+            #('link', 'Enlaza')
+            #('clasification', 'Clasificación'),
+        ],
+    )
+
+    true_false_items = fields.One2many(
+        'survey.true_false_item',
+        'question_id',
+        string='True/False Items',
+        help="List of True/False statements for this question.",
+    )
 
     @api.depends('question_type', 'scoring_type', 'answer_date', 'answer_datetime', 'answer_numerical_box')
     def _compute_is_scored_question(self):
@@ -31,7 +48,12 @@ class SurveyQuestion(models.Model):
             else:
                 question.is_scored_question = False
             
-       
+    def write(self, vals):
+        res = super(SurveyQuestion, self).write(vals)
+        for question in self:
+            if question.question_type == 'true_false' and not question.true_false_items:
+                raise ValidationError("A 'True or False' question must have at least one item.")
+        return res
 
 
     

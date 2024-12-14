@@ -14,5 +14,15 @@
         <field name="category_id" ref="module_category_elearning_cujae"/>    
         <field name="implied_ids" eval="[(4, ref('group_elearning_teacher'))]"/>                         
                   
-    </record>              
+    </record>
+
+    <record id="survey_true_false_item_access" model="ir.model.access">
+            <field name="name">survey.true_false_item access</field>
+            <field name="model_id" ref="model_survey_true_false_item"/>
+            <field name="group_id" ref="group_elearning_teacher"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
 </odoo>

@@ -28,6 +28,7 @@
     'data': [        
         'data/gamification_data.xml',
         'views/survey_question.xml',
+        'views/survey_question_views.xml',
         #'static/description/icon.png',
         'views/slide_slide_views.xml',
         'views/survey_survey_views.xml',
@@ -58,7 +59,7 @@
      'assets': {
         'web.assets_frontend': [
           'elearning_cujae/static/src/scss/website_slides_survey.scss',
-          'elearning_cujae/static/src/js/slides_upload.js',
+         # 'elearning_cujae/static/src/js/slides_upload.js',
          # 'elearning_cujae/static/src/js/slides_upload_copy.js',    
           'elearning_cujae/static/src/js/slides_course_fullscreen_player.js',
           'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
