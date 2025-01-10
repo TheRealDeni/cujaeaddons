@@ -5,7 +5,7 @@ var core = require('web.core');
 var _t = core._t;
 var SlidesUpload = require('@website_slides/js/slides_upload')[Symbol.for("default")];
 
-/**
+/
  * Management of the new 'exam' slide_category
  */
 SlidesUpload.SlideUploadDialog.include({
@@ -18,7 +18,7 @@ SlidesUpload.SlideUploadDialog.include({
     // Handlers
     //--------------------------------------------------------------------------
 
-   /**
+   /
     * Will automatically set the title of the slide to the title of the chosen exam
     */
     _onChangeExam: function (ev) {
@@ -36,7 +36,7 @@ SlidesUpload.SlideUploadDialog.include({
     // Private
     //--------------------------------------------------------------------------
 
-    /**
+    /
      * Overridden to add the "exam" slide category
      *
      * @override
@@ -50,7 +50,7 @@ SlidesUpload.SlideUploadDialog.include({
             template: 'website.slide.upload.modal.another_template',
         };
     },
-    /**
+    /
      * Overridden to add exams management in select2
      *
      * @override
@@ -71,7 +71,7 @@ SlidesUpload.SlideUploadDialog.include({
             }, 'title')
         );
     },
-    /**
+    /
      * The select2 field makes the "required" input hidden on the interface.
      * We need to make the "exam" field required so we override this method
      * to handle validation in a fully custom way.
@@ -100,7 +100,7 @@ SlidesUpload.SlideUploadDialog.include({
 
         return result;
     },
-    /**
+    /
      * Overridden to add the 'exam' field into the submitted values
      *
      * @override
@@ -108,7 +108,6 @@ SlidesUpload.SlideUploadDialog.include({
      */
     _getSelect2DropdownValues: function () {
         var result = this._super.apply(this, arguments);
-
         var certificateValue = this.$('#exam_id').select2('data');
         var certificateValue2 = this.$('#certification_id').select2('data');
         var survey = {};

@@ -13,6 +13,7 @@
                                 <!-- Mostrar los campos 'name' y 'answer' -->
                                 <field name="name"/>
                                 <field name="answer"/>
+                                <field name="score"/>
                             </tree>
                         </field>
                     </group>

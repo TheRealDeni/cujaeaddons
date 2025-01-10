@@ -43,7 +43,7 @@ class SurveyQuestion(models.Model):
                 question.is_scored_question = bool(question.answer_datetime)
             elif question.question_type == 'numerical_box' and question.answer_numerical_box:
                 question.is_scored_question = True
-            elif question.question_type in ['simple_choice', 'multiple_choice']:  # Add 'text_box' here
+            elif question.question_type in ['simple_choice', 'multiple_choice', 'true_false']:  # Add 'text_box' here
                 question.is_scored_question = True
             else:
                 question.is_scored_question = False
@@ -55,5 +55,18 @@ class SurveyQuestion(models.Model):
                 raise ValidationError("A 'True or False' question must have at least one item.")
         return res
 
+    @api.model
+    def proccess_true_false(self, answers, question_id):
+        print("Question ID ", question_id)
+        print(answers)
+        pregunta = self.browse(question_id)
+        puntos_obtenidos = 0
+        for answer in answers:
+            inciso_id = int(answer['inciso_id'])
+            user_answer = answer['respuesta']
+            inciso = self.env['survey.true_false_item'].browse(inciso_id)
+            if inciso and inciso.answer == user_answer:
+                puntos_obtenidos += inciso.score
 
+        return {'puntos_obtenidos': puntos_obtenidos}
     

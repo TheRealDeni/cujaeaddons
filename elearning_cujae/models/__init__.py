@@ -5,3 +5,5 @@ from . import survey_question
 from . import survey_survey
 from . import survey_true_false_item
 from . import survey_user
+from . import survey_user_input
+from . import survey_user_input_line

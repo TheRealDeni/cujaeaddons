@@ -1,4 +1,6 @@
-from odoo import models, fields
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
+
 
 class SurveyTrueFalseItem(models.Model):
     _name = 'survey.true_false_item'
@@ -11,11 +13,7 @@ class SurveyTrueFalseItem(models.Model):
         required=True,
         help="Respuesta correcta para esta pregunta"
     )
-    student_answer = fields.Selection(
-        [('true', 'V'), ('false', 'F')],
-        string='Respuesta del estudiante',
-        help="La respuesta del estudiante para esta pregunta"
-    )
+    score = fields.Float(string="Puntuación", required=True, default=0, help="La puntuación de este inciso")
     question_id = fields.Many2one(
         'survey.question',
         string='Parent Question',
@@ -24,3 +22,9 @@ class SurveyTrueFalseItem(models.Model):
         help="The question this item belongs to.",
         default=lambda self: self._context.get('active_id')
     )
+
+    @api.constrains('score')
+    def _check_score(self):
+        for rec in self:
+            if rec.score <= 0:
+                raise ValidationError(_("La puntuación debe ser mayor que 0"))

@@ -59,8 +59,9 @@
      'assets': {
         'web.assets_frontend': [
           'elearning_cujae/static/src/scss/website_slides_survey.scss',
-         # 'elearning_cujae/static/src/js/slides_upload.js',
-         # 'elearning_cujae/static/src/js/slides_upload_copy.js',    
+          'elearning_cujae/static/src/js/slides_upload.js',
+          'elearning_cujae/static/src/js/survey_submit.js',
+         # 'elearning_cujae/static/src/js/slides_upload_copy.js',
           'elearning_cujae/static/src/js/slides_course_fullscreen_player.js',
           'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
           'elearning_cujae/static/src/xml/website_slide_upload.xml',
