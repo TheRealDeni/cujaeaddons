@@ -21,6 +21,20 @@ class SurveyQuestion(models.Model):
         help="List of True/False statements for this question.",
     )
 
+    answer_score = fields.Float('Score', compute='_compute_answer_score', help="Score value for a correct answer to this question.")
+
+    @api.depends('true_false_items.score')
+    def _compute_answer_score(self):
+        for question in self:
+            old_score = question.answer_score
+            if question.question_type == 'true_false':
+                score = 0
+                for item in question.true_false_items:
+                    score += item.score
+                question.answer_score = score
+            else:
+                question.answer_score = old_score
+
     @api.depends('question_type', 'scoring_type', 'answer_date', 'answer_datetime', 'answer_numerical_box')
     def _compute_is_scored_question(self):
         """ Computes whether a question "is scored" or not. Handles following cases:
@@ -55,18 +69,5 @@ class SurveyQuestion(models.Model):
                 raise ValidationError("A 'True or False' question must have at least one item.")
         return res
 
-    @api.model
-    def proccess_true_false(self, answers, question_id):
-        print("Question ID ", question_id)
-        print(answers)
-        pregunta = self.browse(question_id)
-        puntos_obtenidos = 0
-        for answer in answers:
-            inciso_id = int(answer['inciso_id'])
-            user_answer = answer['respuesta']
-            inciso = self.env['survey.true_false_item'].browse(inciso_id)
-            if inciso and inciso.answer == user_answer:
-                puntos_obtenidos += inciso.score
 
-        return {'puntos_obtenidos': puntos_obtenidos}
     
