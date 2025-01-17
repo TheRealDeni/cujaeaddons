@@ -21,19 +21,21 @@ class SurveyQuestion(models.Model):
         help="List of True/False statements for this question.",
     )
 
-    answer_score = fields.Float('Score', compute='_compute_answer_score', help="Score value for a correct answer to this question.")
+    answer_score_calculated = fields.Float(string="Puntaje Calculado", compute='_compute_answer_score_calculated', store=True)
+
+    answer_score = fields.Float('Score', help="Score value for a correct answer to this question.")
 
     @api.depends('true_false_items.score')
-    def _compute_answer_score(self):
+    def _compute_answer_score_calculated(self):
         for question in self:
-            old_score = question.answer_score
             if question.question_type == 'true_false':
                 score = 0
                 for item in question.true_false_items:
                     score += item.score
+                question.answer_score_calculated = score
                 question.answer_score = score
             else:
-                question.answer_score = old_score
+                question.answer_score_calculated = 0
 
     @api.depends('question_type', 'scoring_type', 'answer_date', 'answer_datetime', 'answer_numerical_box')
     def _compute_is_scored_question(self):
