@@ -43,6 +43,7 @@
         'views/survey_templates.xml',
         'views/survey_template_form.xml',
         'views/gamification_menu.xml',
+        'views/survey_user_views.xml',
 
         'security/security.xml',
         

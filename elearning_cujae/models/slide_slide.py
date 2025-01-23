@@ -43,7 +43,7 @@ class Slide(models.Model):
     nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)
     # small override of 'is_preview' to uncheck it automatically for slides of type 'exam'
     is_preview = fields.Boolean(compute='_compute_is_preview', readonly=False, store=True)
-    karma_for_completion=fields.Integer("Karma ganado al completar", compute='_compute_karma_gain_slide',readonly=False, store=True)
+    karma_for_completion=fields.Integer("Karma ganado al completar",readonly=False, store=True)
   
 
     @api.depends('exam_id')
