@@ -4,7 +4,7 @@ from odoo import models, fields
 class TravelExpense(models.Model):
     _name = 'travel.expense'
     _description = "Registro de la información de los costos del viaje"
-
+#poner un name con sequence
     ticket_cost = fields.Float(string="Costo del pasaje")
     taxes = fields.Float(string="Impuestos")
     diet_cost = fields.Float(string="Costos de dieta")
