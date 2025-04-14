@@ -1,0 +1,1 @@
+from . import fetch_faculties_wizard

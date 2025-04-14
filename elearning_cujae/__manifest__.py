@@ -26,7 +26,10 @@
     # always loaded
     # xd
     'data': [        
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'data/gamification_data.xml',
+        'data/cron_jobs.xml',
         'views/survey_question.xml',
         #'static/description/icon.png',
         'views/slide_slide_views.xml',
@@ -39,13 +42,17 @@
         'views/website_slides_templates_utils.xml',
         'views/website_slides_templates_lesson_fullscreen.xml',
         'views/website_slides_templates_homepage.xml',
+        'views/slide_channel_views.xml',
         'views/website_profile.xml',
         'views/survey_templates.xml',
         'views/survey_template_form.xml',
         'views/gamification_menu.xml',
         'views/survey_user_views.xml',
+        'views/survey_templates_print.xml',
+   #     'views/survey_form.xml',
+        'views/domain_inheritance.xml',
 
-        'security/security.xml',
+        
         
     ],
     'images':[

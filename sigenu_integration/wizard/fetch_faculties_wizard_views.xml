@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_fetch_faculties_wizard_form" model="ir.ui.view">
+        <field name="name">fetch.faculties.wizard.form</field>
+        <field name="model">fetch.faculties.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <h1>Obtener Facultades desde SIGENU</h1>
+                </header>
+                <footer>
+                    <button name="action_fetch_faculties" string="Sincronizar" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fetch_faculties_wizard" model="ir.actions.act_window">
+        <field name="name">Sincronizar Facultades</field>
+        <field name="res_model">fetch.faculties.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_fetch_faculties" name="Sincronizar Facultades" 
+              parent="base.menu_config" action="action_fetch_faculties_wizard"/>
+</odoo>

@@ -13,6 +13,14 @@
                     </t>
                 </t>
             </xpath>
+            <xpath expr="//div[contains(text(), 'You scored')]" position="after">
+                <t t-if="answer.professor_check">
+                    <div><strong>Your final grade will be given by the professor</strong></div>
+                </t>
+                <t t-else="channel_id">
+                    <div>Your grade is <strong><t t-esc="answer.grade" /></strong></div>
+                </t>
+            </xpath>
         </template>
 
         <template id="o_wss_certification_icon">
