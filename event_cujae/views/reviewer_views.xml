@@ -1,0 +1,34 @@
+<odoo>
+    <!-- Vista de formulario para Revisores -->
+    <record id="view_work_reviewer_form" model="ir.ui.view">
+        <field name="name">work.reviewer.form</field>
+        <field name="model">work.reviewer</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="work_id" readonly="1"/>
+                        <field name="reviewer_id" readonly="1"/>
+                        <field name="opinion"/>
+                        <field name="rating"/>
+                        <field name="is_reviewed"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_mark_reviewed" string="Marcar como Revisado" type="object" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acciones y menús para Revisores -->
+    <record id="action_work_reviewer" model="ir.actions.act_window">
+        <field name="name">Trabajos Asignados</field>
+        <field name="res_model">work.reviewer</field>
+        <field name="domain">[('reviewer_id', '=', uid)]</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_work_reviewer_root" name="Revisión de Trabajos"/>
+    <menuitem id="menu_work_reviewer" name="Mis Trabajos" parent="menu_work_reviewer_root" action="action_work_reviewer"/>
+</odoo>

@@ -1,0 +1,59 @@
+<odoo>
+    <!-- Vista de formulario para Trabajos Científicos -->
+    <record id="view_scientific_work_form" model="ir.ui.view">
+        <field name="name">scientific.work.form</field>
+        <field name="model">scientific.work</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="event_id"/>
+                        <field name="state"/>
+                    </group>
+                    <notebook>
+                        <page string="Revisores">
+                            <field name="reviewer_ids">
+                                <tree editable="bottom">
+                                    <field name="reviewer_id"/>
+                                    <field name="opinion"/>
+                                    <field name="rating"/>
+                                    <field name="is_reviewed"/>
+                                    <button name="action_mark_reviewed" string="Marcar como Revisado" type="object" class="btn-primary"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_to_review" string="Enviar a Revisión" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_approved" string="Aprobar" type="object" class="btn-success" attrs="{'invisible': [('state', '!=', 'reviewed')]}"/>
+                    <button name="action_rejected" string="Rechazar" type="object" class="btn-danger" attrs="{'invisible': [('state', '!=', 'reviewed')]}"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de lista para Trabajos Científicos -->
+    <record id="view_scientific_work_tree" model="ir.ui.view">
+        <field name="name">scientific.work.tree</field>
+        <field name="model">scientific.work</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="event_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acciones y menús -->
+    <record id="action_scientific_work" model="ir.actions.act_window">
+        <field name="name">Trabajos Científicos</field>
+        <field name="res_model">scientific.work</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_scientific_work_root" name="Trabajos Científicos"/>
+    <menuitem id="menu_scientific_work" name="Trabajos" parent="menu_scientific_work_root" action="action_scientific_work"/>
+</odoo>
