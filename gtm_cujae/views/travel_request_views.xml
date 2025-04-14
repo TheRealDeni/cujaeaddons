@@ -1,0 +1,52 @@
+<odoo>
+    <record
+        id='travel_request_action'
+        model="ir.actions.act_window"
+    >
+        <field name="name">Solicitar viaje</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">form</field>
+    </record>
+    <record id="travel_request_view_form" model="ir.ui.view">
+        <field name="name">travel.request.view.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group[@name='main']" position="after">
+                <group name="basic_info">
+                    <group string="Información personal">
+                        <field name="traveler_name"/>
+                        <field name="id_number"/>
+                        <field name="gender"/>
+                        <field name="personal_address"/>
+                        <field name="personal_email"/>
+                        <field name="work_email"/>
+                        <field name="personal_telephone_number"/>
+                        <field name="civil_status"/>
+                        <field name="has_child"/>
+                        <field name="children_situation" attrs="{'invisible': [('has_child', '=', False)],
+                                                              'required': [('has_child', '!=', False)]}"/>
+                    </group>
+                    <group string="Información del viaje">
+                        <field name="country"/>
+                        <field name="applicant_type"/>
+                        <field name="applicant_area"/>
+                        <field name="travel_reason"/>
+                        <field name="travel_concept"/>
+                        <field name="sponsor"/>
+                        <field name="sub_teacher"/>
+                        <field name="sub_researcher"/>
+                        <field name="rank_n_subs"/>
+                        <field name="records"/>
+                    </group>
+                </group>
+
+            </xpath>
+
+
+        </field>
+
+
+    </record>
+</odoo>
