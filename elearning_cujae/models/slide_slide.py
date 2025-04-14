@@ -126,7 +126,7 @@ class Slide(models.Model):
             else:
                 self.is_published = False
         else:
-            # Si no hay fechas, no cambiar el estado actual
+            # Si no hay fechas, no cambiar el estado actuall
             pass
      
 
