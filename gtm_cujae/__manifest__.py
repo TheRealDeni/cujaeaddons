@@ -16,15 +16,17 @@
     'version': '1.0',
 
     'depends': [
-        'base','helpdesk_mgmt','helpdesk_mgmt_project'
+        'base','helpdesk_mgmt','helpdesk_mgmt_project','helpdesk_mgmt_timesheet','helpdesk_type'
     ],
 
     'data':[
         'security/ir.model.access.csv',
+        'data/gtm_sequence.xml',
         'data/gtm_data.xml',
         'views/gtm_menu.xml',
-        'views/travel_request_views.xml',
+        'views/travel_form_views.xml',
         'views/travel_expense_views.xml',
+        'views/gtm_form_views.xml',
     ],
 
     'installable': True,

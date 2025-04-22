@@ -1,0 +1,59 @@
+<odoo>
+    <record id='travel_form_action' model="ir.actions.act_window">
+        <field name="name">Solicitar viaje</field>
+        <field name="res_model">travel.form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="travel_form_view_form" model="ir.ui.view">
+        <field name="name">travel.form.view.form</field>
+        <field name="model">travel.form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group name="basic_info">
+                        <group string="Información personal">
+                            <field name="traveler_name"/>
+                            <field name="id_number"/>
+                            <field name="gender"/>
+                            <field name="personal_address"/>
+                            <field name="personal_email"/>
+                            <field name="work_email"/>
+                            <field name="personal_telephone_number"/>
+                            <field name="civil_status"/>
+                            <field name="has_child"/>
+                            <field name="children_situation" attrs="{'invisible': [('has_child', '=', False)],
+                                                                  'required': [('has_child', '!=', False)]}"/>
+                        </group>
+                        <group string="Información del viaje">
+                            <field name="country"/>
+                            <field name="applicant_type"/>
+                            <field name="applicant_area"/>
+                            <field name="travel_reason"/>
+                            <field name="travel_concept"/>
+                            <field name="sponsor"/>
+                            <field name="sub_teacher"/>
+                            <field name="sub_researcher"/>
+                            <field name="rank_n_subs"/>
+                            <field name="records"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista tree para travel.form -->
+    <record id="travel_form_view_tree" model="ir.ui.view">
+        <field name="name">travel.form.view.tree</field>
+        <field name="model">travel.form</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="traveler_name" string="Nombre del Viajero"/>
+                <field name="country" string="País"/>
+                <field name="travel_concept" string="Concepto del viaje"/>
+                <field name="work_email" string="Correo institucional"/>
+                <field name="ticket_id" string="Código de la solicitud de viaje"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

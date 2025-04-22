@@ -6,13 +6,11 @@
         <field name="model">travel.expense</field>
         <field name="arch" type="xml">
             <tree string="Costos del viaje">
-                <field name="ticket_cost"/>
-                <field name="taxes"/>
-                <field name="diet_cost"/>
-                <field name="accommodation_cost"/>
-                <field name="medical_insurance_cost"/>
+                <field name="name"/>
+                <field name="ticket_id"/>
+                <field name="traveler_name"/>
+                <field name="total_travel_cost" string="Costo total del viaje"/>
                 <field name="pocket_money"/>
-                <field name="other_expenses"/>
             </tree>
         </field>
     </record>
@@ -25,6 +23,16 @@
             <form string="Costos del viaje">
                 <sheet>
                     <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="ticket_id"/>
+                            <field name="traveler_name"/>
+                        </group>
+                        <group>
+                            <field name="total_travel_cost"/>
+                        </group>
+                    </group>
+                    <group>
                         <field name="ticket_cost"/>
                         <field name="taxes"/>
                         <field name="diet_cost"/>
@@ -34,7 +42,8 @@
                         <field name="other_expenses"/>
                     </group>
                     <group>
-                        <field name="other_expenses_specification"/>
+                        <field name="other_expenses_specification" attrs="{'invisible': [('other_expenses', '=', 0)],
+                                                                      'required': [('other_expenses', '!=', 0)]}"/>
                     </group>
                 </sheet>
             </form>

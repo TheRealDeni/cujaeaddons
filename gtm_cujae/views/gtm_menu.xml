@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <odoo>
 <!-- Actions -->
-    <record id="travel_request_action" model="ir.actions.act_window">
+    <record id="travel_form_action" model="ir.actions.act_window">
         <field name="name">Solicitudes de viaje</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">tree,kanban,form,pivot</field>
+        <field name="res_model">travel.form</field>
+        <field name="view_mode">tree,form</field>
     </record>
 <!-- Action -->
     <record id="travel_expense_action" model="ir.actions.act_window">
@@ -24,10 +24,10 @@
     />
 <!-- Submenu -->
     <menuitem
-        id="gtm_travel_request_ticket"
-        name="Solicitudes de viaje"
+        id="gtm_travel_form"
+        name="Formularios de solicitudes de viaje"
         parent="gtm_main_menu"
-        action="travel_request_action"
+        action="travel_form_action"
         sequence="1"
     />
     <menuitem
