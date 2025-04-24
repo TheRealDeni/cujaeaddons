@@ -163,7 +163,7 @@
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="category_id"/>
-                            <field name="team_id" options='{"always_reload": True}' attrs="{'invisible':[('category_id','!=',5)]}"/>
+                            <field name="team_id" options='{"always_reload": True}' />
                             <field name="user_ids" readonly="1" invisible="1"/>
                             <field name="user_id" options='{"always_reload": True}' invisible="1"/>
                             <field name="priority" widget="priority" />
@@ -171,21 +171,18 @@
                                 name="company_id"
                                 options="{'no_create': True}"
                                 groups="base.group_multi_company"
-
-                                attrs="{'invisible':[('category_id','!=',5)]}"
                             />
-                            <field name="create_date" readonly="1" attrs="{'invisible':[('category_id','!=',5)]}"/>
-                            <field name="channel_id" attrs="{'invisible':[('category_id','!=',5)]}"/>
+                            <field name="create_date" readonly="1" />
+                            <field name="channel_id" />
                         </group>
                         <group>
-                            <field name="partner_id" attrs="{'invisible':[('category_id','!=',5)]}"/>
-                            <field name="partner_name" attrs="{'invisible':[('category_id','!=',5)]}"/>
-                            <field name="partner_email" attrs="{'invisible':[('category_id','!=',5)]}"/>
+                            <field name="partner_id" />
+                            <field name="partner_name" />
+                            <field name="partner_email" />
                             <field
                                 name="tag_ids"
                                 widget="many2many_tags"
                                 options="{'no_create_edit': True, 'color_field': 'color',}"
-                                attrs="{'invisible':[('category_id','!=',5)]}"
                             />
                             <field name="sequence" groups="base.group_no_one" invisible="1"/>
                         </group>
