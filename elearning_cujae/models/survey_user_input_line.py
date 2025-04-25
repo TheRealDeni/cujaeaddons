@@ -9,7 +9,7 @@ class SurveyUserInputLine(models.Model):
     def _check_answer_score_limit(self):
         """Valida que el answer_score no sea mayor que el max_score de la pregunta."""
         for line in self:
-            if line.answer_score > self.max_score:
+            if line.answer_score > line.question_id.max_score:
                 raise ValidationError(
                     ("El puntaje de la respuesta no puede ser mayor que la puntuación máxima de la pregunta (%s).") 
                     % self.max_score
