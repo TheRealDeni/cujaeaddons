@@ -4,11 +4,19 @@ from odoo.exceptions import ValidationError
 class TravelExpense(models.Model):
     _name = 'travel.expense'
     _description = "Registro de la información de los costos del viaje"
-#poner un name con sequence
 
-    name = fields.Char(string="Referencia", readonly=True,
-                       default=lambda self: self.env['ir.sequence'].next_by_code('travel.expense'), copy=False)
-    ticket_id = fields.Many2one("helpdesk.ticket",string="Solicitud de viaje", required=True)
+    name = fields.Char(
+        string="Código",
+        readonly=True,
+        default=lambda self: self.env['ir.sequence'].next_by_code('travel.expense'),
+        copy=False
+    )
+
+    ticket_id = fields.Many2one(
+        "helpdesk.ticket",
+        string="Solicitud de viaje",
+        required=True
+    )
     traveler_name = fields.Char(related="ticket_id.traveler_name", string="Nombre del solicitante", readonly=True)
     ticket_cost = fields.Float(string="Costo del pasaje")
     taxes = fields.Float(string="Impuestos")
@@ -68,4 +76,31 @@ class TravelExpense(models.Model):
                 expense.other_expenses or 0
             ])
 
+    @api.model
+    def create(self, vals):
+        # Generación automática de secuencia si no se proporciona
+        if not vals.get('name'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('travel.expense')
 
+        # Creación normal del registro
+        expense = super(TravelExpense, self).create(vals)
+
+        # Si se crea desde ticket (contexto) o tiene ticket_id asignado
+        if expense.ticket_id:
+            # Actualizar la referencia en el ticket
+            expense.ticket_id.travel_expense_id = expense.id
+        elif self._context.get('default_ticket_id'):
+            # Asignar ticket desde contexto si no venía en vals
+            expense.ticket_id = self._context['default_ticket_id']
+            expense.ticket_id.travel_expense_id = expense.id
+
+        return expense
+
+    @api.constrains('ticket_id')
+    def _check_unique_expense_per_ticket(self):
+        for record in self:
+            if record.ticket_id and self.search_count([
+                ('ticket_id', '=', record.ticket_id.id),
+                ('id', '!=', record.id)
+            ]) > 0:
+                raise ValidationError("Ya existe una planilla de costos para este ticket.")
