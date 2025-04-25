@@ -1,11 +1,18 @@
+from datetime import date
 from odoo import _, api, fields, models, tools
-from odoo.exceptions import AccessError
+from odoo.exceptions import AccessError, ValidationError
 
 
 class TravelForm(models.Model):
     _name = 'travel.form'
     _description = "Formulario de solicitud de viaje"
 
+    name = fields.Char(
+        string="Código",
+        readonly=True,
+        default=lambda self: self.env['ir.sequence'].next_by_code('travel.form'),
+        copy=False
+    )
     #datos personales
     traveler_name = fields.Char(string="Nombre y apellidos", required=True)  # esto tiene que salir de los usuarios del sistema
     id_number = fields.Char(string="Carnet de identidad",
@@ -21,22 +28,26 @@ class TravelForm(models.Model):
                              required=True)  # esto tiene que salir de los usuarios del sistema
     personal_telephone_number = fields.Char(string="Teléfono personal",
                                             required=True)  # esto tiene que salir de los usuarios del sistema
-    civil_status = fields.Selection(
-        selection=[("married","Casado"),("single","Soltero"),("divorced","Divorciado"),("widow","Viudo")],
-        required=True,
-        string="Estado Civil"
-    )  # esto tiene que salir de los usuarios del sistema
-    has_child = fields.Boolean(string="Tiene hijos", required=True)  # esto tiene que salir de los usuarios del sistema
-    children_situation = fields.Char(
-        string="Persona que se encargará de cuidar a los hijos")  # hay que poner un required condicional
+    #civil_status = fields.Selection(
+    #    selection=[("married","Casado"),("single","Soltero"),("divorced","Divorciado"),("widow","Viudo")],
+    #    required=True,
+    #    string="Estado Civil"
+    #)  # esto tiene que salir de los usuarios del sistema
+    #has_child = fields.Boolean(string="Tiene hijos", required=True)  # esto tiene que salir de los usuarios del sistema
+    #children_situation = fields.Char(
+    #    string="Persona que se encargará de cuidar a los hijos")  # hay que poner un required condicional
 
     #datos del viaje
     country = fields.Many2one("res.country", string="País de destino")
-    applicant_type = fields.Char(string="Tipo de solicitante", required=True)  # cambiar a tipo selection
+    departure_date = fields.Date(string="Fecha de Salida", required=True)
+    return_date = fields.Date(string="Fecha de Regreso", required=True)
+    applicant_type = fields.Selection(
+        selection=[("estudiante","Estudiante"),("docente","Trabajador docente"),("no_docente","Trabajador no docente")],
+        required=True,string="Tipo de solicitante"
+    )
     applicant_area = fields.Selection(
         selection=[("cemat", "CEMAT"), ("ceis", "CEIS"), ("citi", "CITI")], required=True,
         string="Área a la que peretenece")  # esto tiene que salir de los usuarios del sistema
-    travel_reason = fields.Char(string="Motivo del viaje", required=True)
     travel_concept = fields.Selection(
         selection=[("guest_teacher","Profesor invitado"),("academic_exchange","Intercambio académico"),
                    ("scholarship","Beca"),("event","Evento"),("international_degree","Postgrado internacional"),
@@ -45,13 +56,11 @@ class TravelForm(models.Model):
                    ("alba_mission","Misión del ALBA")], required=True, string="Concepto del viaje"
     )
     sponsor = fields.Char(string="Encargado de cubrir los gastos", required=True)
-    sub_teacher = fields.Char(string="Sustituto en la docencia", required=True)
-    sub_researcher = fields.Char(string="Sustituto en la investigación", required=True)
-    rank_n_subs = fields.Char(string="Cargos y sustitutos")
-    records = fields.Char(string="Antecedentes")#esto es many2one con este mismo modelo validando que sea el mismo viajero
-
-    #préstamos
-    loan_ids = fields.One2many('travel.loan', 'travel_id')
+    travel_objective = fields.Html(string="Objetivos del viaje", required=True)
+    sub_teacher = fields.Text(string="Sustituto en la docencia", required=True)
+    sub_researcher = fields.Text(string="Sustituto en la investigación", required=True)
+    rank_n_subs = fields.Text(string="Cargos que ocupa y sustitutos en cada uno")
+    records = fields.Html(string="Antecedentes")#esto es many2one con este mismo modelo validando que sea el mismo viajero
 
     #el objetivo de la estancia se ponen en el campo descripición, hay que hacerlo reuired para este proceso
     # si es militante pcc o ujc tiene que salir de los usuarios del sistema
@@ -72,7 +81,7 @@ class TravelForm(models.Model):
                     <p><strong>Solicitud de viaje creada automáticamente</strong></p>
                     <ul>
                         <li><b>Viajero:</b> {form.traveler_name or 'N/A'}</li>
-                        <li><b>Motivo:</b> {form.travel_reason or 'N/A'}</li>
+                        <li><b>Motivo:</b> {form.travel_concept or 'N/A'}</li>
                         <li><b>País:</b> {form.country.name or 'N/A'}</li>
                         <li><b>Área:</b> {form.applicant_area or 'N/A'}</li>
                     </ul>
@@ -97,3 +106,11 @@ class TravelForm(models.Model):
             form.ticket_id = ticket.id  # Opcional: Guardar referencia inversa
 
         return travel_forms
+
+    @api.constrains('departure_date', 'return_date')
+    def _check_dates(self):
+        for record in self:
+            if record.departure_date < date.today():
+                raise ValidationError("La fecha de salida no puede ser anterior a la fecha actual.")
+            if record.return_date < record.departure_date:
+                raise ValidationError("La fecha de regreso no puede ser anterior a la fecha de salida.")

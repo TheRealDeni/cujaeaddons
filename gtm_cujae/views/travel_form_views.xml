@@ -10,6 +10,9 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                    </group>
                     <group name="basic_info">
                         <group string="Información personal">
                             <field name="traveler_name"/>
@@ -19,24 +22,42 @@
                             <field name="personal_email"/>
                             <field name="work_email"/>
                             <field name="personal_telephone_number"/>
+                            <!--
                             <field name="civil_status"/>
                             <field name="has_child"/>
                             <field name="children_situation" attrs="{'invisible': [('has_child', '=', False)],
                                                                   'required': [('has_child', '!=', False)]}"/>
+                                                                  -->
                         </group>
                         <group string="Información del viaje">
                             <field name="country"/>
+                            <field name="departure_date"/>
+                            <field name="return_date"/>
                             <field name="applicant_type"/>
                             <field name="applicant_area"/>
-                            <field name="travel_reason"/>
                             <field name="travel_concept"/>
                             <field name="sponsor"/>
-                            <field name="sub_teacher"/>
-                            <field name="sub_researcher"/>
-                            <field name="rank_n_subs"/>
-                            <field name="records"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Objetivos del viaje" name="travel_objective">
+                            <group>
+                                <field name="travel_objective" widget="Html" placeholder="Profundizar en los objetivos del viaje, plan de actividades, tareas a realizar y resultados esperados"/>
+                            </group>
+                        </page>
+                        <page string="Antecedentes" name="records">
+                            <group>
+                                <field name="records" widget="Html" placeholder="Si no ha realizado viajes anteriormente dejar este campo vacío"/>
+                            </group>
+                        </page>
+                        <page string="Fundamentación del viaje" name="travel_fundament">
+                            <group>
+                                <field name="sub_teacher" help="Especificar en caso de que no imparta clases"/>
+                                <field name="sub_researcher" help="Especificar en caso de que no forme parte de ninguna investigación"/>
+                                <field name="rank_n_subs" help="Si no ocupa ningún cargo dejar este campo vacío"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -48,11 +69,14 @@
         <field name="model">travel.form</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="name" string="Código de solicitud"/>
                 <field name="traveler_name" string="Nombre del Viajero"/>
                 <field name="country" string="País"/>
+                <field name="departure_date"/>
+                <field name="return_date"/>
                 <field name="travel_concept" string="Concepto del viaje"/>
                 <field name="work_email" string="Correo institucional"/>
-                <field name="ticket_id" string="Código de la solicitud de viaje"/>
+                <field name="ticket_id" string="Código del ticket de solicitud de viaje"/>
             </tree>
         </field>
     </record>

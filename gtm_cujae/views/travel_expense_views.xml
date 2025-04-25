@@ -5,7 +5,7 @@
         <field name="name">travel.expense.tree</field>
         <field name="model">travel.expense</field>
         <field name="arch" type="xml">
-            <tree string="Costos del viaje">
+            <tree string="Planillas de costos de viaje">
                 <field name="name"/>
                 <field name="ticket_id"/>
                 <field name="traveler_name"/>
