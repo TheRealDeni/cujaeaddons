@@ -15,15 +15,15 @@
                     <attribute name="attrs">{'readonly': [('exam', '=', True)], 'invisible': [('scoring_type', '=', 'no_scoring')]}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='access_mode']" position="after">
-                    <field name="professor_check" readonly="1"/>
+                    <field name="professor_check" readonly="1" invisible="1"/>
                 </xpath>
 
                 <xpath expr="//field[@name='scoring_success_min']" position="after">
-                    <field name="grade_ranges" attrs="{'invisible': [('scoring_type', '=', 'no_scoring')]}">
+                    <field name="grade_ranges" attrs="{'invisible': [('scoring_type', '=', 'no_scoring')]}" required="1">
                         <tree editable="bottom" >
-                            <field name="min_percentage"/>
-                            <field name="max_percentage"/>
-                            <field name="grade"/>
+                            <field name="min_percentage" required="1"/>
+                            <field name="max_percentage" required="1"/>
+                            <field name="grade" required="1"/>
                         </tree>
                     </field>
                 </xpath>  
