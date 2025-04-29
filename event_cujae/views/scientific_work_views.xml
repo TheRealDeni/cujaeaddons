@@ -10,6 +10,8 @@
                         <field name="name"/>
                         <field name="event_id"/>
                         <field name="state"/>
+                        <field name="attachment" filename="attachment_filename"/>
+                        <field name="attachment_filename" invisible="1"/>
                     </group>
                     <notebook>
                         <page string="Revisores">
@@ -54,6 +56,9 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_scientific_work_root" name="Trabajos Científicos"/>
-    <menuitem id="menu_scientific_work" name="Trabajos" parent="menu_scientific_work_root" action="action_scientific_work"/>
+   <menuitem name="Trabajos Enviados"
+        id="event_cujae_work_item_menu"
+        parent="event.event_main_menu"
+        sequence="4"
+        action="action_scientific_work"/>
 </odoo>

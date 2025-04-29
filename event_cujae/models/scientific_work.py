@@ -8,7 +8,8 @@ class ScientificWork(models.Model):
     name = fields.Char(string='Título del Trabajo', required=True)
     author_name=fields.Char(string='Nombre del autor', required=True)
     event_id = fields.Many2one('event.event', string='Evento', required=True)
-    attachment = fields.Binary(string='Archivo del Trabajo')
+    attachment = fields.Binary(string='Archivo del Trabajo', filename='attachment_filename')
+    attachment_filename = fields.Char(string='Nombre del Archivo')
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('to_review', 'Por Revisar'),
@@ -34,10 +35,20 @@ class WorkReviewer(models.Model):
     _name = 'work.reviewer'
     _description = 'Revisor de Trabajo'
 
+    name = fields.Char(string='Título del Trabajo', related = 'work_id.name')
     work_id = fields.Many2one('scientific.work', string='Trabajo', required=True)
     reviewer_id = fields.Many2one('res.users', string='Revisor', required=True)
     opinion = fields.Text(string='Opinión')
-    rating = fields.Float(string='Calificación', digits=(2, 1))  # Ejemplo: 4.5
+    rating = fields.Float(string='Calificación', digits=(2, 1))
+    attachment = fields.Binary(
+        string='Archivo del Trabajo',
+        related='work_id.attachment',
+        readonly=False  # Permite editar el archivo desde el revisor
+    )
+    attachment_filename = fields.Char(
+        string='Nombre del Archivo',
+        related='work_id.attachment_filename'
+    )
     is_reviewed = fields.Boolean(string='Revisado', default=False)
 
     def action_mark_reviewed(self):

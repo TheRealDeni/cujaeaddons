@@ -12,7 +12,6 @@
         'views/submission_page.xml',
         'views/submission_confirmation.xml',
         'views/event_website.xml',
-        'views/menu_views.xml',
         'data/faculty_data.xml',
         'data/responsible_data.xml',
     ],
