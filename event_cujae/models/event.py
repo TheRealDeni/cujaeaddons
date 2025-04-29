@@ -35,7 +35,6 @@ class Event(models.Model):
 
     speaker_ids = fields.Many2many('res.partner', string='Ponentes')
     submission_page_url = fields.Char(string='URL para subir trabajos')
-    sport_info = fields.Text(string='Información sobre el deporte')
 
     @api.depends('event_type_id.name')
     def _compute_event_type_name(self):
@@ -47,7 +46,6 @@ class Event(models.Model):
         for record in self:
             if record.event_type_id.name == 'Conferencia':
                 record.submission_page_url = False
-                record.sport_info = False
                 return {
                     'domain': {},
                     'warning': {},
@@ -57,22 +55,11 @@ class Event(models.Model):
                 }
             elif record.event_type_id.name == 'Científico':
                 record.speaker_ids = [(6, 0, [])]
-                record.sport_info = False
                 return {
                     'domain': {},
                     'warning': {},
                     'value': {
                         'submission_page_url': '',
-                    },
-                }
-            elif record.event_type_id.name == 'Deportivo':
-                record.speaker_ids = [(6, 0, [])]
-                record.submission_page_url = False
-                return {
-                    'domain': {},
-                    'warning': {},
-                    'value': {
-                        'sport_info': '',
                     },
                 }
 
