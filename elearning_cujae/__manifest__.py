@@ -50,7 +50,7 @@
         'views/survey_user_views.xml',
         'views/survey_templates_print.xml',
    #     'views/survey_form.xml',
-        'views/domain_inheritance.xml',
+        'views/slide_channel_partner_views.xml',
 
         
         

@@ -99,8 +99,32 @@
                     </td>
                 </tr>
             </xpath>
+            <xpath expr="//tr[@t-if='channel.user_id']" position="replace">
+                <tr t-if="channel.user_ids">
+                    <th class="border-top-0">Responsibles</th>
+                    <td class="border-top-0 text-break">
+                       <t t-foreach="channel.user_ids" t-as="user">
+                           <span t-esc="user.display_name"/>
+                           <t t-if="not user_is_last"> </t>
+                       </t>
+                   </td>
+                </tr>
+            </xpath>
         </template>
-
+        <template id="inherit_course_slides_list" inherit_id="website_slides.course_slides_list">
+            <!-- Añadir t-if al contenedor principal -->
+            <xpath expr="//div[hasclass('o_wslides_slides_list')]" position="attributes">
+                <attribute name="t-if">channel.is_member</attribute>
+            </xpath>
+            
+            <!-- Mensaje para no miembros (se inserta después del contenedor) -->
+            <xpath expr="//div[hasclass('o_wslides_slides_list')]" position="after">
+                <div t-else="" class="alert alert-info mt-4">
+                    <i class="fa fa-info-circle me-2"/> 
+                    Debes unirte al curso para acceder a los materiales de formación.
+                </div>
+            </xpath>
+        </template>
     </data>
 </odoo>
 
