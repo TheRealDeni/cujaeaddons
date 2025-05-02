@@ -165,7 +165,7 @@
                             <field name="category_id"/>
                             <field name="team_id" options='{"always_reload": True}' />
                             <field name="user_ids" readonly="1" invisible="1"/>
-                            <field name="user_id" options='{"always_reload": True}' invisible="1"/>
+                            <field name="user_id" options='{"always_reload": True}'/>
                             <field name="priority" widget="priority" />
                             <field
                                 name="company_id"

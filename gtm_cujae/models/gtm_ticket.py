@@ -18,7 +18,9 @@ class Ticket(models.Model):
     )
 
 
-    traveler_name = fields.Char(related='travel_form_id.traveler_name', string="Nombre y apellidos", readonly=False)
+    traveler_name = fields.Char(related='travel_form_id.traveler_name.name',
+                                string="Nombre y apellidos", readonly=False)
+
 
     def action_open_expense(self):
         self.ensure_one()

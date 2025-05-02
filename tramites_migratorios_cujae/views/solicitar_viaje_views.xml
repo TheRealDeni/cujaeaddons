@@ -1,9 +1,0 @@
-<odoo>
-    <record
-        id='action_solicitar_viaje'
-        model="ir.actions.act_window"
-    >
-        <field name="name">Solicitar viaje</field>
-        <field name="res_model">helpdesk.ticket</field>
-    </record>
-</odoo>
