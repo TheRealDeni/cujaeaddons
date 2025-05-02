@@ -21,7 +21,7 @@
                         <label for="attachment">Subir Archivo</label>
                         <input type="file" class="form-control" id="attachment" name="attachment" required="1"/>
                     </div>
-                    <div class="mt-3">
+                    <div class="mt-3 mb-3">
                         <button type="submit" class="btn btn-primary">Enviar Trabajo</button>
                     </div>
                 </form>

@@ -31,17 +31,14 @@
 
             <!-- Agregar campos dinámicos después de un campo existente en la vista padre -->
             <xpath expr="//field[@name='tag_ids']" position="after">
-                <!-- Campo para ponentes (Conferencia) -->
-                <field name="speaker_ids"
-                       attrs="{'invisible': [('event_type_name', '!=', 'Conferencia')]}"/>
 
-                <!-- Campo para URL de subida de trabajos (Científico) -->
+               <field name="speaker_ids"
+                      widget="many2many_tags"
+                      domain="[('is_company', '=', False)]"
+                      attrs="{'invisible': [('event_type_name', '!=', 'Conferencia')]}"/>
+
                 <field name="submission_page_url"
                        attrs="{'invisible': [('event_type_name', '!=', 'Científico')]}"/>
-
-                <!-- Campo para información deportiva (Deportivo) -->
-                <field name="sport_info"
-                       attrs="{'invisible': [('event_type_name', '!=', 'Deportivo')]}"/>
             </xpath>
         </field>
     </record>
