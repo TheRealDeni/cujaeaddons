@@ -17,7 +17,7 @@
         <record id="rule_slide_channel_officer_crud" model="ir.rule">
             <field name="name">Channel: professor: crud own only</field>
             <field name="model_id" ref="website_slides.model_slide_channel"/>
-            <field name="domain_force">[('user_ids', 'in', [user.id])]</field>  <!-- Cambiar a user_ids -->
+            <field name="domain_force">['&amp;', ('user_ids', 'in', [user.id]), ('company_id', 'in', user.company_ids.ids)]</field>
             <field name="groups" eval="[(4, ref('website_slides.group_website_slides_officer'))]"/>
             <field name="perm_unlink" eval="1"/>
             <field name="perm_write" eval="1"/>
@@ -151,6 +151,12 @@
         <!--SLIDE RESOURCE-->
         <delete model="ir.rule" id="website_slides.rule_slide_slide_resource_officer_read"/>
         
+        <record id="res_company_rule_portal" model="ir.rule">
+            <field name="name">Portal: Read allowed companies</field>
+            <field name="model_id" ref="base.model_res_company"/>
+            <field name="domain_force">[('id', 'in', user.company_ids.ids)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
     </data>
 </odoo>
 
