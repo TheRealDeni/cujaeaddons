@@ -94,7 +94,7 @@ class Slide(models.Model):
                     if slide.is_published:
                         slide.write({'is_published': False})
 
-    @api.constrains('availability_start_date', 'availability_end_date')
+    @api.onchange('availability_start_date', 'availability_end_date')
     def _check_availability_dates(self):
         """
         Validación para asegurar que la fecha de inicio no sea posterior a la fecha de fin.

@@ -25,7 +25,7 @@
                 <field name="karma_for_completion" String="Karma al completar"/>
             </xpath>            
             <xpath expr="//field[@name='user_id']" position="after">
-                <field name="availability_start_date"/>
+                <field name="availability_start_date" required="1"/>
                 <field name="availability_end_date"/>
             </xpath>            
         </field>

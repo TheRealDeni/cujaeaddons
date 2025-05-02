@@ -1,5 +1,6 @@
-# event_cujae/models/event.py
+
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 import logging
 import requests
 from html import unescape
@@ -34,7 +35,6 @@ class Event(models.Model):
 
     speaker_ids = fields.Many2many('res.partner', string='Ponentes')
     submission_page_url = fields.Char(string='URL para subir trabajos')
-    sport_info = fields.Text(string='Información sobre el deporte')
 
     @api.depends('event_type_id.name')
     def _compute_event_type_name(self):
@@ -46,7 +46,6 @@ class Event(models.Model):
         for record in self:
             if record.event_type_id.name == 'Conferencia':
                 record.submission_page_url = False
-                record.sport_info = False
                 return {
                     'domain': {},
                     'warning': {},
@@ -56,22 +55,11 @@ class Event(models.Model):
                 }
             elif record.event_type_id.name == 'Científico':
                 record.speaker_ids = [(6, 0, [])]
-                record.sport_info = False
                 return {
                     'domain': {},
                     'warning': {},
                     'value': {
                         'submission_page_url': '',
-                    },
-                }
-            elif record.event_type_id.name == 'Deportivo':
-                record.speaker_ids = [(6, 0, [])]
-                record.submission_page_url = False
-                return {
-                    'domain': {},
-                    'warning': {},
-                    'value': {
-                        'sport_info': '',
                     },
                 }
 
@@ -91,6 +79,8 @@ class Event(models.Model):
         text = soup.get_text(separator="\n")
         return unescape(text.strip())
 
+
+
     def _post_to_telegram(self, event):
         telegram_bot_token = "7396987561:AAGMjZ-fvWcOFCtk_YILIWAxVLLWdumWHKY"
         telegram_chat_id = "@OdooEvent"
@@ -98,7 +88,7 @@ class Event(models.Model):
         descripcion = self._clean_html(event.descripcion)
         message = f'📢 ¡Nuevo evento publicado!\n\n' \
                   f'🎉 {event.name}\n' \
-                  f'📅 Fecha: {event.date_begin.strftime('%d/%m/%Y %H:%M')}\n' \
+                  f'📅 Fecha: {event.date_begin.strftime("%d/%m/%Y %H:%M")}\n' \
                   f'📝 Descripción:\n\n{descripcion}'
 
         url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
@@ -108,15 +98,17 @@ class Event(models.Model):
             "parse_mode": "Markdown",
         }
 
-        response = requests.post(url, data=data)
-        _logger.info(f"Telegram response: {response.text}")
-
-        if response.status_code != 200:
-            _logger.error(f"Error al publicar en Telegram: {response.text}")
-            raise ValueError(f"Error al publicar en Telegram: {response.text}")
+        try:
+            response = requests.post(url, data=data)
+            if response.status_code != 200:
+                raise ValueError(f"Error al publicar en Telegram: {response.text}")
+        except requests.ConnectionError:
+            raise ValidationError("No se pudo publicar en Telegram porque no hay conexión a internet.")
+            event = super(Event, self).create(vals)
+            if event.event_type_id.name == 'Científico':
+                self._create_submission_page()
 
     def _create_submission_page(self):
-        # Crear una página web para la subida de trabajos
         website = self.env['website'].get_current_website()
         page = self.env['website.page'].create({
             'name': f'Subida de Trabajos - {self.name}',
