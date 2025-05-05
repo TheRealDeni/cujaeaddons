@@ -8,7 +8,7 @@ class Survey(models.Model):
     exam_badge_id = fields.Many2one('gamification.badge', 'Insignia de examen', copy=False)
     exam_badge_id_dummy = fields.Many2one(related='exam_badge_id', string='Insignia de examen ')
     professor_check= fields.Boolean('Revisado por profesor', compute='_compute_check_survey',store=True)
-    grade_ranges = fields.One2many('survey.grade.range', 'survey_id', string="Rangos de Calificación")
+    user_input_ids = fields.One2many('survey.user_input', 'survey_id', string='User responses', readonly=False, groups='survey.group_survey_user')
 
     @api.depends('scoring_type')
     def _compute_exam(self):

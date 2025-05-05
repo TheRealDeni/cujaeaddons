@@ -30,6 +30,7 @@
         'security/ir.model.access.csv',
         'data/gamification_data.xml',
         'data/cron_jobs.xml',
+        'data/mail_template_data.xml',
         'views/survey_question.xml',
         #'static/description/icon.png',
         'views/slide_slide_views.xml',
@@ -49,8 +50,12 @@
         'views/gamification_menu.xml',
         'views/survey_user_views.xml',
         'views/survey_templates_print.xml',
-   #     'views/survey_form.xml',
+       # 'views/survey_form.xml',
         'views/slide_channel_partner_views.xml',
+        'wizard/question_wizard_views.xml',
+        'views/action_open_question_wizard.xml'
+        
+
 
         
         
@@ -74,10 +79,10 @@
           'elearning_cujae/static/src/xml/website_slide_upload.xml',
           'elearning_cujae/static/src/xml/website_slides_fullscreen.xml',
 
-
      ],
         'survey.survey_assets': [
           'elearning_cujae/static/src/js/survey_form.js',
+          'elearning_cujae/static/src/js/survey_form_attachment.js',
           'elearning_cujae/static/src/scss/website_slides_survey_result.scss',
         ],
      },

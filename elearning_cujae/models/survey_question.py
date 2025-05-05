@@ -15,6 +15,13 @@ class SurveyQuestion(models.Model):
         compute='_compute_question_max_score',
         store=True  # Opcional: Almacena el valor en la BD para mejor rendimiento
     )
+    question_type = fields.Selection(
+        selection_add=[('upload_file', 'Subir archivo')],
+        help='Select the type of question to create.')
+    upload_multiple_file = fields.Boolean(string='Subir múltiples archivos',
+                                          help='Check this box if you want to '
+                                               'allow users to upload '
+                                               'multiple files')
 
     @api.depends('answer_score', 'suggested_answer_ids', 'suggested_answer_ids.answer_score')
     def _compute_question_max_score(self):
@@ -60,6 +67,18 @@ class SurveyQuestion(models.Model):
             else:
                 question.is_scored_question = False
             
-       
+    def action_add_question(self):
+        """Summary:
+              Function to view question wizard
+           Returns:
+               returns the  view of the 'question.wizard' view.
+        """
+        return {
+            'name': "Add To Survey",
+            'view_mode': 'form',
+            'res_model': 'question.wizard',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+        }  
 
     
