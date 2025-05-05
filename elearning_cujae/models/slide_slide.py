@@ -17,16 +17,18 @@ class SlidePartnerRelation(models.Model):
         succeeded_slide_partners = succeeded_user_inputs.mapped('slide_partner_id')
         for record in self:
             record.exam_scoring_success = record in succeeded_slide_partners
-            
+                
 
     def _compute_field_value(self, field):
         super()._compute_field_value(field)
         if field.name == 'survey_scoring_success':
-            self.filtered('survey_scoring_success').write({
-                'completed': True
-            })
-            if self.completed==True:
-                self.slide_id.env.user.sudo().add_karma(self.slide_id.karma_for_completion)
+            # Iterar sobre cada registro en self
+            for record in self:
+                if record.survey_scoring_success:
+                    # Marcar como completado
+                    record.completed = True
+                    # Otorgar karma al usuario asociado al slide
+                    record.slide_id.env.user.sudo().add_karma(record.slide_id.karma_for_completion)
             
 
             
