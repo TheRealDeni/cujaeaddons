@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <menuitem name="Exams"
-        id="website_slides_menu_courses_exam"
-        parent="website_slides.website_slides_menu_courses"
-        sequence="4"
-        action="survey_survey_action_slides_exam"/>
-</odoo>
