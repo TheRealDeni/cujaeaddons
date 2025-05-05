@@ -54,6 +54,7 @@
         <delete model="ir.rule" id="survey.survey_user_input_rule_survey_user_read" />
         <delete model="ir.rule" id="survey.survey_user_input_rule_survey_user_cw" />
         <delete model="ir.rule" id="survey.survey_user_input_line_rule_survey_user_read" />
+        <delete model="ir.rule" id="survey.survey_user_input_line_rule_survey_user_cw" />
 
         <record id="survey_survey_rule_survey_user_crud" model="ir.rule">
             <field name="name">Survey: professor: create/write/unlink own only</field>
@@ -114,10 +115,11 @@
         <!-- SLIDE -->
         <delete model="ir.rule" id="website_slides.rule_slide_slide_officer_cw" />
         <delete model="ir.rule" id="website_slides.rule_slide_slide_officer_r" />
+        <delete model="ir.rule" id="website_slides.rule_slide_slide_not_website" />
         <record id="rule_slide_slide_officer_cw" model="ir.rule">
             <field name="name">Slide: professor: crud own only</field>
             <field name="model_id" ref="model_slide_slide"/>
-            <field name="domain_force">[('channel_id.user_ids', 'in', [user.id])]</field>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
             <field name="groups" eval="[(4, ref('website_slides.group_website_slides_officer'))]"/>
             <field name="perm_unlink" eval="1"/>
             <field name="perm_write" eval="1"/>
@@ -155,8 +157,10 @@
             <field name="name">Portal: Read allowed companies</field>
             <field name="model_id" ref="base.model_res_company"/>
             <field name="domain_force">[('id', 'in', user.company_ids.ids)]</field>
-            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="groups" eval="[(4, ref('base.group_portal')), (4, ref('base.group_user'))]"/>
         </record>
+
+        
     </data>
 </odoo>
 

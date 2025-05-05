@@ -7,7 +7,8 @@ class SlidePartnerRelation(models.Model):
 
     user_input_ids = fields.One2many('survey.user_input', 'slide_partner_id', 'Intentos de examen')
     exam_scoring_success = fields.Boolean('Examen completado', compute='_compute_survey_scoring_success', store=True)
-
+    compute_survey_completed=fields.Boolean(string="Completed",compute="_compute_completed",store=True,help="True si el usuario completó al menos un intento de la encuesta."
+)
     @api.depends('partner_id', 'user_input_ids.scoring_success')
     def _compute_exam_scoring_success(self):
         succeeded_user_inputs = self.env['survey.user_input'].sudo().search([
@@ -18,6 +19,16 @@ class SlidePartnerRelation(models.Model):
         for record in self:
             record.exam_scoring_success = record in succeeded_slide_partners
                 
+    @api.depends('user_input_ids.state')
+    def _compute_completed(self):
+        for record in self:
+            # Verificar si existe al menos un intento en estado 'done'
+            record.compute_survey_completed = bool(
+                self.env['survey.user_input'].sudo().search_count([
+                    ('slide_partner_id', '=', record.id),
+                    ('state', '=', 'done')
+                ], limit=1)
+            )
 
     def _compute_field_value(self, field):
         super()._compute_field_value(field)
@@ -25,9 +36,7 @@ class SlidePartnerRelation(models.Model):
             # Iterar sobre cada registro en self
             for record in self:
                 if record.survey_scoring_success:
-                    # Marcar como completado
-                    record.completed = True
-                    # Otorgar karma al usuario asociado al slide
+                    record.complete=True
                     record.slide_id.env.user.sudo().add_karma(record.slide_id.karma_for_completion)
             
 

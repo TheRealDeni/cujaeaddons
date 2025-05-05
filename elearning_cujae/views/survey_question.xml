@@ -26,7 +26,21 @@
                  <xpath expr="//group[contains(@attrs, 'scoring_type')]" position="attributes">
                     <attribute name="attrs">{'invisible': ['|', ('scoring_type', '=', 'no_scoring'), ('question_type', 'not in', ['numerical_box', 'date', 'datetime','char_box', 'text_box','upload_file'])]}</attribute>
                 </xpath>   
+                <xpath expr="//div[hasclass('o_preview_questions')]"
+                    position="inside">
+                    <div attrs="{'invisible': [('question_type', '!=', 'upload_file')]}">
+                        <p class="o_upload_file">Subir archivo
+                            <i class="fa fa-upload"/>
+                        </p>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='constr_mandatory']" position="after">
+                    <field name="upload_multiple_file"
+                        attrs="{'invisible': [('question_type', '!=', 'upload_file')]}"/>
+                </xpath>
             </field>
         </record>
     </data>
 </odoo>
+
+

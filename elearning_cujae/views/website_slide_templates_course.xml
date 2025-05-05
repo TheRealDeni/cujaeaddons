@@ -112,17 +112,34 @@
             </xpath>
         </template>
         <template id="inherit_course_slides_list" inherit_id="website_slides.course_slides_list">
-            <!-- Añadir t-if al contenedor principal -->
+            <!-- Condición original para miembros -->
             <xpath expr="//div[hasclass('o_wslides_slides_list')]" position="attributes">
                 <attribute name="t-if">channel.is_member</attribute>
             </xpath>
             
-            <!-- Mensaje para no miembros (se inserta después del contenedor) -->
+            <!-- Bloque para no miembros -->
             <xpath expr="//div[hasclass('o_wslides_slides_list')]" position="after">
-                <div t-else="" class="alert alert-info mt-4">
-                    <i class="fa fa-info-circle me-2"/> 
-                    Debes unirte al curso para acceder a los materiales de formación.
-                </div>
+                <t t-else="">
+                    <!-- Mostrar slides con preview -->
+                    <div class="o_wslides_slides_list">
+                        <t t-foreach="channel.slide_ids.filtered(lambda s: s.is_preview)" t-as="slide">
+                            <!-- Usar la misma estructura de template de slide -->
+                            <t t-call="website_slides.course_slides_list_slide">
+                                <t t-set="slide" t-value="slide"/>
+                                <t t-set="channel" t-value="channel"/>
+                                <t t-set="channel_progress" t-value="channel_progress"/>
+                                <t t-set="category_id" t-value="category_id"/>
+                                <t t-set="j" t-value="0"/> <!-- Ajustar índice si es necesario -->
+                            </t>
+                        </t>
+                    </div>
+                    
+                    <!-- Mensaje de unirse al curso -->
+                    <div class="alert alert-info mt-4">
+                        <i class="fa fa-info-circle me-2"/>
+                        Debes unirte al curso para acceder a todos los materiales de formación.
+                    </div>
+                </t>
             </xpath>
         </template>
     </data>
