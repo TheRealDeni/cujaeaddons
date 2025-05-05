@@ -1,0 +1,16 @@
+<odoo>
+     <record id="action_glossary" model="ir.actions.act_window">
+        <field name="name">Glosarios</field>
+        <field name="res_model">glossary.glossary</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_glossary_term" model="ir.actions.act_window">
+        <field name="name">Términos del glosario</field>
+        <field name="res_model">glossary.term</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem id="menu_glossary" name="Glosarios" parent="website_slides.website_slides_menu_courses" action="action_glossary"/>
+    <menuitem id="menu_glossary_term" name="Términos del glosario" parent="website_slides.website_slides_menu_courses" action="action_glossary_term"/>
+</odoo>

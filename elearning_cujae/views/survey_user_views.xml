@@ -1,0 +1,50 @@
+<odoo>
+    <record id="view_survey_user_input_line_form_inherit" model="ir.ui.view">
+        <field name="name">survey.user.input.line.form.inherit</field>
+        <field name="model">survey.user_input.line</field>
+        <field name="inherit_id" ref="survey.survey_user_input_line_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='answer_score']" position="attributes">
+                <attribute name="groups"/>
+            </xpath>            
+            <xpath expr="//field[@name='answer_score']" position="after">
+                <field name="max_score"/>
+            </xpath>            
+          
+        </field>
+    </record>
+
+    <record id="view_survey_user_input_line_tree_inherit" model="ir.ui.view">
+        <field name="name">survey.user.input.line.tree.inherit</field>
+        <field name="model">survey.user_input.line</field>
+        <field name="inherit_id" ref="survey.survey_response_line_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='survey_id']" position="after">
+                <field name="slide_partner_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_survey_user_input_line_search_inherit" model="ir.ui.view">
+        <field name="name">survey.user.user_input_line.view.search.inherit</field>
+        <field name="model">survey.user_input.line</field>
+        <field name="inherit_id" ref="survey.survey_user_input_line_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='group_by_survey']" position="before">
+                <filter name="group_by_partner" string="Partner" domain="[]"  context="{'group_by':'slide_partner_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="survey.survey_user_input_line_action" model="ir.actions.act_window">
+        <field name="name">Detailed Answers</field> <!-- Opcional, pero recomendable para identificar la herencia -->
+        <field name="context">{'search_default_group_by_partner': True,'search_default_group_by_survey': True, 'search_default_group_by_user_input': True}</field>
+    </record>
+
+
+
+
+
+</odoo>
+
+           

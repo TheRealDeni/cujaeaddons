@@ -1,0 +1,45 @@
+<odoo>
+    <menuitem name="Herramientas de gamificación"
+        id="website_slides_menu_gamification"
+        parent="website_slides.website_slides_menu_root"
+        sequence="94"
+        />
+    <menuitem name="Desafíos"
+        id="website_slides_menu_gamification_challenge"
+        parent="website_slides_menu_gamification"
+        action="gamification.challenge_list_action"
+        sequence="10"
+        />
+    <menuitem name="Metas"
+        id="website_slides_menu_gamification_goal"
+        parent="website_slides_menu_gamification"
+        action="gamification.goal_list_action"
+        sequence="20"
+        />
+    <menuitem name="Definiciones de meta"
+        id="website_slides_menu_gamification_goal_definition"
+        parent="website_slides_menu_gamification"
+        action="gamification.goal_definition_list_action"
+        sequence="30"
+        />
+
+    <menuitem name="Insignias"
+        id="website_slides_menu_gamification_badges"
+        parent="website_slides_menu_gamification"
+        action="gamification.badge_list_action"
+        sequence="50"
+        />
+    <menuitem name="Rangos"
+        id="website_slides_menu_gamification_ranks"
+        parent="website_slides_menu_gamification"
+        action="gamification.gamification_karma_ranks_action"
+        sequence="60"
+        />
+    <menuitem name="Seguimientos"
+        id="website_slides_menu_gamification_followups"
+        parent="website_slides_menu_gamification"
+        action="gamification.gamification_karma_tracking_action"
+        sequence="70"
+        />
+    
+</odoo>

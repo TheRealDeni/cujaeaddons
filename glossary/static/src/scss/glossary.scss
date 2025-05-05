@@ -1,0 +1,72 @@
+.glossary-container {
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.glossary-container h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #d30e0e;
+}
+
+.glossary-terms {
+  list-style: lower-latin;
+  padding: 0;
+}
+
+.glossary-terms li {
+  margin-bottom: 15px;
+}
+
+.glossary-terms h3 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.glossary-terms p {
+  font-size: 1em;
+  color: #555;
+}
+
+.glossary-terms li:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+.table td {
+  word-wrap: break-word; /* Permite que las palabras largas se dividan */
+  white-space: normal;    /* Permite que el texto fluya a la siguiente línea */
+  max-width: 200px;       /* Establece un ancho máximo para la celda */
+}
+.table-container {
+  max-height: 400px; /* Ajusta según sea necesario */
+  overflow-y: auto;  /* Habilita el desplazamiento vertical */
+}
+
+.table {
+  width: 100%; /* Asegúrate de que la tabla ocupe todo el ancho */
+  border-collapse: collapse; /* Para un mejor aspecto */
+}
+
+.table th, .table td {
+  padding: 8px; /* Espaciado interno */
+  text-align: left; /* Alineación del texto */
+}
+.alphabet-filter {
+  margin-bottom: 10px;
+}
+
+.alphabet-letter {
+  cursor: pointer;
+  margin-right: 5px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.alphabet-letter:hover {
+  text-decoration: underline;
+}

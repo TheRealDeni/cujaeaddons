@@ -1,0 +1,109 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <data>
+
+        <template id="bhs_elearning_required_slide.missing_requirement_modal" name="Slide missing requirement modal">
+            <div class="modal fade" id="missing_requirement_modal" role="dialog">
+                <div class="modal-dialog bh_modal_dialog">
+                    <div class="modal-content bh_modal-box">
+                        <div class="bh_text_popup pt-4">
+                            <p>Please complete the <b>Required Slide:</b>
+                                <br/>
+                                <a href="#" id="modal_required_slide"><span></span></a>
+                                <br/>
+                                before learning this slide.</p>
+                        </div>
+                        <button type="button" class="btn btn-primary px-5 mb-2" data-bs-dismiss="modal">Understood</button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="course_slides_list_modal" name="Modal for Training Course content: list" inherit_id="website_slides.course_slides_list">
+            <xpath expr="//div[@t-field='channel.description_html']" position="after">
+                <t t-call="bhs_elearning_required_slide.missing_requirement_modal"/>
+            </xpath>
+        </template>
+
+        <template id="slide_aside_training_modal" name="Modal for Slide: Sidebar in Training" inherit_id="website_slides.slide_aside_training">
+            <xpath expr="//div[@class='o_wslides_lesson_aside_list position-relative bg-white border-bottom mt-4']" position="after">
+                <t t-call="bhs_elearning_required_slide.missing_requirement_modal"/>
+            </xpath>
+        </template>
+
+        <template id="slide_fullscreen_modal" name="Modal for Slide Fullscreen" inherit_id="website_slides.slide_fullscreen">
+            <xpath expr="//div[@class='o_wslides_fs_container d-flex position-relative overflow-hidden flex-grow-1']" position="after">
+                <t t-call="bhs_elearning_required_slide.missing_requirement_modal"/>
+            </xpath>
+        </template>
+
+        <template id="slide_fullscreen_sidebar_category" name="Fullscreen view side bar - remove slide link when not accessible" inherit_id="website_slides.slide_fullscreen_sidebar_category">
+            <xpath expr="//t[@t-set='can_access']" position="after">
+                <t t-set="missing_requirement" t-value="slide.missing_requirement"/>
+            </xpath>
+            <xpath expr="//a//div[@class='o_wslides_fs_slide_name text-truncate']" position="replace">
+                <div t-attf-class="o_wslides_fs_slide_name #{'text-600 text-truncate' if missing_requirement else 'text-truncate'}" t-esc="slide.name"/>
+            </xpath>
+            <xpath expr="//li[@t-att-data-embed-code]" position="attributes">
+                <attribute name="t-att-data-required">slide.is_required</attribute>
+            </xpath>
+            <xpath expr="//a[@t-att-href='link.link']" position="replace">
+                <a t-if="can_access" t-attf-class="o_wslides_fs_slide_link #{'text-600 text-truncate' if missing_requirement else 'text-truncate'}" t-att-href="link.link" target="_blank">
+                    <i class="fa fa-link me-2"/><span t-esc="link.name"/>
+                </a>
+            </xpath>
+<!--            <xpath expr="//a[@t-att-href='resource._get_download_url()']" position="replace">-->
+<!--                <a t-attf-class="o_wslides_fs_slide_link #{'text-600' if missing_requirement else ''}" t-att-href="resource._get_download_url()">-->
+<!--            <xpath expr="//a[@t-attf-href='/web/content/slide.slide.resource/#{resource.id}/data?download=true']" position="replace">-->
+<!--                <a t-attf-class="o_wslides_fs_slide_link #{'text-600' if missing_requirement else ''}" t-attf-href="/web/content/slide.slide.resource/#{resource.id}/data?download=true">-->
+<!--                    <i class="fa fa-download me-2"/><span t-esc="resource.name"/>-->
+<!--                </a>-->
+<!--            </xpath>-->
+            <xpath expr="//a[hasclass('o_wslides_fs_slide_quiz')]" position="replace">
+                <a t-if="can_access" t-attf-class="o_wslides_fs_slide_quiz o_wslides_fs_slide_name #{'text-600 text-truncate' if missing_requirement else 'text-truncate'}" href="#" t-att-index="i">
+                    <i class="fa fa-flag-checkered text-warning me-2"/>Quiz
+                </a>
+            </xpath>
+        </template>
+
+        <template id="course_slides_required_slide" name="Slides template with required slide" inherit_id="website_slides.course_slides_list_slide">
+            <xpath expr="//div[@class='text-truncate me-auto']" position="replace">
+                <div class="text-truncate me-auto">
+                    <a t-if="slide.is_preview or channel.is_member or channel.can_publish"
+                       t-attf-class="o_wslides_js_slides_list_slide_link #{'text-muted' if slide.missing_requirement else ''}"
+                       t-attf-href="#{'/website_slides_survey/slide/get_certification_url?slide_id=%s' %(slide.id) if slide.slide_type == 'certification' and slide.channel_id.total_slides == 1 else '/slides/slide/%s' %(slug(slide))}"
+                       t-att-data-slide-id="slide.id">
+                        <span t-field="slide.name"/>
+                    </a>
+                    <span t-else="">
+                        <span t-esc="slide.name"/>
+                    </span>
+                </div>
+            </xpath>
+            <xpath expr="//a[@name='o_wslides_list_slide_add_quizz']" position="before">
+                <a t-if="channel.can_upload" href="#">
+                    <span t-att-data-slide-id="slide.id" t-attf-class="o_wslides_js_slide_toggle_is_required badge #{'bh-badge-warning' if slide.is_required else 'badge-light badge-hide border text-bg-light'} fw-normal px-2 py-1 m-1"><p>Required</p></span>
+                </a>
+                <t t-elif="slide.is_required">
+                    <span class="badge bh-badge-warning fw-normal px-2 py-1 m-1"><span>Required</span></span>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="slide_sidebar_done_button_required" inherit_id="website_slides.slide_sidebar_done_button" name="Sidebar Done Button">
+            <xpath expr="//button[@t-if]//i[@t-else]" position="replace">
+                <i t-elif="slide.is_required" class="fa fa-lock fa-fw fa-lg" t-att-data-slide-id="slide.id" title="Mark as done"/>
+                <i t-else="" class="fa fa-circle-thin fa-fw fa-lg" t-att-data-slide-id="slide.id" title="Mark as done"/>
+            </xpath>
+            <xpath expr="//button[@t-else]//i[@t-if]" position="replace">
+                <i t-if="not slide_completed and slide.is_required" class="fa fa-lock fa-fw fa-lg" t-att-data-slide-id="slide.id" title="Can not be marked as done"/>
+                <i t-elif="not slide_completed" class="fa fa-circle-thin fa-fw fa-lg" t-att-data-slide-id="slide.id" title="Can not be marked as done"/>
+            </xpath>
+        </template>
+
+        
+
+    </data>
+
+</odoo>

@@ -1,0 +1,31 @@
+<templates>
+    <t t-name="website.slides.fullscreen.glossary">
+        <div class="glossary-container">
+            <h3 t-esc="glossary.name"/>  <!-- Mostrar el nombre del glosario -->
+       
+
+            <table class="table table-bordered" id="glossary-table">
+                <thead>
+                    <tr>
+                        <th>Término</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="terms" t-as="term">
+                        <tr class="term-row" t-att-data-letter="term.name.charAt(0).toUpperCase()">
+                            <td><t t-esc="term.name"/></td>
+                            <td class="description-cell"><t t-esc="term.description"/></td> 
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+
+    <t t-extend="website.slides.fullscreen.title">
+        <t t-jquery=".o_wslides_fs_slide_title_span" t-operation="before">
+            <i t-if="widget.get('slide').category === 'glossary'" class="fa fa-trophy me-2 text"></i>
+        </t>
+    </t>
+</templates>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_glossary,access_glossary,model_glossary_glossary,base.group_user,1,1,1,1
+access_glossary_term,access_glossary_term,model_glossary_term,base.group_user,1,1,1,1
+access_glossary_portal,access_glossary,model_glossary_glossary,base.group_portal,1,0,0,0
+access_glossary_term_portal,access_glossary_term,model_glossary_term,base.group_portal,1,0,0,0
