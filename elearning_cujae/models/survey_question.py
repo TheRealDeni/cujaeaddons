@@ -23,19 +23,20 @@ class SurveyQuestion(models.Model):
                                                'allow users to upload '
                                                'multiple files')
 
-    @api.depends('answer_score', 'suggested_answer_ids', 'suggested_answer_ids.answer_score')
+    @api.depends('answer_score', 'suggested_answer_ids', 'suggested_answer_ids.answer_score', 'suggested_answer_ids.is_correct')
     def _compute_question_max_score(self):
-        """Calcula la puntuación máxima sumando el answer_score de la pregunta y sus suggested_answer_ids."""
+        """Calcula la puntuación máxima sumando el answer_score de la pregunta y sus suggested_answer_ids que tengan is_correct en True."""
         for question in self:
             # Suma del answer_score de la pregunta (0 si no está definido)
             question_score = question.answer_score or 0
             
-            # Suma de los answer_score de todas las respuestas sugeridas
+            # Suma de los answer_score de todas las respuestas sugeridas CORRECTAS
             suggested_scores = sum(
-                answer.answer_score for answer in question.suggested_answer_ids
+                answer.answer_score for answer in question.suggested_answer_ids if answer.is_correct
             ) or 0
             
             question.max_score = question_score + suggested_scores
+
     
 
 
