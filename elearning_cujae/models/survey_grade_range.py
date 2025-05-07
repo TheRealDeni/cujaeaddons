@@ -15,7 +15,7 @@ class SurveyGradeRange(models.Model):
     def _check_all_validations(self):
         for record in self:
             # Validación básica de porcentajes
-            if record.min_percentage >= record.max_percentage:
+            if record.min_percentage > record.max_percentage:
                 raise ValidationError("El porcentaje mínimo debe ser menor que el máximo.")
             
             if record.min_percentage < 0 or record.max_percentage > 100:
@@ -38,8 +38,8 @@ class SurveyGradeRange(models.Model):
             if record.grade == 2:
                 if record.min_percentage != 0:
                     raise ValidationError("La nota 2 debe comenzar en 0%.")
-                if record.max_percentage != record.survey_id.scoring_success_min:
-                    raise ValidationError("La nota 2 debe terminar en el porcentaje mínimo de aprobación de la encuesta.")
+   #             if record.max_percentage != record.survey_id.scoring_success_min:
+    #                raise ValidationError("La nota 2 debe terminar en el porcentaje mínimo de aprobación de la encuesta.")
             elif record.grade == 5:
                 if record.max_percentage != 100:
                     raise ValidationError("La nota 5 debe terminar en 100%.")

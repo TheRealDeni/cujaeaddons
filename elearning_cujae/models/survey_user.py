@@ -6,12 +6,6 @@ class SurveyUserInput(models.Model):
     _inherit = 'survey.user_input'
     
     slide_exam = fields.Boolean('Examen completado', compute='_compute_exam_input', store=True)
-
-
-    
-
- 
-
     def _compute_exam_input(self):
         if self.slide_id.exam_id.exam==True:
             self.slide_exam=True
@@ -28,7 +22,8 @@ class SurveyUserInput(models.Model):
                 ('id', 'in', self.ids),
                 ('state', '=', 'done'),
                 ('scoring_success', '=', False),
-                ('slide_partner_id', '!=', False)
+                ('slide_partner_id', '!=', False),
+                ('survey_id.exam', '=', False)
             ])
 
             if user_inputs:
