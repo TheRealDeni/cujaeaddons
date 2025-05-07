@@ -36,7 +36,7 @@ class SlidePartnerRelation(models.Model):
             # Iterar sobre cada registro en self
             for record in self:
                 if record.survey_scoring_success:
-                    record.complete=True
+                    record.compute_survey_completed=True
                     record.slide_id.env.user.sudo().add_karma(record.slide_id.karma_for_completion)
             
 
@@ -61,11 +61,15 @@ class Slide(models.Model):
     availability_end_date = fields.Datetime(string="Fecha de Fin de Disponibilidad")  # Cambio a Datetime
 
 
-    @api.depends('exam_id')
+    @api.depends('exam_id', 'survey_id')  # Incluye ambas dependencias
     def _compute_name(self):
+        # Ejecuta el método original (que maneja survey_id)
+        super(Slide, self)._compute_name()
+        # Luego aplica tu lógica adicional para exam_id
         for slide in self:
             if not slide.name and slide.exam_id:
                 slide.name = slide.exam_id.title
+        
 
     def _compute_mark_complete_actions(self):
         slides_exam = self.filtered(lambda slide: slide.slide_category == 'exam')
