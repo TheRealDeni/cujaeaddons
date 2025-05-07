@@ -72,15 +72,12 @@
                             <div class="p-2 w-100">
                                 <h5 class="mt-0 mb-1" t-esc="completed_exx.survey_id.title"/>
                                 <div t-if="user.id == uid">
-                                    <small class="fw-bold">Score : <span t-esc="completed_exx.scoring_percentage"/> %</small>
+                                    <small class="fw-bold">Score : <span t-esc="completed_exx.scoring_percentage"/> %</small>                                   
+                                    <small class="fw-bold">Grade : <span t-esc="completed_exx.grade"/></small>
                                     <div class="float-end">
                                         <a role="button" class="float-end" t-att-href="'/survey/%s/get_exam' % completed_exx.survey_id.id">
                                             <i class="fa fa-download" aria-label="Download exam" title="Download exam"/>
-                                        </a>
-                                        <a role="button" class="me-2" href="#"
-                                             t-attf-onclick="event.stopPropagation(); $('#slideShareModal_#{completed_exx.slide_id.channel_id.id}').modal('show');">
-                                            <i class="fa fa-share-alt" aria-label="Share" title="Share"/>
-                                        </a>
+                                        </a>                                        
                                     </div>
                                 </div>
                             </div>
@@ -103,6 +100,11 @@
     <template id="top3_user_card" inherit_id="website_profile.top3_user_card">
         <xpath expr="//div[hasclass('o_wprofile_top3_card_footer')]//div[last()]" position="after">
             <div class="col py-3"><b t-esc="user['exam_count']"/> <span class="text-muted">Exámenes</span></div>
+        </xpath>
+    </template>
+    <template id="display_certificate_inherit" inherit_id="website_slides_survey.display_certificate">
+        <xpath expr="//small[hasclass('fw-bold')]" position="after">
+            <small class="fw-bold">Grade : <span t-esc="certificate.grade"/></small>
         </xpath>
     </template>
 
