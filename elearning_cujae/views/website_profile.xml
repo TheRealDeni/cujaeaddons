@@ -74,11 +74,7 @@
                                 <div t-if="user.id == uid">
                                     <small class="fw-bold">Score : <span t-esc="completed_exx.scoring_percentage"/> %</small>                                   
                                     <small class="fw-bold">Grade : <span t-esc="completed_exx.grade"/></small>
-                                    <div class="float-end">
-                                        <a role="button" class="float-end" t-att-href="'/survey/%s/get_exam' % completed_exx.survey_id.id">
-                                            <i class="fa fa-download" aria-label="Download exam" title="Download exam"/>
-                                        </a>                                        
-                                    </div>
+ 
                                 </div>
                             </div>
                         </div>
