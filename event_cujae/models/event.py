@@ -11,16 +11,28 @@ _logger = logging.getLogger(__name__)
 class Event(models.Model):
     _inherit = 'event.event'
 
+
+    name = fields.Char(
+        string='Nombre del Evento',
+        required=True,  # Campo requerido
+        help='Proporcione el nombre del evento.'
+    )
+    date_begin = fields.Datetime(
+        string='Fecha de Inicio',
+        required=True,  # Campo requerido
+        help='Proporcione la fecha de inicio del evento.'
+    )
+
     organizer_faculty = fields.Many2one(
         'university.faculty',
         string='Facultad Organizadora',
-        required=True,
+        required=True,  # Campo requerido
         help='Seleccione la facultad organizadora del evento.'
     )
     responsible_faculty = fields.Many2one(
         'faculty.responsible',
         string="Responsable",
-        required=True,
+        required=True,  # Campo requerido
         help='Seleccione el responsable del evento.'
     )
     descripcion = fields.Text(

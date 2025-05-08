@@ -39,6 +39,7 @@ class WorkReviewer(models.Model):
     reviewer_id = fields.Many2one('res.users', string='Revisor', required=True)
     opinion = fields.Text(string='Opinión')
     rating = fields.Float(string='Calificación', digits=(2, 1))
+    is_reviewed = fields.Boolean(string='Revisado', default=False)
     attachment = fields.Binary(
         string='Archivo del Trabajo',
         related='work_id.attachment',

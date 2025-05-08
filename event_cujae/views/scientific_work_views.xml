@@ -12,7 +12,7 @@
                             "approved": "green",
                             "rejected": "red"
                         }'
-                        options="{'clickable': '1'}"
+
                 />
             </header>
             <sheet>
