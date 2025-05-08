@@ -1,0 +1,958 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: ffgh\n"
+"Language: en\n"
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/models/survey_survey.py:0
+msgid "- %s (Courses - %s)"
+msgstr "- %s (Cursos - %s)"
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/models/slide_channel.py:0
+msgid "<b>%s</b> is requesting access to this course. Responsible: %s"
+msgstr "<b>%s</b> solicita acceso a este curso. Responsable: %s"
+
+#. module: elearning_cujae
+#: model:mail.template,body_html:elearning_cujae.email_template_survey_grade
+msgid "<div style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Hola <t t-out=\"object.partner_id.name or 'participante'\"></t>,<br><br>\n"
+"                        La calificación de tu examen es: <strong><t t-out=\"object.grade\"></t></strong>.<br><br>\n"
+"                        Saludos<br>                        \n"
+"                    </p>\n"
+"                </div>\n"
+"            "
+msgstr "<div style=\"margin: 0px; padding: 0px; font-size: 13px;\"><p style=\"margin: 0px; padding: 0px; font-size: 13px;\"> Hola<t t-out=\"object.partner_id.name or 'participante'\"></t> ,<br><br> La calificación de tu examen es:<strong><t t-out=\"object.grade\"></t></strong> .<br><br> Saludos<br></p></div>\n"
+"            "
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_content_detailed_exam
+msgid "<i class=\"fa fa-arrow-right me-1\"/>Add questions to this survey"
+msgstr "<i class=\"fa fa-arrow-right me-1\"/>Añadir preguntas a esta encuesta</i>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.display_exam
+msgid "<i class=\"fa fa-arrow-right me-1\"/>All exams"
+msgstr "<i class=\"fa fa-arrow-right me-1\"/>Todos los exámenes</i>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.user_profile_content_exam
+msgid "<i class=\"fa fa-arrow-right\"/> View exams"
+msgstr "<i class=\"fa fa-arrow-right\"/>Ver exámenes</i>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.display_exam
+msgid "<i class=\"fa fa-download\" aria-label=\"Download exam\" title=\"Download exam\"/>"
+msgstr "<i class=\"fa fa-download\" aria-label=\"Download exam\" title=\"Descargar examen\"/>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.inherit_course_slides_list
+msgid "<i class=\"fa fa-info-circle me-2\"/>\n"
+"                        You must join the course to see its materials."
+msgstr "<i class=\"fa fa-info-circle me-2\"/>Debes unirte al curso para ver sus materiales.</i>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.badge_content_exam
+msgid "<i class=\"text-muted\">Awarded users</i>"
+msgstr "<i class=\"text-muted\">Usuarios premiados</i>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.course_slides_list_slide_inherit_survey_exam
+msgid "<span class=\"badge bh-badge-warning fw-normal px-2 py-1 m-1\"><span>Unpublishes soon</span></span>"
+msgstr "<span class=\"badge bh-badge-warning fw-normal px-2 py-1 m-1\"><span>Se despublicará próximamente</span></span>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.courses_home_inherit_survey_exam
+msgid "<span class=\"ms-1\">Exams</span>"
+msgstr "<span class=\"ms-1\">Exámenes</span>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.all_user_card
+msgid "<span class=\"text-muted small fw-bold\">Exams</span>"
+msgstr "<span class=\"text-muted small fw-bold\">Exámenes</span>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.top3_user_card
+msgid "<span class=\"text-muted\">Exams</span>"
+msgstr "<span class=\"text-muted\">Exámenes</span>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.mail_notification_ending_soon
+msgid "<span style=\"font-size: 10px;\">Contenido del curso</span><br/>"
+msgstr "<span style=\"font-size: 10px;\">Contenido del curso</span><br/>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.course_main_exam
+msgid "<span>Start Now</span><i class=\"fa fa-chevron-right ms-2 align-middle\"/>"
+msgstr "<span>Empieza ahora</span><i class=\"fa fa-chevron-right ms-2 align-middle\"/>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.survey_page_print_valid_answers
+msgid "<strong class=\"text-success mt-1\">Valid answers:</strong>"
+msgstr "<strong class=\"text-success mt-1\">Respuestas válidas:</strong>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.survey_fill_form_done_inherit_website_slides_exam
+msgid "<strong>Your final grade will be given by the professor</strong>"
+msgstr "<strong>Tu calificación final la dará el profesor.</strong>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.mail_notification_ending_soon
+msgid "Acceder al curso ahora"
+msgstr "Accede al curso ahora"
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/models/slide_channel.py:0
+msgid "Access Granted"
+msgstr "Acceso concedido"
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/models/slide_channel.py:0
+msgid "Access Refused"
+msgstr "Acceso denegado"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_channel_view_form_inherit
+msgid "Add Exam"
+msgstr "Agregar examen"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.question_wizard_view_form
+msgid "Add To\n"
+"                        Survey"
+msgstr "Agregar a la encuesta"
+
+#. module: elearning_cujae
+#: model:ir.actions.server,name:elearning_cujae.survey_question_action
+msgid "Add To Survey"
+msgstr "Agregar a la encuesta"
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slides_fullscreen.xml:0
+msgid "Add questions to this survey"
+msgstr "Añadir preguntas a esta encuesta"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__is_preview
+msgid "Allow Preview"
+msgstr "Permitir vista previa"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question_valid_answer__value
+msgid "Answer"
+msgstr "Respuesta"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input_line__answer_type
+msgid "Answer Type"
+msgstr "Tipo de respuesta"
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/models/survey_survey.py:0
+msgid "Any Survey listed below is currently used as a Course Exam and cannot be deleted:\n"
+"%s"
+msgstr "Cualquier encuesta que se enumera a continuación se utiliza actualmente como examen del curso y no se puede eliminar: %s"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.survey_menu_questions_inherit_attempts
+msgid "Atendees attempts"
+msgstr "Intentos de los asistentes"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_channel__availability_end_date
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__availability_end_date
+msgid "Availability End Date"
+msgstr "Fecha de finalización de disponibilidad"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_channel__availability_start_date
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__availability_start_date
+msgid "Availability Start Date"
+msgstr "Fecha de inicio de disponibilidad"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.website_slides_menu_gamification_badges
+msgid "Badges"
+msgstr "Insignias"
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slides_fullscreen.xml:0
+msgid "Begin exam"
+msgstr "Comenzar el examen"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.course_main_exam
+msgid "Begin your <b>exam</b> today!"
+msgstr "¡Comienza tu <b>examen</b> hoy!"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.question_wizard_view_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__slide_category
+msgid "Category"
+msgstr "Categoría"
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slide_upload.xml:0
+msgid "Certification"
+msgstr "Proceso de dar un título"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.o_wss_certification_icon
+msgid "Certification icon"
+msgstr "Icono de certificación"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.website_slides_menu_gamification_challenge
+msgid "Challenges"
+msgstr "Desafíos"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_slide_channel_partner
+msgid "Channel / Partners (Members)"
+msgstr "Canal / Socios (Miembros)"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_survey_question__upload_multiple_file
+msgid "Check this box if you want to allow users to upload multiple files"
+msgstr "Marque esta casilla si desea permitir que los usuarios carguen varios archivos"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input__checked
+msgid "Checked"
+msgstr "Comprobado"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_survey__professor_check
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input__professor_check
+msgid "Checked by teacher"
+msgstr "Revisado por el profesor"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_channel__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: elearning_cujae
+#: model:gamification.badge,name:elearning_cujae.website_slides_badge_data_exam
+#: model:gamification.goal.definition,name:elearning_cujae.website_slides_badge_data_exam_goal
+msgid "Complecionista de exámenes"
+msgstr "Complecionista de exámenes"
+
+#. module: elearning_cujae
+#: model_terms:gamification.badge,description:elearning_cujae.website_slides_badge_data_exam
+msgid "Complete an exam"
+msgstr "Completar un examen"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide_partner__compute_survey_completed
+msgid "Completed"
+msgstr "Terminado"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input__slide_exam
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_slide_partner_view_search_exam
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_slide_partner_view_tree_exam
+msgid "Completed exam"
+msgstr "Examen completado"
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slides_fullscreen.xml:0
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_content_detailed_exam
+msgid "Congratulations, you passed the exam!"
+msgstr "¡Felicitaciones, pasaste el examen!"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.custom_survey_user_input_view_search
+msgid "Contacto"
+msgstr "Contacto"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.view_question_form_inherit
+msgid "Correct Answers"
+msgstr "Respuestas correctas"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_slide_channel
+msgid "Course"
+msgstr "Curso"
+
+#. module: elearning_cujae
+#: model_terms:ir.actions.act_window,help:elearning_cujae.survey_survey_action_slides_exam
+msgid "Create an exam"
+msgstr "Crear un examen"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_question_wizard__create_uid
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__create_uid
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question_valid_answer__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_question_wizard__create_date
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__create_date
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question_valid_answer__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_question_wizard__display_name
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__display_name
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question_valid_answer__display_name
+msgid "Display Name"
+msgstr "Nombre para mostrar"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.mail_notification_ending_soon
+msgid "El contenido"
+msgstr "El contenido"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input__email_sent
+msgid "Email Sent"
+msgstr "Correo electrónico enviado"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.custom_survey_user_input_view_search
+msgid "Encuesta"
+msgstr "Encuesta"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.course_sidebar_inherit
+msgid "End of Availability"
+msgstr "Fin de disponibilidad"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__is_ending_soon
+msgid "Ending soon"
+msgstr "Terminando pronto"
+
+#. module: elearning_cujae
+#: model_terms:ir.actions.act_window,help:elearning_cujae.survey_survey_action_slides_exam
+msgid "Evaluate your assistants\n"
+"                <br>y send them their grade."
+msgstr "Evalúa a tus asistentes<br> y les enviamos su calificación."
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.website_slides_menu_evaluations
+msgid "Evaluations"
+msgstr "Evaluaciones"
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/js/slides_upload.js:0
+#: code:addons/elearning_cujae/static/src/js/slides_upload.js:0
+#: code:addons/elearning_cujae/static/src/xml/website_slide_upload.xml:0
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__exam_id
+#: model:ir.model.fields.selection,name:elearning_cujae.selection__slide_slide__slide_category__exam
+#: model:ir.model.fields.selection,name:elearning_cujae.selection__slide_slide__slide_type__exam
+msgid "Exam"
+msgstr "Examen"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_gamification_badge__exam_ids
+msgid "Exam Ids"
+msgstr "Identificaciones de exámenes"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_survey__slides_asociated
+msgid "Exam Slides"
+msgstr "Diapositivas del examen"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide_partner__user_input_ids
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.user_profile_content_exam
+msgid "Exam attempts"
+msgstr "Intentos de examen"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_survey__exam_badge_id
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_survey__exam_badge_id_dummy
+msgid "Exam badge"
+msgstr "Insignia de examen"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.badge_content_exam
+msgid "Exam badges"
+msgstr "Insignias de examen"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide_partner__exam_scoring_success
+msgid "Exam completed"
+msgstr "Examen completado"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.website_slides_menu_courses_exam
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.user_profile_content_exam
+msgid "Exams"
+msgstr "Exámenes"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_content_detailed_exam
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_sidebar_done_button_exam
+msgid "Exams you have passed cannot be marked as not done"
+msgstr "Los exámenes que has aprobado no se pueden marcar como no realizados"
+
+#. module: elearning_cujae
+#: model:ir.actions.act_window,name:elearning_cujae.survey_survey_action_slides_exam
+msgid "Exámenes"
+msgstr "Exámenes"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.website_slides_menu_gamification_followups
+msgid "Followups"
+msgstr "Seguimientos"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_gamification_badge
+msgid "Gamification Badge"
+msgstr "Insignia de gamificación"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.website_slides_menu_gamification
+msgid "Gamification tools"
+msgstr "Herramientas de gamificación"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_survey__exam_give_badge
+msgid "Give exam badge"
+msgstr "Entregar insignia de examen"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.website_slides_menu_gamification_goal_definition
+msgid "Goal definitions"
+msgstr "Definiciones de objetivos"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.website_slides_menu_gamification_goal
+msgid "Goals"
+msgstr "Objetivos"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__grade
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input__grade
+msgid "Grade"
+msgstr "Calificación"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.display_certificate_inherit
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.display_exam
+msgid "Grade :"
+msgstr "Calificación :"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_survey__grade_ranges
+msgid "Grade Ranges"
+msgstr "Rangos de calificaciones"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_survey_grade_range
+msgid "Grade range for surveys"
+msgstr "Rango de calificación para encuestas"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.custom_survey_user_input_view_search
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slide_upload.xml:0
+msgid "How to upload a certification on your course?"
+msgstr "¿Cómo cargar una certificación en tu curso?"
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slide_upload.xml:0
+msgid "How to upload an exam to a course?"
+msgstr "¿Cómo subir un examen a un curso?"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_question_wizard__id
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__id
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question_valid_answer__id
+msgid "ID"
+msgstr "IDENTIFICACIÓN"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_slide_slide__ending_soon_notification_sent
+msgid "Indicates if the notification has been sent."
+msgstr "Indica si la notificación ha sido enviada."
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.user_profile_content_exam
+msgid "Intento n°"
+msgstr "Intención n°"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input__is_certification
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.custom_survey_user_input_view_search
+msgid "Is a certification"
+msgstr "Es una certificación"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_survey__exam
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input__is_exam
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.custom_survey_user_input_view_search
+msgid "Is an exam"
+msgstr "Es un examen"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.custom_survey_user_input_view_search
+msgid "Is in channel"
+msgstr "Está en el canal"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__karma_for_completion
+msgid "Karma gained when completed"
+msgstr "Karma obtenido al completarlo"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_question_wizard____last_update
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range____last_update
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question_valid_answer____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_question_wizard__write_uid
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__write_uid
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question_valid_answer__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_question_wizard__write_date
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__write_date
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question_valid_answer__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_content_detailed_exam
+msgid "Mark to do"
+msgstr "Marcar para hacer"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__max_percentage
+msgid "Max %"
+msgstr "Máximo %"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question__max_score
+msgid "Max score"
+msgstr "Puntuación máxima"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__min_percentage
+msgid "Min %"
+msgstr "Mínimo %"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.user_profile_content_exam
+msgid "No exams were found."
+msgstr "No se encontraron exámenes."
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.mail_notification_ending_soon
+msgid "No pierdas la oportunidad de completar este contenido."
+msgstr "No pierdas la oportunidad de completar este contenido."
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.multi_upload_file
+msgid "Note: You can  upload multiple files"
+msgstr "Nota: Puedes cargar varios archivos"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.multi_upload_file
+msgid "Note: You can only upload 1\n"
+"                        file."
+msgstr "Nota: Solo puedes cargar 1 archivo."
+
+#. module: elearning_cujae
+#: model:mail.template,name:elearning_cujae.email_template_survey_grade
+msgid "Notificación de Calificación"
+msgstr "Notificación de Calificación"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__ending_soon_notification_sent
+msgid "Notificación enviada"
+msgstr "Notificación enviada"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_channel__nbr_exam
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__nbr_exam
+msgid "Number of exams"
+msgstr "Número de exámenes"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.mail_notification_ending_soon
+msgid "Odoo"
+msgstr "Odoo"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input_line__slide_partner_id
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.view_survey_user_input_line_search_inherit
+msgid "Partner"
+msgstr "Pareja"
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/wizard/question_wizard.py:0
+msgid "Please Select The Surveys"
+msgstr "Por favor seleccione las encuestas"
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slide_upload.xml:0
+msgid "Please select a certification."
+msgstr "Seleccione una certificación."
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.mail_notification_ending_soon
+msgid "Powered by"
+msgstr "Desarrollado por"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question_valid_answer__question_id
+msgid "Question"
+msgstr "Pregunta"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question__question_type
+msgid "Question Type"
+msgstr "Tipo de pregunta"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_question_wizard
+msgid "Question Wizard"
+msgstr "Asistente de preguntas"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input_line__max_score
+msgid "Question score"
+msgstr "Puntuación de la pregunta"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.survey_menu_questions_inherit
+msgid "Questions"
+msgstr "Preguntas"
+
+#. module: elearning_cujae
+#: model:ir.ui.menu,name:elearning_cujae.website_slides_menu_gamification_ranks
+msgid "Ranks"
+msgstr "Rangos"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_channel__user_ids
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_channel_partner__channel_user_ids
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.course_sidebar_inherit
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_channel_partner_view_kanban_inherit
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_channel_partner_view_tree_inherit
+msgid "Responsibles"
+msgstr "Responsables"
+
+#. module: elearning_cujae
+#: model:mail.template,subject:elearning_cujae.email_template_survey_grade
+msgid "Resultado de tu examen: {{ object.grade }}"
+msgstr "Resultado de tu examen: {{ object.grade }}"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.display_exam
+msgid "Score :"
+msgstr "Puntaje :"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.user_profile_content_exam
+msgid "Search"
+msgstr "Buscar"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.user_profile_content_exam
+msgid "Search Attempts..."
+msgstr "Intentos de búsqueda..."
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slide_upload.xml:0
+msgid "Select an exam."
+msgstr "Seleccione un examen."
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_question_wizard__survey_ids
+msgid "Select the survey to duplicate the question"
+msgstr "Seleccione la encuesta para duplicar la pregunta"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_survey_question__question_type
+msgid "Select the type of question to create."
+msgstr "Seleccione el tipo de pregunta a crear."
+
+#. module: elearning_cujae
+#: model:ir.actions.server,name:elearning_cujae.ir_cron_send_ending_soon_notifications_ir_actions_server
+#: model:ir.cron,cron_name:elearning_cujae.ir_cron_send_ending_soon_notifications
+msgid "Send notifications of ending soon contents"
+msgstr "Enviar notificaciones de contenidos que finalizan pronto"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_slide_slide_partner
+msgid "Slide / Partner decorated m2m"
+msgstr "Diapositiva / Pareja decorada m2m"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_slide_slide__slide_type
+msgid "Slide Type"
+msgstr "Tipo de diapositiva"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_survey_user_input_line__slide_partner_id
+msgid "Slide membership information for the logged in user"
+msgstr "Deslice la información de membresía para el usuario que inició sesión"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_slide_slide
+msgid "Slides"
+msgstr "Diapositivas"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.survey_fill_form_start_inherit
+msgid "Start Certification"
+msgstr "Iniciar certificación"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.survey_fill_form_start_inherit
+msgid "Start Exam"
+msgstr "Iniciar examen"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.survey_fill_form_start_inherit
+msgid "Start Survey"
+msgstr "Iniciar encuesta"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_content_detailed_exam
+msgid "Start exam"
+msgstr "Iniciar examen"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.view_question_form_inherit
+msgid "Subir archivo\n"
+"                            <i class=\"fa fa-upload\"/>"
+msgstr "Subir archivo<i class=\"fa fa-upload\"/>"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.multi_upload_file
+msgid "Subir arhivo"
+msgstr "Subir archivo"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_slide_slide__slide_type
+msgid "Subtype of the slide category, allows more precision on the actual file type / source type."
+msgstr "Subtipo de la categoría de diapositiva, permite mayor precisión en el tipo de archivo/tipo de fuente real."
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_survey_survey
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_grade_range__survey_id
+msgid "Survey"
+msgstr "Encuesta"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_survey_question
+msgid "Survey Question"
+msgstr "Pregunta de la encuesta"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_survey_user_input
+msgid "Survey User Input"
+msgstr "Entrada del usuario de la encuesta"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_survey_user_input_line
+msgid "Survey User Input Line"
+msgstr "Línea de entrada del usuario de la encuesta"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_question_wizard__survey_ids
+msgid "Surveys"
+msgstr "Encuestas"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_content_detailed_exam
+msgid "Take Quiz"
+msgstr "Tomar la prueba"
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slides_fullscreen.xml:0
+msgid "Test exam"
+msgstr "Examen de prueba"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.slide_content_detailed_exam
+msgid "Test exams"
+msgstr "Exámenes de prueba"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_survey_user_input_line__value_file_data_ids
+msgid "The attachments corresponding to the user's file upload answer, if any."
+msgstr "Los archivos adjuntos correspondientes a la respuesta de carga de archivos del usuario, si los hubiera."
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_slide_slide__is_preview
+msgid "The course is accessible by anyone : the users don't need to join the channel to access the content of the course."
+msgstr "El curso es accesible para cualquier persona: los usuarios no necesitan unirse al canal para acceder al contenido del curso."
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/wizard/question_wizard.py:0
+msgid "The selected question is already included in the survey."
+msgstr "La pregunta seleccionada ya está incluida en la encuesta."
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_survey_user_input_line__answer_type
+msgid "The type of answer for this question (upload_file if the user is uploading a file)."
+msgstr "El tipo de respuesta para esta pregunta (upload_file si el usuario está cargando un archivo)."
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.display_exam
+msgid "There are no exams yet"
+msgstr "Aún no hay exámenes"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_slide_slide__is_ending_soon
+msgid "True if the content has 1 week or less of availability."
+msgstr "Verdadero si el contenido tiene 1 semana o menos de disponibilidad."
+
+#. module: elearning_cujae
+#: model:ir.model.fields,help:elearning_cujae.field_slide_slide_partner__compute_survey_completed
+msgid "True if user at least completed one time the survey."
+msgstr "Verdadero si el usuario completó la encuesta al menos una vez."
+
+#. module: elearning_cujae
+#: model:ir.actions.server,name:elearning_cujae.ir_cron_update_channel_status_publish_ir_actions_server
+#: model:ir.cron,cron_name:elearning_cujae.ir_cron_update_channel_status_publish
+msgid "Update Channel Status Publish"
+msgstr "Actualizar el estado del canal Publicar"
+
+#. module: elearning_cujae
+#: model:ir.actions.server,name:elearning_cujae.ir_cron_update_slide_status_publish_ir_actions_server
+#: model:ir.cron,cron_name:elearning_cujae.ir_cron_update_slide_status_publish
+msgid "Update Slide Status Publish"
+msgstr "Actualizar estado de diapositiva Publicar"
+
+#. module: elearning_cujae
+#: model:ir.actions.server,name:elearning_cujae.ir_cron_update_ending_soon_ir_actions_server
+#: model:ir.cron,cron_name:elearning_cujae.ir_cron_update_ending_soon
+msgid "Update field ending soon in slide"
+msgstr "Campo de actualización que finaliza pronto en la diapositiva"
+
+#. module: elearning_cujae
+#: model:ir.model.fields.selection,name:elearning_cujae.selection__survey_question__question_type__upload_file
+#: model:ir.model.fields.selection,name:elearning_cujae.selection__survey_user_input_line__answer_type__upload_file
+msgid "Upload file"
+msgstr "Subir archivo"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question__upload_multiple_file
+msgid "Upload multiple files"
+msgstr "Subir varios archivos"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_survey__user_input_ids
+msgid "User responses"
+msgstr "Respuestas de los usuarios"
+
+#. module: elearning_cujae
+#: model:ir.model,name:elearning_cujae.model_survey_question_valid_answer
+msgid "Valid answer for completion questions"
+msgstr "Respuesta válida para preguntas de finalización"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_question__valid_answer_ids
+msgid "Valid answers"
+msgstr "Respuestas válidas"
+
+#. module: elearning_cujae
+#: model:ir.model.fields,field_description:elearning_cujae.field_survey_user_input_line__value_file_data_ids
+msgid "Value File Data"
+msgstr "Datos del archivo de valores"
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/controllers/slides.py:0
+msgid "You are not allowed to create a survey."
+msgstr "No está permitido crear una encuesta."
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/controllers/slides.py:0
+msgid "You are not allowed to link a exam."
+msgstr "No está permitido vincular un examen."
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slide_upload.xml:0
+msgid "You can create your certification from here or use an existing one. Once your certification is created, you can still edit it in backend."
+msgstr "Puedes crear tu certificación desde aquí o usar una existente. Una vez creada, podrás editarla en el backend."
+
+#. module: elearning_cujae
+#. odoo-javascript
+#: code:addons/elearning_cujae/static/src/xml/website_slide_upload.xml:0
+msgid "You can create your exam here and edit it in the backend."
+msgstr "Puedes crear tu examen aquí y editarlo en el backend."
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.badge_content_exam
+msgid "You can obtain badges completing exams. Here are a few exam badges examples.\n"
+"                            <br/>¡Follow the links to improve new highs and learn more!"
+msgstr "Puedes obtener insignias al completar exámenes. Aquí tienes algunos ejemplos.<br/> ¡Sigue los enlaces para mejorar nuevos máximos y aprender más!"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.user_profile_content_exam
+msgid "You have not done any exam yet."
+msgstr "Aún no has hecho ningún examen."
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.survey_fill_form_done_inherit_website_slides_exam
+msgid "Your final grade is"
+msgstr "Tu calificación final es"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.survey_fill_form_done_inherit_website_slides_exam
+msgid "Your grade is"
+msgstr "Tu calificación es"
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.mail_notification_ending_soon
+msgid "estará disponible hasta el"
+msgstr "estará disponible hasta el"
+
+#. module: elearning_cujae
+#. odoo-python
+#: code:addons/elearning_cujae/controllers/slides.py:0
+msgid "exam slides are completed when the survey is succeeded."
+msgstr "Las diapositivas del examen se completan cuando se aprueba la encuesta."
+
+#. module: elearning_cujae
+#: model_terms:ir.ui.view,arch_db:elearning_cujae.mail_notification_ending_soon
+msgid "¡Solo quedan 7 días o menos para completarlo!"
+msgstr "¡Solo quedan 7 días o menos para completarlo!"
+

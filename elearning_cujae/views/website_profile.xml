@@ -4,7 +4,7 @@
         <xpath expr="//div[@id='profile_about_badge']" position="before">
             <t t-if="channel">
                 <div class="mb32">
-                    <h5 class="border-bottom pb-1">Exámenes</h5>
+                    <h5 class="border-bottom pb-1">Exams</h5>
                     <t t-call="elearning_cujae.display_exam"/>
                 </div>
             </t>
@@ -13,14 +13,14 @@
         <xpath expr="//ul[hasclass('o_wprofile_nav_tabs')]" position="inside">
             <li t-if="show_exam_tab" class="nav-item">
                 <a role="tab" aria-controls="exam" href="#profile_tab_content_exam" t-attf-class="nav-link #{ 'active' if active_tab == 'exam' else '' }" data-bs-toggle="tab">
-                    <t t-if="user_exam_inputs" t-out="len(user_exam_inputs)" /> Intento de exámenes
+                    <t t-if="user_exam_inputs" t-out="len(user_exam_inputs)" /> Exam attempts
                 </a>
             </li>
         </xpath>
         <xpath expr="//div[hasclass('o_wprofile_tabs_content')]" position="inside">
             <div t-if="show_exam_tab" role="tabpanel" t-attf-class="tab-pane #{ 'show active' if active_tab == 'exam' else '' }" id="profile_tab_content_exam">
                 <h5 class="d-flex justify-content-between align-items-end border-bottom pb-1">
-                    Intento de exámenes
+                    Exam attempts
                     <form method="get">
                         <div class="input-group" role="search">
                             <input type="text" class="form-control" name="exam_search" t-att-value="exam_search_terms or ''" placeholder="Search Attempts..."/>
@@ -33,10 +33,10 @@
                     </form>
                 </h5>
                 <t t-if="not user_exam_inputs">
-                    <p t-if="exam_search_terms">No se encontraron exámenes según el criterio de búsqueda.</p>
-                    <p t-else="">No has realizado ningún examen todavia.</p>
+                    <p t-if="exam_search_terms">No exams were found.</p>
+                    <p t-else="">You have not done any exam yet.</p>
                     <a href="/slides/all?slide_category=exam">
-                        <i class="fa fa-arrow-right"/> Ver exámenes
+                        <i class="fa fa-arrow-right"/> View exams
                     </a>
                 </t>
                 <div t-else="" class="card p-3 mb-3" t-foreach="user_exam_inputs" t-as="user_input">
@@ -72,16 +72,9 @@
                             <div class="p-2 w-100">
                                 <h5 class="mt-0 mb-1" t-esc="completed_exx.survey_id.title"/>
                                 <div t-if="user.id == uid">
-                                    <small class="fw-bold">Score : <span t-esc="completed_exx.scoring_percentage"/> %</small>
-                                    <div class="float-end">
-                                        <a role="button" class="float-end" t-att-href="'/survey/%s/get_exam' % completed_exx.survey_id.id">
-                                            <i class="fa fa-download" aria-label="Download exam" title="Download exam"/>
-                                        </a>
-                                        <a role="button" class="me-2" href="#"
-                                             t-attf-onclick="event.stopPropagation(); $('#slideShareModal_#{completed_exx.slide_id.channel_id.id}').modal('show');">
-                                            <i class="fa fa-share-alt" aria-label="Share" title="Share"/>
-                                        </a>
-                                    </div>
+                                    <small class="fw-bold">Score : <span t-esc="completed_exx.scoring_percentage"/> %</small>                                   
+                                    <small class="fw-bold">Grade : <span t-esc="completed_exx.grade"/></small>
+ 
                                 </div>
                             </div>
                         </div>
@@ -93,23 +86,28 @@
             </div>
         </t>
         <t t-else="">
-            <div class="text-muted d-inline-block">No hay exámenes todavia</div>
+            <div class="text-muted d-inline-block">There are no exams yet</div>
         </t>
         <div class="text-end d-inline-block pull-right">
-            <a href="/slides/all?slide_category=exam" class="btn btn-link btn-sm"><i class="fa fa-arrow-right me-1"/>Todos los exámenes</a>
+            <a href="/slides/all?slide_category=exam" class="btn btn-link btn-sm"><i class="fa fa-arrow-right me-1"/>All exams</a>
         </div>
     </template>
 
     <template id="top3_user_card" inherit_id="website_profile.top3_user_card">
         <xpath expr="//div[hasclass('o_wprofile_top3_card_footer')]//div[last()]" position="after">
-            <div class="col py-3"><b t-esc="user['exam_count']"/> <span class="text-muted">Exámenes</span></div>
+            <div class="col py-3"><b t-esc="user['exam_count']"/> <span class="text-muted">Exams</span></div>
+        </xpath>
+    </template>
+    <template id="display_certificate_inherit" inherit_id="website_slides_survey.display_certificate">
+        <xpath expr="//small[hasclass('fw-bold')]" position="after">
+            <small class="fw-bold">Grade : <span t-esc="certificate.grade"/></small>
         </xpath>
     </template>
 
     <template id="all_user_card" inherit_id="website_profile.all_user_card">
         <xpath expr="//td[hasclass('all_user_badge_count')]" position="after">
             <td class="align-middle text-end pe-3 text-nowrap all_user_exam_count">
-                <b t-esc="user['exam_count']"/> <span class="text-muted small fw-bold">Exámenes</span>
+                <b t-esc="user['exam_count']"/> <span class="text-muted small fw-bold">Exams</span>
             </td>
         </xpath>
     </template>
@@ -119,10 +117,10 @@
             <t t-if="exam_badges">
                 <div class="row">
                     <div class="col-12">
-                        <h1 class="mt-4 mt-lg-2">Insignias de Exámenes</h1>
+                        <h1 class="mt-4 mt-lg-2">Exam badges</h1>
                         <p class="lead">
-                            Puede obtener insignias aprobando exámenes. Aquí hay una lista de todas las insignias de examen disponibles.
-                            <br />¡Sigue los enlaces para alcanzar nuevas alturas y mejorar tus habilidades!
+                            You can obtain badges completing exams. Here are a few exam badges examples.
+                            <br />¡Follow the links to improve new highs and learn more!
                         </p>
                         <div class="row col-12 align-items-center p-0" t-foreach="exam_badges" t-as="badge">
                             <div class="col-3">
@@ -135,7 +133,7 @@
                             </div>
                             <div class="col-3 text-end">
                                 <b t-esc="badge.granted_users_count"/>
-                                <i class="text-muted">usuarios premiados</i>
+                                <i class="text-muted">Awarded users</i>
                             </div>
                         </div>
                     </div>

@@ -1,14 +1,19 @@
+from build import _logger
 from odoo import fields, models, api
+from odoo import exceptions
 from odoo.exceptions import UserError
 from datetime import datetime, timedelta
+from odoo.tools import is_html_empty
+
 
 class Channel(models.Model):
     _inherit = 'slide.channel'
 
-    nbr_exam = fields.Integer("Número de exámenes", compute='_compute_slides_statistics', store=True)
+    nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)
     company_id = fields.Many2one('res.company', string='Company',  default=lambda self: self.env.company)
-    availability_start_date = fields.Datetime(string="Fecha de Inicio de Disponibilidad", default=fields.Datetime.now)  # Cambio a Datetime
-    availability_end_date = fields.Datetime(string="Fecha de Fin de Disponibilidad")  # Cambio a Datetime
+    availability_start_date = fields.Datetime(string="Availability Start Date", default=fields.Datetime.now)  # Cambio a Datetime
+    availability_end_date = fields.Datetime(string="Availability End Date")  # Cambio a Datetime
+    user_ids = fields.Many2many('res.users', string='Responsibles',  default=lambda self: [(4, self.env.user.id)] )
 
     @api.model
     def _cron_check_course_availability(self):
@@ -76,3 +81,139 @@ class Channel(models.Model):
         else:
             # Si no hay fechas, no cambiar el estado actual
             pass
+
+
+    #cambios a user id
+    
+    @api.depends('upload_group_ids', 'user_ids')  # Cambiar user_id -> user_ids
+    @api.depends_context('uid')
+    def _compute_can_upload(self):
+        for record in self:
+            # Verificar si el usuario actual está en user_ids o es superuser
+            if self.env.user in record.user_ids or self.env.is_superuser():
+                record.can_upload = True
+            elif record.upload_group_ids:
+                record.can_upload = bool(record.upload_group_ids & self.env.user.groups_id)
+            else:
+                record.can_upload = self.env.user.has_group('website_slides.group_website_slides_manager')        
+    @api.depends('channel_type', 'user_ids', 'can_upload')  # Cambiar user_id -> user_ids
+    @api.depends_context('uid')
+    def _compute_can_publish(self):
+        for record in self:
+            if not record.can_upload:
+                record.can_publish = False
+            # Verificar si el usuario actual está en user_ids o es superuser
+            elif self.env.user in record.user_ids or self.env.is_superuser():
+                record.can_publish = True
+            else:
+                record.can_publish = self.env.user.has_group('website_slides.group_website_slides_manager')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+     try:  
+        for vals in vals_list:
+            if not vals.get('channel_partner_ids') and not self.env.is_superuser():
+                vals['channel_partner_ids'] = [(0, 0, {'partner_id': self.env.user.partner_id.id})]
+            if not is_html_empty(vals.get('description')) and is_html_empty(vals.get('description_short')):
+                vals['description_short'] = vals['description']
+            vals['user_ids'] = [(4, self.env.user.id)]
+
+        channels = super().create(vals_list)
+
+        for channel in channels:
+            # Agregar todos los usuarios en user_ids como miembros
+            if channel.user_ids:  # <--- Cambiar user_id -> user_ids
+                partners = channel.user_ids.mapped('partner_id')
+                channel._action_add_members(partners)
+            if channel.enroll_group_ids:
+                channel._add_groups_members()
+
+        return channels
+     except exceptions.ValidationError as e:
+        _logger.error("Error de validación: %s", e)
+        raise
+     except exceptions.UserError as e:
+        _logger.error("Error de usuario: %s", e)
+        raise
+     except Exception as e:
+        _logger.error("Error inesperado: %s", e)
+        raise
+    
+    def write(self, vals):
+        if 'description' in vals and not is_html_empty(vals['description']) and self.description == self.description_short:
+            vals['description_short'] = vals['description']
+
+        res = super().write(vals)
+
+        # Manejar cambios en user_ids (Many2many)
+        if 'user_ids' in vals:
+            # Obtener todos los partners de los nuevos usuarios
+            new_users = self.user_ids - self._origin.user_ids  # Usuarios agregados
+            partners = new_users.mapped('partner_id')
+            self._action_add_members(partners)
+            
+            # Reagendar actividades para todos los user_ids
+            for user in self.user_ids:
+                self.activity_reschedule(
+                    ['website_slides.mail_activity_data_access_request'], 
+                    new_user_id=user.id
+                )
+
+        if 'enroll_group_ids' in vals:
+            self._add_groups_members()
+
+        return res
+    
+    def action_grant_access(self, partner_id):
+        partner = self.env['res.partner'].browse(partner_id).exists()
+        if partner and self._action_add_members(partner):
+            # Buscar actividades para todos los user_ids
+            activities = self.activity_search(
+                ['website_slides.mail_activity_data_access_request'],
+                additional_domain=[
+                    ('request_partner_id', '=', partner.id),
+                    ('user_id', 'in', self.user_ids.ids)  # <--- Filtrar por todos los responsables
+                ]
+            )
+            activities.action_feedback(feedback=_('Access Granted'))
+    
+    def action_refuse_access(self, partner_id):
+        partner = self.env['res.partner'].browse(partner_id).exists()
+        if partner:
+            # Buscar actividades para todos los responsables (user_ids)
+            activities = self.activity_search(
+                ['website_slides.mail_activity_data_access_request'],
+                additional_domain=[
+                    ('request_partner_id', '=', partner.id),
+                    ('user_id', 'in', self.user_ids.ids)  # <--- Filtrar por todos los responsables
+            ]
+        )
+        activities.action_feedback(feedback=_('Access Refused'))
+    
+    def _action_request_access(self, partner):
+        activities = self.env['mail.activity']
+        requested_cids = self.sudo().activity_search(
+            ['website_slides.mail_activity_data_access_request'],
+            additional_domain=[('request_partner_id', '=', partner.id)]
+        ).mapped('res_id')
+        
+        for channel in self:
+            if channel.id not in requested_cids and channel.user_ids:  # <--- Cambiar user_id -> user_ids
+                # Crear una actividad para cada responsable
+                for user in channel.user_ids:
+                    activities += channel.activity_schedule(
+                        'website_slides.mail_activity_data_access_request',
+                        note=_('<b>%s</b> is requesting access to this course. Responsible: %s') % (  # Nota mejorada
+                            partner.name, 
+                            ", ".join(channel.user_ids.mapped('name'))
+                        ),
+                        user_id=user.id,  # <--- Asignar a cada responsable
+                        request_partner_id=partner.id
+                    )
+        return activities
+        
+
+class ChannelUsersRelation(models.Model):
+        _inherit = 'slide.channel.partner'
+
+        channel_user_ids = fields.Many2many('res.users', string='Responsibles', related='channel_id.user_ids')

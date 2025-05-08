@@ -18,6 +18,7 @@ class TravelExpense(models.Model):
         required=True
     )
     traveler_name = fields.Char(related="ticket_id.traveler_name", string="Nombre del solicitante", readonly=True)
+    sponsor = fields.Char(string="Encargado de cubrir los gastos")
     ticket_cost = fields.Float(string="Costo del pasaje")
     taxes = fields.Float(string="Impuestos")
     diet_cost = fields.Float(string="Costos de dieta")

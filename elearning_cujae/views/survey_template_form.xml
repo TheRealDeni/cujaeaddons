@@ -5,7 +5,7 @@
                 <button type="submit" value="start" class="btn btn-primary btn-lg disabled">
                     <t t-if="survey.certification">
                         <t t-if="survey.exam">
-                            Empezar Examen
+                            Start Exam
                         </t>
                         <t t-else="">
                             Start Certification
@@ -13,7 +13,7 @@
                     </t>
                     <t t-else="">
                         <t t-if="survey.exam">
-                            Empezar Examen
+                            Start Exam
                         </t>
                         <t t-else="">
                             Start Survey

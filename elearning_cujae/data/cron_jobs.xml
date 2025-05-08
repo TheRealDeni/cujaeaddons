@@ -16,5 +16,26 @@
             <field name="interval_number">1</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
-        </record>        
+        </record>    
+        <record id="ir_cron_update_ending_soon" model="ir.cron">
+            <field name="name">Update field ending soon in slide</field>
+            <field name="model_id" ref="model_slide_slide"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_update_ending_soon()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>    
+        <record id="ir_cron_send_ending_soon_notifications" model="ir.cron">
+            <field name="name">Send notifications of ending soon contents</field>
+            <field name="model_id" ref="model_slide_slide"/> 
+            <field name="state">code</field>
+            <field name="code">model._cron_send_ending_soon_notifications()</field> 
+            <field name="interval_number">1</field> 
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field> 
+            <field name="doall" eval="False"/> 
+            <field name="active" eval="True"/> 
+        </record>
 </odoo>

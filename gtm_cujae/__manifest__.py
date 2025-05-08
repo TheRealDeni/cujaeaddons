@@ -16,7 +16,7 @@
     'version': '1.0',
 
     'depends': [
-        'base','helpdesk_mgmt','helpdesk_mgmt_project','helpdesk_mgmt_timesheet','helpdesk_type'
+        'base','helpdesk_mgmt','helpdesk_mgmt_project','helpdesk_mgmt_timesheet','helpdesk_type','config_cujae'
     ],
 
     'data':[

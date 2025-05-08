@@ -6,7 +6,7 @@
             <xpath expr="//t[@t-call='survey.question_char_box']" position="after">
                 <t t-if="question.question_type == 'char_box' and question.valid_answer_ids">
                     <div class="valid-answers-container mt-2">
-                        <strong class="text-success mt-1">Respuestas válidas aceptadas:</strong>
+                        <strong class="text-success mt-1">Valid answers:</strong>
                         <ul class="list-unstyled">
                             <li class="text-success" t-foreach="question.valid_answer_ids" t-as="valid_answer">
                                 <span t-esc="valid_answer.value"/>
