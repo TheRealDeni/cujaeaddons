@@ -9,11 +9,12 @@
     'category': 'Education',
     'author': 'Reinaldo y Keila',
     'website': 'https://yourwebsite.com',
-    'depends': ['base','website_slides','elearning_cujae'],
+    'depends': ['base','website_slides'],
     'data': [
         'security/ir.model.access.csv',
         'views/glossary_views.xml',
-        'views/glossary_term_views.xml',
+        #'elearning_cujae',
+       # 'views/glossary_term_views.xml',
         'views/glossary_menu_views.xml',
         'views/slide_slide_views.xml',
         'views/website_slides_templates_lesson_fullscreen.xml',
@@ -23,18 +24,14 @@
     ],
     'assets': {
         'web.assets_frontend': [
-      #    'glossary/static/src/js/completion.js',
           'glossary/static/src/js/slides_course_fullscreen_player.js',
           'glossary/static/src/js/slides_upload.js',
           'glossary/static/src/scss/glossary.scss',
+          'glossary/static/src/js/glossary.js',
           'glossary/static/src/xml/website_slides_fullscreen.xml',
           'glossary/static/src/xml/website_slide_upload.xml',
-
-
-
-
-
      ],
+     
     'installable': True,
     'application': True,
     'auto_install': False,
