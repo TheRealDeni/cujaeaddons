@@ -5,18 +5,8 @@ class TravelExpense(models.Model):
     _name = 'travel.expense'
     _description = "Registro de la información de los costos del viaje"
 
-    name = fields.Char(
-        string="Código",
-        readonly=True,
-        default=lambda self: self.env['ir.sequence'].next_by_code('travel.expense'),
-        copy=False
-    )
-
-    ticket_id = fields.Many2one(
-        "helpdesk.ticket",
-        string="Solicitud de viaje",
-        required=True
-    )
+    name = fields.Char(string="Código", readonly=True, default=lambda self: self.env['ir.sequence'].next_by_code('travel.expense'), copy=False)
+    ticket_id = fields.Many2one("helpdesk.ticket",string="Solicitud de viaje",required=True)
     traveler_name = fields.Char(related="ticket_id.traveler_name", string="Nombre del solicitante", readonly=True)
     sponsor = fields.Char(string="Encargado de cubrir los gastos")
     ticket_cost = fields.Float(string="Costo del pasaje")
@@ -41,7 +31,6 @@ class TravelExpense(models.Model):
     def _check_positive_values(self):
         for expense in self:
             error_fields = []
-
             if expense.ticket_cost and expense.ticket_cost < 0:
                 error_fields.append('Costo del pasaje')
             if expense.taxes and expense.taxes < 0:
@@ -56,7 +45,6 @@ class TravelExpense(models.Model):
                 error_fields.append('Dinero de bolsillo')
             if expense.other_expenses and expense.other_expenses < 0:
                 error_fields.append('Otros gastos')
-
             if error_fields:
                 raise ValidationError(
                     "Los siguientes campos no pueden tener valores negativos:\n- " +
