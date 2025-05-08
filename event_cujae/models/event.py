@@ -65,11 +65,13 @@ class Event(models.Model):
     def create(self, vals):
         event = super(Event, self).create(vals)
         # Manejar evento científico
-        if event.event_type_id.name == 'Científico' and not event.submission_page_url:
-            event._create_submission_page()
+        if event.submission_page_url:
+            self._create_scientific_url()
+        elif event.event_type_id.name == 'Científico' and not event.submission_page_url:
+            self._create_submission_page()
         # Manejar evento de conferencia
         elif event.event_type_id.name == 'Conferencia':
-            event._create_conference_page()
+            self._create_conference_page()
         # Publicar en Telegram
         event._post_to_telegram()
         return event
@@ -113,7 +115,7 @@ class Event(models.Model):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         page = self.env['website.page'].create({
             'name': f'Subida de Trabajos - {self.name}',
-            'url': f'/event/{self.id}',
+            'url': f'/event/submit_work/{self.id}',
             'website_id': base_url.id,
             'view_id': self.env.ref('event_cujae.view_submission_page').id,
         })
@@ -125,7 +127,17 @@ class Event(models.Model):
         website = self.env['website'].get_current_website()
         self.env['website.page'].create({
             'name': f'Ponentes - {self.name}',
-            'url': f'/event/{self.id}',
+            'url': f'/conferencia/{self.id}',
             'website_id': website.id,
             'view_id': self.env.ref('event_cujae.view_conference_speakers').id,
+        })
+
+    def _create_scientific_url(self):
+        """Crear página web con información de ponentes"""
+        website = self.env['website'].get_current_website()
+        self.env['website.page'].create({
+            'name': f'URL - {self.name}',
+            'url': f'/cientifico/{self.id}',
+            'website_id': website.id,
+            'view_id': self.env.ref('event_cujae.scientific_url_views').id,
         })

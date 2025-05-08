@@ -12,9 +12,27 @@
                     <field name="rating"/>
                     <field name="attachment" filename="attachment_filename"/>
                     <field name="attachment_filename" invisible="1"/>
-                    <field name="is_reviewed"/>
+                    <field name="is_reviewed" invisible="1"/>
+                    <button name="action_confirm_review"
+        string="Marcar como Terminado"
+        type="object"
+        class="btn-primary"
+        attrs="{'invisible': [('is_reviewed','=',True)]}"
+        confirm="¿Está seguro de que ya ha terminado la revisión y no desea volver a ver este trabajo?"/>
                 </group>
                 </sheet>
+            <footer>
+                <!-- solo aparece si aún no está revisado -->
+                <button name="action_confirm_review"
+                        string="Marcar como Terminado"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('is_reviewed','=',True)]}"
+                        confirm="¿Está seguro que ya ha terminado la revisión y no desea volver a ver este trabajo?"/>
+                <button string="Cancelar"
+                        class="btn-default"
+                        special="cancel"/>
+            </footer>
             </form>
      </field>
     </record>
@@ -23,6 +41,7 @@
         <field name="name">Trabajos por Revisar</field>
         <field name="res_model">work.reviewer</field>
         <field name="view_mode">tree,form</field>
+         <field name="domain">[('is_reviewed','=',False)]</field>
     </record>
 
    <menuitem name="Trabajos por Revisar"

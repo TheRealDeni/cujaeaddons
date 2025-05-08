@@ -30,6 +30,22 @@ class ScientificWork(models.Model):
     def action_rejected(self):
         self.write({'state': 'rejected'})
 
+    def write(self, vals):
+        # Guardamos el estado anterior para evitar bucles
+        old_states = {w.id: w.state for w in self}
+
+        res = super().write(vals)
+
+        for work in self:
+            # 1) Si el número de revisores llega a 3 y aún no está en to_review:
+            if len(work.reviewer_ids) >= 3 and old_states[work.id] != 'to_review':
+                work.state = 'to_review'
+            # 2) Si TODOS los revisores marcaron is_reviewed y estamos en to_review:
+            if work.state == 'to_review' and work.reviewer_ids and all(r.is_reviewed for r in work.reviewer_ids):
+                work.state = 'reviewed'
+
+        return res
+
 class WorkReviewer(models.Model):
     _name = 'work.reviewer'
     _description = 'Revisor de Trabajo'
@@ -42,3 +58,15 @@ class WorkReviewer(models.Model):
     is_reviewed = fields.Boolean(string='Revisado', default=False)
     attachment = fields.Binary(string='Archivo del Trabajo',related='work_id.attachment',readonly=False)
     attachment_filename = fields.Char(string='Nombre del Archivo',related='work_id.attachment_filename')
+
+    def action_confirm_review(self):
+        """Se llama desde el botón con confirm"""
+        self.write({'is_reviewed': True})
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Trabajos por Revisar',
+            'res_model': 'work.reviewer',
+            'view_mode': 'tree,form',
+            'target': 'current',
+            'domain': [('is_reviewed', '=', False)],
+        }

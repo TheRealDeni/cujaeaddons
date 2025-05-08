@@ -13,6 +13,7 @@
         'views/submission_confirmation.xml',
         'views/event_website.xml',
         'views/view_conference_speakers.xml',
+        'views/scientific_url_views.xml',
         'data/faculty_data.xml',
         'data/responsible_data.xml',
     ],
