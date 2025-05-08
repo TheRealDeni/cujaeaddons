@@ -4,23 +4,19 @@ class Ticket(models.Model):
     _inherit = 'helpdesk.ticket'
     _description = "Modificaciones al helpdesk ticket"
 
-    travel_expense_id = fields.Many2one(
-        "travel.expense",
-        string="Planilla de costos de viaje",
-        ondelete='cascade',
+    travel_expense_id = fields.Many2one("travel.expense", string="Planilla de costos de viaje", ondelete='restrict',
         context="{'default_ticket_id': id}",  # Autoasigna el ticket al crear
         copy=False
     )
+    travel_form_id = fields.Many2one('travel.form', string="Formulario de Viaje")
+    traveler_name = fields.Char(related='travel_form_id.traveler_name.name', string="Nombre y apellidos", readonly=False)
 
-    travel_form_id = fields.Many2one(
-        'travel.form',
-        string="Formulario de Viaje"
-    )
-
-
-    traveler_name = fields.Char(related='travel_form_id.traveler_name.name',
-                                string="Nombre y apellidos", readonly=False)
-
+    #validaciones
+    requires_pcc_validation = fields.Boolean(string="Requiere validación del PCC")
+    requires_ujc_validation = fields.Boolean(string="Requiere validación de la UJC")
+    pcc_validated = fields.Boolean(string="Validado por PCC")
+    ujc_validated = fields.Boolean(string="Validado por UJC")
+    validation_notes = fields.Text(string="Notas de Validación")
 
     def action_open_expense(self):
         self.ensure_one()

@@ -5,7 +5,7 @@
         <field name="name">Solicitudes de viaje</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">travel.form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,search</field>
     </record>
 <!-- Action -->
     <record id="travel_expense_action" model="ir.actions.act_window">
@@ -13,6 +13,24 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">travel.expense</field>
         <field name="view_mode">tree,form</field>
+    </record>
+    <!-- Actions para validadores -->
+    <record id="action_pcc_validation_tickets" model="ir.actions.act_window">
+        <field name="name">Tickets por Validar (PCC)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[('requires_pcc_validation', '=', True), ('pcc_validated', '=', False)]</field>
+        <field name="context">{'default_requires_pcc_validation': True}</field>
+    </record>
+
+    <record id="action_ujc_validation_tickets" model="ir.actions.act_window">
+        <field name="name">Tickets por Validar (UJC)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[('requires_ujc_validation', '=', True), ('ujc_validated', '=', False)]</field>
+        <field name="context">{'default_requires_ujc_validation': True}</field>
     </record>
 
 
@@ -37,6 +55,29 @@
         action="travel_expense_action"
         sequence="5"
     />
+    <!-- Menú principal para validaciones -->
+    <menuitem
+        id="menu_gtm_validations"
+        name="Validaciones"
+        parent="gtm_main_menu"
+        sequence="15"/>
+
+    <!-- Submenús para cada tipo de validación -->
+    <menuitem
+        id="menu_gtm_pcc_validations"
+        name="Validaciones PCC"
+        parent="menu_gtm_validations"
+        action="action_pcc_validation_tickets"
+        groups="gtm_cujae.group_pcc_validator"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_gtm_ujc_validations"
+        name="Validaciones UJC"
+        parent="menu_gtm_validations"
+        action="action_ujc_validation_tickets"
+        groups="gtm_cujae.group_ujc_validator"
+        sequence="20"/>
 
 
 </odoo>

@@ -112,9 +112,7 @@ class Slide(models.Model):
 
     @api.depends('exam_id', 'survey_id')  # Incluye ambas dependencias
     def _compute_name(self):
-        # Ejecuta el método original (que maneja survey_id)
         super(Slide, self)._compute_name()
-        # Luego aplica tu lógica adicional para exam_id
         for slide in self:
             if not slide.name and slide.exam_id:
                 slide.name = slide.exam_id.title
