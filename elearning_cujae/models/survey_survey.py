@@ -3,11 +3,11 @@ from odoo.exceptions import ValidationError
 class Survey(models.Model):
     _inherit="survey.survey"
     grade_ranges = fields.One2many('survey.grade.range', 'survey_id', string="Grade Ranges")
-    exam = fields.Boolean('¿Es un examen?', compute='_compute_exam',readonly=False, store=True, precompute=True)
-    exam_give_badge = fields.Boolean('Dar insignia de examen', compute='_compute_exam_give_badge',readonly=False, store=True, copy=False)
-    exam_badge_id = fields.Many2one('gamification.badge', 'Insignia de examen', copy=False)
-    exam_badge_id_dummy = fields.Many2one(related='exam_badge_id', string='Insignia de examen ')
-    professor_check= fields.Boolean('Revisado por profesor', compute='_compute_check_survey',store=True)
+    exam = fields.Boolean('Is an exam', compute='_compute_exam',readonly=False, store=True, precompute=True)
+    exam_give_badge = fields.Boolean('Give exam badge', compute='_compute_exam_give_badge',readonly=False, store=True, copy=False)
+    exam_badge_id = fields.Many2one('gamification.badge', 'Exam badge', copy=False)
+    exam_badge_id_dummy = fields.Many2one(related='exam_badge_id', string='Exam badge')
+    professor_check= fields.Boolean('Checked by teacher', compute='_compute_check_survey',store=True)
     user_input_ids = fields.One2many('survey.user_input', 'survey_id', string='User responses', readonly=False, groups='survey.group_survey_user')
     slides_asociated= fields.One2many('slide.slide','exam_id' , string="Exam Slides")
     @api.depends('scoring_type')
@@ -69,7 +69,7 @@ class Survey(models.Model):
             if remaining > 0:
                 step = remaining / 3
                 if step < 0.01:
-                    raise ValidationError("El rango entre cada nota es demasiado pequeño")
+                    raise ValidationError("The range between grades is too short")
                 ranges.extend([
                     {
                         'min_percentage': scoring_min,
@@ -115,7 +115,7 @@ class Survey(models.Model):
     def _check_scoring_min(self):
         for record in self:
             if record.scoring_success_min < 0 or record.scoring_success_min > 100:
-                raise ValidationError("El porcentaje mínimo de aprobación debe estar entre 0 y 100")
+                raise ValidationError("The minimum scoring percentage must be between 0 and 100")
             
 
     @api.depends('slide_ids.channel_id','slides_asociated.channel_id')

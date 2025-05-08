@@ -1,4 +1,6 @@
+from build import _logger
 from odoo import fields, models, api
+from odoo import exceptions
 from odoo.exceptions import UserError
 from datetime import datetime, timedelta
 from odoo.tools import is_html_empty
@@ -7,10 +9,10 @@ from odoo.tools import is_html_empty
 class Channel(models.Model):
     _inherit = 'slide.channel'
 
-    nbr_exam = fields.Integer("Número de exámenes", compute='_compute_slides_statistics', store=True)
+    nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)
     company_id = fields.Many2one('res.company', string='Company',  default=lambda self: self.env.company)
-    availability_start_date = fields.Datetime(string="Fecha de Inicio de Disponibilidad", default=fields.Datetime.now)  # Cambio a Datetime
-    availability_end_date = fields.Datetime(string="Fecha de Fin de Disponibilidad")  # Cambio a Datetime
+    availability_start_date = fields.Datetime(string="Availability Start Date", default=fields.Datetime.now)  # Cambio a Datetime
+    availability_end_date = fields.Datetime(string="Availability End Date")  # Cambio a Datetime
     user_ids = fields.Many2many('res.users', string='Responsibles',  default=lambda self: [(4, self.env.user.id)] )
 
     @api.model
@@ -93,8 +95,7 @@ class Channel(models.Model):
             elif record.upload_group_ids:
                 record.can_upload = bool(record.upload_group_ids & self.env.user.groups_id)
             else:
-                record.can_upload = self.env.user.has_group('website_slides.group_website_slides_manager')
-    
+                record.can_upload = self.env.user.has_group('website_slides.group_website_slides_manager')        
     @api.depends('channel_type', 'user_ids', 'can_upload')  # Cambiar user_id -> user_ids
     @api.depends_context('uid')
     def _compute_can_publish(self):
@@ -106,14 +107,16 @@ class Channel(models.Model):
                 record.can_publish = True
             else:
                 record.can_publish = self.env.user.has_group('website_slides.group_website_slides_manager')
-    
+
     @api.model_create_multi
     def create(self, vals_list):
+     try:  
         for vals in vals_list:
             if not vals.get('channel_partner_ids') and not self.env.is_superuser():
                 vals['channel_partner_ids'] = [(0, 0, {'partner_id': self.env.user.partner_id.id})]
             if not is_html_empty(vals.get('description')) and is_html_empty(vals.get('description_short')):
                 vals['description_short'] = vals['description']
+            vals['user_ids'] = [(4, self.env.user.id)]
 
         channels = super().create(vals_list)
 
@@ -126,6 +129,15 @@ class Channel(models.Model):
                 channel._add_groups_members()
 
         return channels
+     except exceptions.ValidationError as e:
+        _logger.error("Error de validación: %s", e)
+        raise
+     except exceptions.UserError as e:
+        _logger.error("Error de usuario: %s", e)
+        raise
+     except Exception as e:
+        _logger.error("Error inesperado: %s", e)
+        raise
     
     def write(self, vals):
         if 'description' in vals and not is_html_empty(vals['description']) and self.description == self.description_short:
@@ -200,6 +212,7 @@ class Channel(models.Model):
                     )
         return activities
         
+
 class ChannelUsersRelation(models.Model):
         _inherit = 'slide.channel.partner'
 

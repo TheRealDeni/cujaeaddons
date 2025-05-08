@@ -31,6 +31,7 @@
         'data/gamification_data.xml',
         'data/cron_jobs.xml',
         'data/mail_template_data.xml',
+        'data/mail_content_template.xml',
         'views/survey_question.xml',
         #'static/description/icon.png',
         'views/slide_slide_views.xml',
@@ -71,6 +72,7 @@
      'assets': {
         'web.assets_frontend': [
           'elearning_cujae/static/src/scss/website_slides_survey.scss',
+          'elearning_cujae/static/src/scss/website_slides_list.scss',
           'elearning_cujae/static/src/js/slides_upload.js',
           'elearning_cujae/static/src/js/slides_course_extend.js',
          # 'elearning_cujae/static/src/js/slides_upload_copy.js',    

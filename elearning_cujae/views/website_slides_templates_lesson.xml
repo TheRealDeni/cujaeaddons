@@ -10,19 +10,16 @@
                         t-att-href="'/slides_survey/slide/get_exam_url?slide_id=%s' %(slide.id)"
                         target="_blank">
                         <i class="fa fa-fw fa-graduation-cap" role="img"/>
-                        <t t-if="slide.channel_id.is_member and slide.channel_id.active">Empezar examen</t>
-                        <t t-else="">Probar examen</t>
+                        <t t-if="slide.channel_id.is_member and slide.channel_id.active">Start exam</t>
+                        <t t-else="">Test exams</t>
                     </a>
                 </div>
                 <div t-if="slide.slide_category == 'exam' and channel_progress[slide.id].get('completed')" class="col mt32 mb8 text-center">
-                    <h4 class="mb-3">Felicidades, aprobaste el examen!</h4>
-                    <a role="button" class="btn btn-primary btn-lg" t-att-href="'/survey/%s/get_exam' % slide.survey_id.id">
-                        <i class="fa fa-fw fa-trophy" role="img" aria-label="Download exam" title="Download exam"/> Descargar examen
-                    </a>
+                    <h4 class="mb-3">Congratulations, you passed the exam!</h4>
                 </div>
                 <div t-if="slide.slide_category == 'exam' and slide.channel_id.can_upload" class="col mb8 d-flex justify-content-center">
                     <a class="my-4" t-att-href="'/web#id=' + str(slide.survey_id.id)  + '&amp;model=survey.survey&amp;view_type=form'">
-                        <i class="fa fa-arrow-right me-1"/>Añadir preguntas a esta encuesta
+                        <i class="fa fa-arrow-right me-1"/>Add questions to this survey
                     </a>
                 </div>
             </xpath>
@@ -38,7 +35,7 @@
                 <a t-elif="slide_completed and slide.slide_category == 'exam'"
                     class="o_wslides_undone_button btn btn-primary border text-white me-2 disabled"
                     aria-disabled="true" title="Exams you have passed cannot be marked as not done">
-                    Marcar para hacer
+                    Mark to do
                 </a>
             </xpath>
         </template>

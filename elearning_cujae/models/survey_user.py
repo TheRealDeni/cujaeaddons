@@ -5,7 +5,7 @@ from odoo.osv import expression
 class SurveyUserInput(models.Model):
     _inherit = 'survey.user_input'
     
-    slide_exam = fields.Boolean('Examen completado', compute='_compute_exam_input', store=True)
+    slide_exam = fields.Boolean('Completed exam', compute='_compute_exam_input', store=True)
     def _compute_exam_input(self):
         if self.slide_id.exam_id.exam==True:
             self.slide_exam=True
