@@ -58,29 +58,20 @@ class Event(models.Model):
         for record in self:
             if record.event_type_id.name == 'Conferencia':
                 record.submission_page_url = False
-                return {
-                    'domain': {},
-                    'warning': {},
-                    'value': {
-                        'speaker_ids': [(6, 0, [])],
-                    },
-                }
             elif record.event_type_id.name == 'Científico':
                 record.speaker_ids = [(6, 0, [])]
-                return {
-                    'domain': {},
-                    'warning': {},
-                    'value': {
-                        'submission_page_url': '',
-                    },
-                }
 
     @api.model
     def create(self, vals):
         event = super(Event, self).create(vals)
-        if event.event_type_id.name == 'Científico':
-            self._create_submission_page()
-        self._post_to_telegram(event)
+        # Manejar evento científico
+        if event.event_type_id.name == 'Científico' and not event.submission_page_url:
+            event._create_submission_page()
+        # Manejar evento de conferencia
+        elif event.event_type_id.name == 'Conferencia':
+            event._create_conference_page()
+        # Publicar en Telegram
+        event._post_to_telegram()
         return event
 
     @staticmethod
@@ -91,41 +82,50 @@ class Event(models.Model):
         text = soup.get_text(separator="\n")
         return unescape(text.strip())
 
-
-
-    def _post_to_telegram(self, event):
+    def _post_to_telegram(self):
+        """Publicar evento en Telegram"""
         telegram_bot_token = "7396987561:AAGMjZ-fvWcOFCtk_YILIWAxVLLWdumWHKY"
         telegram_chat_id = "@OdooEvent"
 
-        descripcion = self._clean_html(event.descripcion)
-        message = f'📢 ¡Nuevo evento publicado!\n\n' \
-                  f'🎉 {event.name}\n' \
-                  f'📅 Fecha: {event.date_begin.strftime("%d/%m/%Y %H:%M")}\n' \
-                  f'📝 Descripción:\n\n{descripcion}'
-
-        url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
-        data = {
-            "chat_id": telegram_chat_id,
-            "text": message,
-            "parse_mode": "Markdown",
-        }
+        descripcion = self._clean_html(self.descripcion)
+        message = (
+            f'📢 ¡Nuevo evento publicado!\n\n'
+            f'🎉 {self.name}\n'
+            f'📅 Fecha: {self.date_begin.strftime("%d/%m/%Y %H:%M")}\n'
+            f'📝 Descripción:\n{descripcion}'
+        )
 
         try:
-            response = requests.post(url, data=data)
+            response = requests.post(
+                f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage",
+                data={"chat_id": telegram_chat_id, "text": message, "parse_mode": "Markdown"}
+            )
             if response.status_code != 200:
-                raise ValueError(f"Error al publicar en Telegram: {response.text}")
+                _logger.error("Error en Telegram: %s", response.text)
         except requests.ConnectionError:
-            raise ValidationError("No se pudo publicar en Telegram porque no hay conexión a internet.")
-            event = super(Event, self).create(vals)
-            if event.event_type_id.name == 'Científico':
-                self._create_submission_page()
+            _logger.warning("Falló la conexión a Telegram")
+
 
     def _create_submission_page(self):
-        website = self.env['website'].get_current_website()
+        if self.submission_page_url:  # <--- Validación clave
+            return
+
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         page = self.env['website.page'].create({
             'name': f'Subida de Trabajos - {self.name}',
             'url': f'/event/{self.id}',
-            'website_id': website.id,
+            'website_id': base_url.id,
             'view_id': self.env.ref('event_cujae.view_submission_page').id,
         })
-        self.submission_page_url = f"{website.domain}{page.url}"
+        self.submission_page_url = f"{base_url}{page.url}"
+
+
+    def _create_conference_page(self):
+        """Crear página web con información de ponentes"""
+        website = self.env['website'].get_current_website()
+        self.env['website.page'].create({
+            'name': f'Ponentes - {self.name}',
+            'url': f'/event/{self.id}',
+            'website_id': website.id,
+            'view_id': self.env.ref('event_cujae.view_conference_speakers').id,
+        })

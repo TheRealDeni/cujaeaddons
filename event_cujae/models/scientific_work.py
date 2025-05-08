@@ -10,13 +10,13 @@ class ScientificWork(models.Model):
     event_id = fields.Many2one('event.event', string='Evento', required=True)
     attachment = fields.Binary(string='Archivo del Trabajo', filename='attachment_filename')
     attachment_filename = fields.Char(string='Nombre del Archivo')
+    reviewer_ids = fields.One2many('work.reviewer', 'work_id', string='Revisores')
     state = fields.Selection([
         ('to_review', 'Por Revisar'),
         ('reviewed', 'Revisado'),
         ('approved', 'Aprobado'),
         ('rejected', 'Rechazado'),
     ], string='Estado', default='to_review', tracking=True)
-    reviewer_ids = fields.One2many('work.reviewer', 'work_id', string='Revisores')
 
     def action_to_review(self):
         self.write({'state': 'to_review'})

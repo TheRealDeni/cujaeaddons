@@ -1,1 +1,1 @@
-from . import submission_controller
+from . import submission_controller,conference_controller

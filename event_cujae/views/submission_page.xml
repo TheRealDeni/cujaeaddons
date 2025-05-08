@@ -1,5 +1,4 @@
 <odoo>
-    <!-- Vista de la página de subida -->
     <template id="view_submission_page" name="Página de Subida de Trabajos">
         <t t-call="website.layout">
             <div class="container mt-4">
