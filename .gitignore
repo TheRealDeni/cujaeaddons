@@ -473,3 +473,5 @@ course_telegram_notifications/models/__pycache__/slide_slide.cpython-312.pyc
 elearning_cujae/models/__pycache__/slide_channel.cpython-312.pyc
 event_cujae/controllers/__pycache__/conference_controller.cpython-312.pyc
 gtm_cujae/models/__pycache__/travel_expense.cpython-312.pyc
+course_telegram_notifications/__pycache__/__init__.cpython-312.pyc
+gtm_cujae/models/__pycache__/travel_expense.cpython-312.pyc
