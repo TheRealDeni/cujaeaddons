@@ -22,6 +22,7 @@
     'data':[
         'security/ir.model.access.csv',
         'data/security.xml',
+        'data/gtm_activities.xml',
         'data/gtm_sequence.xml',
         'data/gtm_data.xml',
         'views/gtm_menu.xml',

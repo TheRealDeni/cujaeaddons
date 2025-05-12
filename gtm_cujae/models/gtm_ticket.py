@@ -4,11 +4,11 @@ class Ticket(models.Model):
     _inherit = 'helpdesk.ticket'
     _description = "Modificaciones al helpdesk ticket"
 
-    travel_expense_id = fields.Many2one("travel.expense", string="Planilla de costos de viaje", ondelete='restrict',
+    travel_expense_id = fields.Many2one("travel.expense", string="Planilla de costos de viaje", ondelete='set null',
         context="{'default_ticket_id': id}",  # Autoasigna el ticket al crear
         copy=False
     )
-    travel_form_id = fields.Many2one('travel.form', string="Formulario de Viaje")
+    travel_form_id = fields.Many2one('travel.form', string="Formulario de Viaje", ondelete='set null')
     traveler_name = fields.Char(related='travel_form_id.traveler_name.name', string="Nombre y apellidos", readonly=False)
 
     #validaciones

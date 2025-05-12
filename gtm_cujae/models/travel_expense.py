@@ -6,7 +6,7 @@ class TravelExpense(models.Model):
     _description = "Registro de la información de los costos del viaje"
 
     name = fields.Char(string="Código", readonly=True, default=lambda self: self.env['ir.sequence'].next_by_code('travel.expense'), copy=False)
-    ticket_id = fields.Many2one("helpdesk.ticket",string="Solicitud de viaje",required=True)
+    ticket_id = fields.Many2one("helpdesk.ticket", string="Solicitud de viaje", required=True)
     traveler_name = fields.Char(related="ticket_id.traveler_name", string="Nombre del solicitante", readonly=True)
     sponsor = fields.Char(string="Encargado de cubrir los gastos")
     ticket_cost = fields.Float(string="Costo del pasaje")

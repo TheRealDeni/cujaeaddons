@@ -55,7 +55,7 @@ class TravelForm(models.Model):
         'helpdesk.ticket',
         string="Ticket asociado",
         readonly=True,
-        ondelete='set null'
+        ondelete='restrict'
     )
 
     @api.onchange('traveler_name')
@@ -82,6 +82,7 @@ class TravelForm(models.Model):
                 </ul>
                 <p>Este ticket fue generado desde el formulario de viaje.</p>
             """
+
             team_id = self.env.ref('gtm_cujae.team_grupo_tramites_migratorios').id
             type_id = self.env.ref('gtm_cujae.type_tramites_migratorios').id
             category_id = self.env.ref('gtm_cujae.category_viaje_exterior').id
@@ -92,6 +93,7 @@ class TravelForm(models.Model):
                 'team_id': team_id,
                 'type_id': type_id,
                 'category_id': category_id,
+                'partner_id': form.traveler_name.id,
             })
             form.ticket_id = ticket.id  #Guardar referencia inversa
         return travel_forms
