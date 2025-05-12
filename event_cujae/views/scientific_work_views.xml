@@ -1,26 +1,26 @@
 <odoo>
     <!-- Vista de formulario para Trabajos Científicos -->
     <record id="view_scientific_work_form" model="ir.ui.view">
-        <field name="arch" type="xml">
-            <form>
-                <header>
-                    <field name="state" widget="statusbar"
-                           statusbar_visible="draft,to_review,reviewed,approved,rejected"
-                           statusbar_colors='{
+    <field name="arch" type="xml">
+        <form>
+            <header>
+                <field name="state" widget="statusbar"
+                        statusbar_visible="draft,to_review,reviewed,approved,rejected"
+                        statusbar_colors='{
                             "to_review": "orange",
                             "reviewed": "blue",
                             "approved": "green",
                             "rejected": "red"
                         }'
-                           options="{'clickable': ['approved', 'rejected']}"
-                    />
-                </header>
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="event_id"/>
-                        <field name="attachment" filename="attachment_filename"/>
-                        <field name="attachment_filename" invisible="1"/>
+                         options="{'clickable': ['approved', 'rejected']}"
+                />
+            </header>
+            <sheet>
+                <group>
+                    <field name="name" readonly="1"/>
+                    <field name="event_id" readonly="1"/>
+                    <field name="attachment" filename="attachment_filename"/>
+                    <field name="attachment_filename" invisible="1"/>
                     </group>
                     <notebook>
                         <page string="Revisores">
