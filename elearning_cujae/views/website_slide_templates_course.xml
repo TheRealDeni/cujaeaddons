@@ -128,7 +128,7 @@
                 <t t-else="">
                     <!-- Mostrar slides con preview -->
                     <div class="o_wslides_slides_list">
-                        <t t-foreach="channel.slide_ids.filtered(lambda s: s.is_preview)" t-as="slide">
+                        <t t-foreach="channel.slide_ids.filtered(lambda s: s.is_preview and not s.slide_type=='pdf' )" t-as="slide">
                             <!-- Usar la misma estructura de template de slide -->
                             <t t-call="website_slides.course_slides_list_slide">
                                 <t t-set="slide" t-value="slide"/>

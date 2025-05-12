@@ -10,7 +10,6 @@ class Channel(models.Model):
     _inherit = 'slide.channel'
 
     nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)
-    company_id = fields.Many2one('res.company', string='Company',  default=lambda self: self.env.company)
     availability_start_date = fields.Datetime(string="Availability Start Date", default=fields.Datetime.now)  # Cambio a Datetime
     availability_end_date = fields.Datetime(string="Availability End Date")  # Cambio a Datetime
     user_ids = fields.Many2many('res.users', string='Responsibles',  default=lambda self: [(4, self.env.user.id)] )
