@@ -27,31 +27,6 @@
         </field>
     </record>
 
-    <record id="view_ticket_pcc_validation_form" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.pcc.validation.form</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//sheet" position="inside">
-                <group col="4" string="Validación PCC" groups="gtm_cujae.group_pcc_validator">
-                    <field name="pcc_validated"/>
-                    <field name="validation_notes"/>
-                </group>
-            </xpath>
-        </field>
-    </record>
 
-    <record id="view_ticket_ujc_validation_form" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.ujc.validation.form</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//sheet" position="inside">
-                <group col="4" string="Validación UJC" groups="gtm_cujae.group_ujc_validator">
-                    <field name="ujc_validated"/>
-                    <field name="validation_notes"/>
-                </group>
-            </xpath>
-        </field>
-    </record>
+
 </odoo>
