@@ -3,7 +3,6 @@ from odoo import models, fields, api
 class ScientificWork(models.Model):
     _name = 'scientific.work'
     _description = 'Trabajo Científico'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Título del Trabajo', required=True)
     author_name=fields.Char(string='Nombre del autor', required=True)
