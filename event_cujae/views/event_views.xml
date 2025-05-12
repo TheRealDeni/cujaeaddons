@@ -14,18 +14,8 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <!-- Reemplazar organizer_id por organizer_faculty -->
-            <xpath expr="//field[@name='organizer_id']" position="replace">
-                <field name="organizer_faculty"/>
-            </xpath>
-
-            <!-- Reemplazar user_id por responsible_faculty con un dominio basado en organizer_faculty -->
-            <xpath expr="//field[@name='user_id']" position="replace">
-                <field name="responsible_faculty" domain="[('faculty_id', '=', organizer_faculty)]"/>
-            </xpath>
-
             <!-- Agregar el campo event_type_name (invisible) -->
-            <xpath expr="//field[@name='responsible_faculty']" position="after">
+            <xpath expr="//field[@name='date_begin']" position="after">
                 <field name="event_type_name" invisible="1"/>
             </xpath>
 
@@ -40,6 +30,7 @@
                 <field name="submission_page_url"
                        attrs="{'invisible': [('event_type_name', '!=', 'Científico')]}"/>
             </xpath>
+
         </field>
     </record>
 </odoo>

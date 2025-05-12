@@ -2,13 +2,13 @@
   <!-- Grupo Asistente -->
   <record id="group_event_assistant" model="res.groups">
     <field name="name">Asistente de Evento</field>
-    <field name="category_id" ref="base.module_category_hidden"/>
+    <field name="category_id" ref="base.module_category_marketing_events"/>
   </record>
 
   <!-- Grupo Organizador (padre de Revisor y Coordinador) -->
   <record id="group_event_organizer" model="res.groups">
     <field name="name">Organizador de Evento</field>
-    <field name="category_id" ref="base.module_category_hidden"/>
+    <field name="category_id" ref="base.module_category_marketing_events"/>
   </record>
 
   <!-- Subgrupo Revisor -->

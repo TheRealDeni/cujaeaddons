@@ -1,5 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_event,Access to Event,model_event_event,,1,1,1,1
+access_event,Access to Event,model_event_event,event_cujae.group_event_organizer,1,1,1,1
 access_scientific_work,access_scientific_work,model_scientific_work,event_cujae.group_event_assistant,1,0,1,0
-access_scientific_work_org,access_scientific_work_org,model_scientific_work,event_cujae.group_event_organizer,1,1,1,1
+access_scientific_work_org,access_scientific_work_org,model_scientific_work,event_cujae.group_event_coordinator,1,1,1,1
 access_work_reviewer,access_work_reviewer,model_work_reviewer,event_cujae.group_event_reviewer,1,1,1,1
+access_work_reviewer_coordinator,access_work_reviewer_coordinator,model_work_reviewer,event_cujae.group_event_coordinator,1,1,1,1
+

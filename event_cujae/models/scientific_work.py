@@ -15,13 +15,7 @@ class ScientificWork(models.Model):
         ('reviewed', 'Revisado'),
         ('approved', 'Aprobado'),
         ('rejected', 'Rechazado'),
-    ], string='Estado', default='to_review', tracking=True)
-
-    def action_to_review(self):
-        self.write({'state': 'to_review'})
-
-    def action_reviewed(self):
-        self.write({'state': 'reviewed'})
+    ], string='Estado', tracking=True)
 
     def action_approved(self):
         self.write({'state': 'approved'})

@@ -23,18 +23,6 @@ class Event(models.Model):
         help='Proporcione la fecha de inicio del evento.'
     )
 
-    organizer_faculty = fields.Many2one(
-        'university.faculty',
-        string='Facultad Organizadora',
-        required=True,  # Campo requerido
-        help='Seleccione la facultad organizadora del evento.'
-    )
-    responsible_faculty = fields.Many2one(
-        'faculty.responsible',
-        string="Responsable",
-        required=True,  # Campo requerido
-        help='Seleccione el responsable del evento.'
-    )
     descripcion = fields.Text(
         string="Descripción",
         help="Proporcione una descripción detallada del evento."
@@ -77,19 +65,22 @@ class Event(models.Model):
         return event
 
     def write(self, vals):
-        # 1. Guardamos el stage_id previo de cada evento
-        old_stage = {ev.id: ev.stage_id.id for ev in self}
-        # 2. Aplicamos el write normal
+        # Guardar estado anterior de cada evento
+        old_stages = {ev.id: ev.stage_id.id for ev in self}
         res = super(Event, self).write(vals)
-        # 3. Si se cambió stage_id, revisamos si es la etapa “Cancelado”
+
         if 'stage_id' in vals:
-            canceled_stage = self.env.ref('event_cujae.event_stage_canceled').id
-            # Por cada evento modificado...
+            canceled_stage_id = self.env.ref('event_cujae.event_stage_canceled').id
+            finished_stage_id = self.env.ref('event_cujae.event_stage_finalized').id
+
             for ev in self:
-                # ...que efectivamente pasó de otro stage al de cancelación
-                if old_stage.get(ev.id) != ev.stage_id.id and ev.stage_id.id == canceled_stage:
-                    # 5. Publicar en Telegram
+                old_stage = old_stages.get(ev.id)
+                new_stage = ev.stage_id.id
+
+                # Notificar solo si NO venía de "Finalizado" y fue cambiado a "Cancelado"
+                if old_stage != finished_stage_id and new_stage == canceled_stage_id:
                     ev._post_cancel_to_telegram()
+
         return res
 
     @staticmethod
@@ -150,18 +141,33 @@ class Event(models.Model):
         except requests.ConnectionError:
             _logger.warning("Falló la conexión a Telegram al notificar la cancelación")
 
-    def _create_submission_page(self):
-        if self.submission_page_url:  # <--- Validación clave
-            return
+        for registration in self.registration_ids:
+            partner = registration.partner_id
+            if partner.email:
+                mail_values = {
+                    'subject': f'Cancelación del evento: {self.name}',
+                    'body_html': f"""
+                           <p>Estimado/a {partner.name},</p>
+                           <p>Lamentamos informarle que el evento <strong>{self.name}</strong> programado para el día 
+                           <strong>{self.date_begin.strftime('%d/%m/%Y %H:%M')}</strong> ha sido cancelado.</p>
+                           <p>Disculpe las molestias ocasionadas.</p>
+                           <p>Atentamente,<br/>Equipo organizador de eventos CUJAE</p>
+                       """,
+                    'email_to': partner.email,
+                    'auto_delete': True,
+                }
+                self.env['mail.mail'].create(mail_values).send()
 
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        page = self.env['website.page'].create({
-            'name': f'Subida de Trabajos - {self.name}',
+    def _create_submission_page(self):
+        website = self.env['website'].get_current_website()
+
+        # ejemplo de creación de página o vista
+        self.env['website.page'].create({
+            'name': 'Página de Envío de Trabajos',
             'url': f'/event/submit_work/{self.id}',
-            'website_id': base_url.id,
-            'view_id': self.env.ref('event_cujae.view_submission_page').id,
+            'website_id': website.id,
+            # otros campos que necesites
         })
-        self.submission_page_url = f"{base_url}{page.url}"
 
 
     def _create_conference_page(self):

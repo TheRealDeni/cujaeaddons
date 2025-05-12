@@ -2,7 +2,7 @@
     'name': 'event_cujae',
     'author': "Marlon Gonzalez Baro",
     "category": "Tools",
-    "depends": ['base', 'event', 'website_event', 'mail', 'web'],
+    "depends": ['base', 'event', 'website_event', 'mail', 'web', "mass_mailing_event","website_event_track_live"],
 
     'data': [
         'security/event_cujae_groups.xml',
