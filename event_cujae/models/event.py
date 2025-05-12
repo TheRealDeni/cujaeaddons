@@ -31,6 +31,7 @@ class Event(models.Model):
         string='Nombre del Tipo de Evento',
         compute='_compute_event_type_name',
         store=True,
+        required=True,
     )
 
     speaker_ids = fields.Many2many('res.partner', string='Ponentes')
@@ -168,7 +169,6 @@ class Event(models.Model):
             'website_id': website.id,
             # otros campos que necesites
         })
-
 
     def _create_conference_page(self):
         """Crear página web con información de ponentes"""
