@@ -9,19 +9,20 @@
                        string="Formulario de viaje"
                        placeholder="Selecciona el formulario de viaje"/>
                 <field name="travel_expense_id" invisible="1"/>
-                <button
-                    name="action_open_expense"
-                    string="Gestionar Planilla de Costos"
-                    type="object"
-                    class="oe_highlight"
-                    attrs="{'invisible': [('travel_expense_id', '!=', False)]}"
+                <button name="action_open_expense"
+                        string="Gestionar Planilla de Costos"
+                        type="object"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('travel_expense_id', '!=', False)]}"
                 />
-                <field
-                    name="travel_expense_id"
-                    readonly="1"
-                    attrs="{'invisible': [('travel_expense_id', '=', False)]}"
-                    widget="many2one_clickable"
+                <field name="travel_expense_id"
+                       readonly="1"
+                       attrs="{'invisible': [('travel_expense_id', '=', False)]}"
+                       widget="many2one_clickable"
                 />
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('type_id', '=','gtm_cujae.type_tramites_migratorios.id')]}</attribute>
             </xpath>
         </field>
     </record>

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="group_helpdesk_decano" model="res.groups">
+        <field name="name">Decano/Jefe de Área</field>
+        <field name="category_id" ref="helpdesk_mgmt.module_helpdesk_category"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
     <!-- Grupos de seguridad para los validadores -->
     <record id="group_pcc_validator" model="res.groups">
         <field name="name">Validadores del PCC</field>
@@ -13,6 +20,19 @@
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
 
+    <record id="helpdesk_ticket_rule_internal_user" model="ir.rule">
+        <field name="name">Internal Tickets with Company</field>
+        <field name="model_id" ref="model_helpdesk_ticket"/>
+        <field name="domain_force">
+            ['|', '|',
+                ('partner_id', '=', user.partner_id.id),
+                ('message_partner_ids', '=', user.partner_id.id),
+                ('company_id', '=', user.company_id.id)
+            ]
+        </field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
     <!-- Regla para validadores del PCC (Sindicato de trabajadores) -->
     <record id="helpdesk_ticket_pcc_validation_rule" model="ir.rule">
         <field name="name">Acceso a tickets para validación del PCC</field>
@@ -21,6 +41,7 @@
             [('requires_pcc_validation', '=', True)]
         </field>
         <field name="groups" eval="[(4, ref('gtm_cujae.group_pcc_validator'))]"/>
+        <field name="global" eval="True"/>
     </record>
 
     <!-- Regla para validadores de la UJC (Sindicato de jóvenes) -->
@@ -31,5 +52,9 @@
             [('requires_ujc_validation', '=', True)]
         </field>
         <field name="groups" eval="[(4, ref('gtm_cujae.group_ujc_validator'))]"/>
+        <field name="global" eval="True"/>
     </record>
+
+
+
 </odoo>
