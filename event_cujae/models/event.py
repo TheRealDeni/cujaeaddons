@@ -76,6 +76,22 @@ class Event(models.Model):
         event._post_to_telegram()
         return event
 
+    def write(self, vals):
+        # 1. Guardamos el stage_id previo de cada evento
+        old_stage = {ev.id: ev.stage_id.id for ev in self}
+        # 2. Aplicamos el write normal
+        res = super(Event, self).write(vals)
+        # 3. Si se cambió stage_id, revisamos si es la etapa “Cancelado”
+        if 'stage_id' in vals:
+            canceled_stage = self.env.ref('event_cujae.event_stage_canceled').id
+            # Por cada evento modificado...
+            for ev in self:
+                # ...que efectivamente pasó de otro stage al de cancelación
+                if old_stage.get(ev.id) != ev.stage_id.id and ev.stage_id.id == canceled_stage:
+                    # 5. Publicar en Telegram
+                    ev._post_cancel_to_telegram()
+        return res
+
     @staticmethod
     def _clean_html(html_content):
         if not html_content:
@@ -107,6 +123,32 @@ class Event(models.Model):
         except requests.ConnectionError:
             _logger.warning("Falló la conexión a Telegram")
 
+    def _post_cancel_to_telegram(self):
+        """Publicar notificación de cancelación en Telegram"""
+        telegram_bot_token = "7396987561:AAGMjZ-fvWcOFCtk_YILIWAxVLLWdumWHKY"
+        telegram_chat_id = "@OdooEvent"
+
+        # Construir mensaje
+        message = (
+            f'⚠️ <b>Evento Cancelado</b>\n\n'
+            f'❌ {self.name}\n'
+            f'📅 Fecha original: {self.date_begin.strftime("%d/%m/%Y %H:%M")}\n\n'
+            f'Este evento ha sido cancelado. Disculpa las molestias.'
+        )
+
+        try:
+            response = requests.post(
+                f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage",
+                data={
+                    "chat_id": telegram_chat_id,
+                    "text": message,
+                    "parse_mode": "HTML",
+                }
+            )
+            if response.status_code != 200:
+                _logger.error("Error en Telegram (cancelación): %s", response.text)
+        except requests.ConnectionError:
+            _logger.warning("Falló la conexión a Telegram al notificar la cancelación")
 
     def _create_submission_page(self):
         if self.submission_page_url:  # <--- Validación clave
