@@ -15,7 +15,7 @@ class Conference(http.Controller):
         elif event.event_type_id.name == 'Científico':
             return request.redirect(f'event/submit_work/{event.id}')
         # si quieres seguir con el flujo normal
-        return super().register(event, **kw)
+        return super(self).register(event, **kw)
 
     @http.route('/conferencia/<model("event.event"):event>', type='http', auth='public', website=True)
     def conference_speakers(self, event, **kw):
