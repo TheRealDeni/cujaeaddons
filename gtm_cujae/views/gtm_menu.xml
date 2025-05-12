@@ -55,29 +55,7 @@
         action="travel_expense_action"
         sequence="5"
     />
-    <!-- Menú principal para validaciones -->
-    <menuitem
-        id="menu_gtm_validations"
-        name="Validaciones"
-        parent="gtm_main_menu"
-        sequence="15"/>
 
-    <!-- Submenús para cada tipo de validación -->
-    <menuitem
-        id="menu_gtm_pcc_validations"
-        name="Validaciones PCC"
-        parent="menu_gtm_validations"
-        action="action_pcc_validation_tickets"
-        groups="gtm_cujae.group_pcc_validator"
-        sequence="10"/>
-
-    <menuitem
-        id="menu_gtm_ujc_validations"
-        name="Validaciones UJC"
-        parent="menu_gtm_validations"
-        action="action_ujc_validation_tickets"
-        groups="gtm_cujae.group_ujc_validator"
-        sequence="20"/>
 
     <menuitem
         id="helpdesk_mgmt.helpdesk_ticket_main_menu"
