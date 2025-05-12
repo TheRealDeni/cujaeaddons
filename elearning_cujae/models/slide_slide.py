@@ -63,7 +63,7 @@ class Slide(models.Model):
         string="Ending soon",
         compute='_compute_is_ending_soon',
         store=True,
-        help="True if the content has 1 week or less of availability."
+        help="True if the content has 1 week or less of availabilityy."
     )
     ending_soon_notification_sent = fields.Boolean(
         string="Notificación enviada",
