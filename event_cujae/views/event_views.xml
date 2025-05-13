@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <!-- Agregar el campo descripción después del nombre -->
             <xpath expr="//field[@name='name']" position="after">
-                <field name="descripcion" placeholder="Escribe la descripción del evento..." style="font-size: 12px;"/>
+                <field name="description" placeholder="Escribe la descripción del evento..." style="font-size: 12px;"/>
             </xpath>
 
             <!-- Ocultar el campo date_tz -->
