@@ -17,10 +17,10 @@ class SlideSlide(models.Model):
     
         # Mensaje con tipo de contenido
         message = _("""
-            📢 Nueva publicación en el curso <b>%s</b>:
-            🏷️ <b>Título:</b> %s
-            📄 <b>Tipo de Contenido:</b> %s
-            🔗 <b>Enlace:</b> %s
+            📢 New post in the course<b>%s</b>:
+            🏷️ <b>Topic:</b> %s
+            📄 <b>Content Type:</b> %s
+            🔗 <b>Link:</b> %s
             """) % (
         channel.name,
         self.name,
