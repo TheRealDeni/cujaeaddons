@@ -57,12 +57,4 @@
     />
 
 
-    <menuitem
-        id="helpdesk_mgmt.helpdesk_ticket_main_menu"
-        name="Helpdesk"
-        sequence="16"
-        web_icon="helpdesk_mgmt,static/description/icon.png"
-        groups="helpdesk_mgmt.group_helpdesk_user_own,gtm_cujae.group_helpdesk_decano"
-    />
-
 </odoo>

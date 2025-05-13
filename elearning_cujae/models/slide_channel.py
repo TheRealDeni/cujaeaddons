@@ -1,5 +1,5 @@
 from build import _logger
-from odoo import fields, models, api
+from odoo import fields, models, api,_
 from odoo import exceptions
 from odoo.exceptions import UserError
 from datetime import datetime, timedelta

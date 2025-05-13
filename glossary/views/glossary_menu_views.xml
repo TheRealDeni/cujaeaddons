@@ -1,9 +1,9 @@
 <odoo>
      <record id="action_glossary" model="ir.actions.act_window">
-        <field name="name">Glosarios</field>
+        <field name="name">Glossaries</field>
         <field name="res_model">glossary.glossary</field>
         <field name="view_mode">tree,form</field>
     </record>
     
-    <menuitem id="menu_glossary" name="Glosarios" parent="website_slides.website_slides_menu_courses" action="action_glossary"/>
+    <menuitem id="menu_glossary" name="Glossaries" parent="website_slides.website_slides_menu_courses" action="action_glossary"/>
 </odoo>
