@@ -39,10 +39,6 @@ class SlidePartnerRelation(models.Model):
                     record.compute_survey_completed=True
                     record.slide_id.env.user.sudo().add_karma(record.slide_id.karma_for_completion)
             
-
-            
-
-            
 class Slide(models.Model):
     _inherit = 'slide.slide'
 
@@ -54,21 +50,25 @@ class Slide(models.Model):
     ], ondelete={'exam': 'set null'})
     exam_id = fields.Many2one('survey.survey', 'Exam')
     nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)
-    # small override of 'is_preview' to uncheck it automatically for slides of type 'exam'
     is_preview = fields.Boolean(compute='_compute_is_preview', readonly=False, store=True)
-    karma_for_completion=fields.Integer("Karma gained when completed",readonly=False, store=True)
-    availability_start_date = fields.Datetime(string="Availability Start Date", default=fields.Datetime.now)  # Cambio a Datetime
-    availability_end_date = fields.Datetime(string="Availability End Date")  # Cambio a Datetime
+    karma_for_completion = fields.Integer("Karma gained when completed", readonly=False, store=True)
+    availability_start_date = fields.Datetime(string="Availability Start Date", default=fields.Datetime.now)
+    availability_end_date = fields.Datetime(string="Availability End Date")
     is_ending_soon = fields.Boolean(
         string="Ending soon",
         compute='_compute_is_ending_soon',
         store=True,
-        help="True if the content has 1 week or less of availabilityy."
+        help="True if the content has 1 week or less of availability."
     )
     ending_soon_notification_sent = fields.Boolean(
         string="Notificación enviada",
         default=False,
         help="Indicates if the notification has been sent."
+    )
+    manual_override = fields.Boolean(
+        string="Publicación Manual",
+        help="Si está activo, el estado de publicación no se actualizará automáticamente basado en fechas.",
+        default=False
     )
 
     def _send_ending_soon_email(self):
@@ -78,7 +78,6 @@ class Slide(models.Model):
             raise UserError("Mail template not found.")
         
         for slide in self:
-            # Obtener partners que están suscritos al slide y NO lo han completado
             slide_partners = self.env['slide.slide.partner'].search([
                 ('slide_id', '=', slide.id),
                 ('completed', '=', False),
@@ -86,7 +85,6 @@ class Slide(models.Model):
             ])
             partners = slide_partners.mapped('partner_id')
 
-            # Enviar correo solo a estos partners
             for partner in partners:
                 template.with_context(
                     partner_name=partner.name,
@@ -97,6 +95,7 @@ class Slide(models.Model):
                 })
             
             slide.ending_soon_notification_sent = True
+
     def _get_is_ending_soon(self, end_date):
         """Helper function to determine if the end date is within a week."""
         if not end_date:
@@ -110,13 +109,12 @@ class Slide(models.Model):
         for slide in self:
             slide.is_ending_soon = self._get_is_ending_soon(slide.availability_end_date)
 
-    @api.depends('exam_id', 'survey_id')  # Incluye ambas dependencias
+    @api.depends('exam_id', 'survey_id')
     def _compute_name(self):
         super(Slide, self)._compute_name()
         for slide in self:
             if not slide.name and slide.exam_id:
                 slide.name = slide.exam_id.title
-        
 
     def _compute_mark_complete_actions(self):
         slides_exam = self.filtered(lambda slide: slide.slide_category == 'exam')
@@ -126,9 +124,7 @@ class Slide(models.Model):
             
     @api.model
     def _cron_update_ending_soon(self):
-        """Actualiza diariamente el campo is_ending_soon."""
         now = fields.Datetime.now()
-        # Buscar slides con fecha de fin en el futuro o recientemente expirados
         slides = self.search([
             '|',
             ('availability_end_date', '>', now - timedelta(days=7)),
@@ -141,79 +137,47 @@ class Slide(models.Model):
 
     @api.model
     def _cron_send_ending_soon_notifications(self):
-        """Envía notificaciones solo a usuarios no completados."""
-        slides = self.search([
-            
-            ('is_ending_soon', '=', True),
-        ])
+        slides = self.search([('is_ending_soon', '=', True)])
         slides._send_ending_soon_email()
 
     @api.model
     def _cron_check_slide_availability(self):
-        """
-        Función que se ejecuta diariamente mediante un cron job para verificar la disponibilidad de los contenidos.
-        Actualiza el campo 'is_published' basándose en las fechas de disponibilidad.
-        """
+        """Verificación de disponibilidad con sobreescritura manual"""
         today = datetime.now()
-        slides = self.search([])  # Busca todos los cursos (slide.channel)
+        slides = self.search([])
         for slide in slides:
+            if slide.manual_override:  # Ignorar slides con sobreescritura manual
+                continue
+                
+            new_status = slide.is_published
             if slide.availability_start_date and slide.availability_end_date:
-                if slide.availability_start_date <= today <= slide.availability_end_date:
-                    if not slide.is_published:
-                        slide.write({'is_published': True})
-                else:
-                    if slide.is_published:
-                        slide.write({'is_published': False})
-            elif slide.availability_start_date: #Solo fecha de inicio
-                if slide.availability_start_date <= today:
-                    if not slide.is_published:
-                        slide.write({'is_published': True})
-                else:
-                    if slide.is_published:
-                        slide.write({'is_published': False})
-            elif slide.availability_end_date: #Solo fecha de fin
-                if today <= slide.availability_end_date:
-                    if not slide.is_published:
-                        slide.write({'is_published': True})
-                else:
-                    if slide.is_published:
-                        slide.write({'is_published': False})
+                new_status = slide.availability_start_date <= today <= slide.availability_end_date
+            elif slide.availability_start_date:
+                new_status = today >= slide.availability_start_date
+            elif slide.availability_end_date:
+                new_status = today <= slide.availability_end_date
 
-    @api.onchange('availability_start_date', 'availability_end_date')
+            if slide.is_published != new_status:
+                slide.with_context(auto_publish_update=True).write({'is_published': new_status})
+
+    @api.constrains('availability_start_date', 'availability_end_date')
     def _check_availability_dates(self):
-        """
-        Validación para asegurar que la fecha de inicio no sea posterior a la fecha de fin.
-        """
         for record in self:
             if record.availability_start_date and record.availability_end_date and record.availability_start_date > record.availability_end_date:
                 raise UserError("The availability start date cannot be after the availability end date.")
-     
 
     @api.onchange('availability_start_date', 'availability_end_date')
     def _onchange_availability_dates(self):
-        """
-        Actualiza el estado de 'is_published' cuando cambian las fechas de disponibilidad directamente en el formulario.
-        """
+        if self.manual_override:
+            return  # No hacer cambios si hay sobreescritura manual
+            
         today = datetime.now()
         if self.availability_start_date and self.availability_end_date:
-            if self.availability_start_date <= today <= self.availability_end_date:
-                self.is_published = True
-            else:
-                self.is_published = False
-        elif self.availability_start_date: #Solo fecha de inicio
-            if self.availability_start_date <= today:
-                self.is_published = True
-            else:
-                self.is_published = False
-        elif self.availability_end_date: #Solo fecha de fin
-            if today <= self.availability_end_date:
-                self.is_published = True
-            else:
-                self.is_published = False
-        else:
-            # Si no hay fechas, no cambiar el estado actuall
-            pass
-     
+            self.is_published = self.availability_start_date <= today <= self.availability_end_date
+        elif self.availability_start_date:
+            self.is_published = today >= self.availability_start_date
+        elif self.availability_end_date:
+            self.is_published = today <= self.availability_end_date
 
     @api.depends('slide_category')
     def _compute_is_preview(self):
@@ -237,8 +201,17 @@ class Slide(models.Model):
         return slides
 
     def write(self, values):
+        # Resetear sobreescritura manual si cambian las fechas
+        if 'availability_start_date' in values or 'availability_end_date' in values:
+            values['manual_override'] = False
+            
+        # Activar sobreescritura manual si se cambia manualmente is_published
+        if 'is_published' in values and not self.env.context.get('auto_publish_update'):
+            values['manual_override'] = True
+
         old_surveys = self.mapped('exam_id')
         result = super(Slide, self).write(values)
+        
         if 'exam_id' in values:
             self._ensure_challenge_category(old_surveys=old_surveys - self.mapped('exam_id'))
         if 'availability_end_date' in values:
@@ -252,9 +225,6 @@ class Slide(models.Model):
         return result
 
     def _ensure_challenge_category(self, old_surveys=None, unlink=False):
-        """ If a slide is linked to a survey that gives a badge, the challenge category of this badge must be
-        set to 'slides' in order to appear under the exam badge list on ranks_badges page.
-        If the survey is unlinked from the slide, the challenge category must be reset to 'exam'"""
         if old_surveys:
             old_exam_challenges = old_surveys.mapped('certification_badge_id').challenge_ids
             old_exam_challenges.write({'challenge_category': 'certification'})
@@ -262,10 +232,9 @@ class Slide(models.Model):
             exam_challenges = self.survey_id.certification_badge_id.challenge_ids
             exam_challenges.write({'challenge_category': 'slides'})
 
-    def _generate_exam_url(self,slide):        
+    def _generate_exam_url(self, slide):        
         exam_urls = {}
-
-        for slide in slide.filtered(lambda slide: slide.slide_category == 'exam' and slide.exam_id or slide.survey_id ):            
+        for slide in slide.filtered(lambda s: s.slide_category == 'exam' and s.exam_id or s.survey_id):
             if slide.channel_id.is_member:
                 user_membership_id_sudo = slide.user_membership_id.sudo()
                 if user_membership_id_sudo.user_input_ids:
