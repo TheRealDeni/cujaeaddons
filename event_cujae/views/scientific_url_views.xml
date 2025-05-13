@@ -1,0 +1,20 @@
+<odoo>
+  <data>
+    <template id="scientific_url_views" name="Página de Subida de Trabajos">
+      <t t-call="website.layout">
+        <div class="container mt-5">
+          <h1>Subir Trabajo para:</h1>
+              <p>
+                <strong>Fecha de inicio:</strong>
+                <span t-field="event.date_begin"
+                      t-options='{"format": "dd/MM/yyyy HH:mm"}'/>
+              </p>
+            <t t-if="event.descripcion">
+                <div t-field="event.descripcion" class="mb-4"/>
+              </t>
+          <p>URL de envío: <a t-att-href="event.submission_page_url"/></p>
+        </div>
+      </t>
+    </template>
+  </data>
+</odoo>

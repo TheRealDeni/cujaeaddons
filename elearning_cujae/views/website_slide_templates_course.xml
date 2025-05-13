@@ -20,6 +20,7 @@
                 <xpath expr="//div[@t-if='category_id']/i" position="replace">
                     <i class="fa fa-minus"/>            
                 </xpath>
+                
                 <ul class="list-unstyled pb-1 border-top" position="replace">
                     <t t-if="category_id">
                         <div class="collapse show" t-att-id="'slide-%s' % (category_id)">
@@ -76,6 +77,11 @@
             <xpath expr="//a[hasclass('o_wslides_js_slides_list_slide_link')]" position="attributes">
                 <attribute name="t-attf-href">#{'/slides_survey/slide/get_exam_url?slide_id=%s' %(slide.id) if slide.slide_category == 'exam' and slide.channel_id.total_slides == 1 else '/slides/slide/%s' %(slug(slide))}</attribute>
             </xpath>
+            <xpath expr="//a[@name='o_wslides_list_slide_add_quizz']" position="before">
+                    <t t-if="slide.is_ending_soon">
+                        <span class="badge bh-badge-warning fw-normal px-2 py-1 m-1"><span>Unpublishes soon</span></span>
+                    </t>                    
+            </xpath>
             <xpath expr="//a[@name='o_wslides_list_slide_add_quizz']" position="attributes">
                 <attribute name="t-if">channel.can_upload and not slide.question_ids and slide.slide_category != 'exam'</attribute>
             </xpath>
@@ -122,7 +128,7 @@
                 <t t-else="">
                     <!-- Mostrar slides con preview -->
                     <div class="o_wslides_slides_list">
-                        <t t-foreach="channel.slide_ids.filtered(lambda s: s.is_preview)" t-as="slide">
+                        <t t-foreach="channel.slide_ids.filtered(lambda s: s.is_preview and not s.slide_type=='pdf' )" t-as="slide">
                             <!-- Usar la misma estructura de template de slide -->
                             <t t-call="website_slides.course_slides_list_slide">
                                 <t t-set="slide" t-value="slide"/>
@@ -137,7 +143,7 @@
                     <!-- Mensaje de unirse al curso -->
                     <div class="alert alert-info mt-4">
                         <i class="fa fa-info-circle me-2"/>
-                        Debes unirte al curso para acceder a todos los materiales de formación.
+                        You must join the course to see its materials.
                     </div>
                 </t>
             </xpath>

@@ -5,7 +5,7 @@
         <field name="name">Solicitudes de viaje</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">travel.form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,search</field>
     </record>
 <!-- Action -->
     <record id="travel_expense_action" model="ir.actions.act_window">
@@ -13,6 +13,24 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">travel.expense</field>
         <field name="view_mode">tree,form</field>
+    </record>
+    <!-- Actions para validadores -->
+    <record id="action_pcc_validation_tickets" model="ir.actions.act_window">
+        <field name="name">Tickets por Validar (PCC)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[('requires_pcc_validation', '=', True), ('pcc_validated', '=', False)]</field>
+        <field name="context">{'default_requires_pcc_validation': True}</field>
+    </record>
+
+    <record id="action_ujc_validation_tickets" model="ir.actions.act_window">
+        <field name="name">Tickets por Validar (UJC)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[('requires_ujc_validation', '=', True), ('ujc_validated', '=', False)]</field>
+        <field name="context">{'default_requires_ujc_validation': True}</field>
     </record>
 
 
@@ -38,5 +56,13 @@
         sequence="5"
     />
 
+
+    <menuitem
+        id="helpdesk_mgmt.helpdesk_ticket_main_menu"
+        name="Helpdesk"
+        sequence="16"
+        web_icon="helpdesk_mgmt,static/description/icon.png"
+        groups="helpdesk_mgmt.group_helpdesk_user_own,gtm_cujae.group_helpdesk_decano"
+    />
 
 </odoo>

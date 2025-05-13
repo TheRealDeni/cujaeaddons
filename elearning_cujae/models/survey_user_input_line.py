@@ -6,7 +6,7 @@ class SurveyUserInputLine(models.Model):
     max_score= fields.Float(related='question_id.max_score', string='Question score')
 
     answer_type = fields.Selection(
-        selection_add=[('upload_file', 'Subir archivo')],
+        selection_add=[('upload_file', 'Upload file')],
         help="The type of answer for this question (upload_file if the user "
              "is uploading a file).")
     value_file_data_ids = fields.Many2many('ir.attachment',
@@ -31,7 +31,7 @@ class SurveyUserInputLine(models.Model):
         for line in self:
             if line.question_id and line.answer_score > line.question_id.max_score:
                 raise ValidationError(
-                    "El puntaje de la respuesta no puede ser mayor que la puntuación máxima de la pregunta (%s)." 
+                    "The answer score cannot be higher than maximum score (%s)." 
                     % line.question_id.max_score  # <--- Aquí está la corrección
                 )
 

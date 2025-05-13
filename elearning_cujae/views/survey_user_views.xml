@@ -110,9 +110,46 @@
     </record>
 
 
+    <record id="custom_survey_user_input_view_search" model="ir.ui.view">
+            <field name="name">survey.user_input.view.search.custom</field>
+            <field name="model">survey.user_input</field>
+            <field name="inherit_id" ref="survey.survey_user_input_view_search"/>
+            <field name="priority" eval="20"/>
 
+            <field name="arch" type="xml">
+                <!-- Eliminar agrupamientos originales -->
+                <xpath expr="//group[@expand='0']" position="replace">
+                    <!-- Nuevos agrupamientos -->
+                    <group expand="0" string="Group By">
+                        <filter name="custom_group_survey" string="Encuesta" context="{'group_by': 'survey_id'}"/>
+                        <filter name="custom_group_partner" string="Contacto" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </xpath>
 
-
+                <!-- Añadir nuevo filtro combinado -->
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <filter name="custom_is_in_channel" 
+                            string="Is in channel" 
+                            domain="[('slide_id','!=',False)]"/>
+                    <separator/>        
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <filter name="custom_is_exam" 
+                            string="Is an exam" 
+                            domain="[('is_exam','=',True)]"/>
+                    <separator/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <filter name="custom_is_certification" 
+                            string="Is a certification" 
+                            domain="[('is_certification','=',True)]"/>
+                    <separator/>
+                </xpath>                
+            </field>
+    </record>
+    <record id="survey.action_survey_user_input" model="ir.actions.act_window">
+        <field name="context">{'search_default_custom_group_survey': True, 'search_default_custom_group_partner': True, 'search_default_custom_completed': True, 'search_default_custom_is_in_channel': True}</field>
+    </record>
 </odoo>
 
            

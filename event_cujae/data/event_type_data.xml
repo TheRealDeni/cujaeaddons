@@ -1,0 +1,32 @@
+<odoo>
+  <data noupdate="0">
+
+    <record id="event_type_conferencia" model="event.type">
+      <field name="name">Conferencia</field>
+    </record>
+
+    <record id="event_type_cientifico" model="event.type">
+      <field name="name">Científico</field>
+    </record>
+
+    <record id="event_type_deportivo" model="event.type">
+      <field name="name">Deportivo</field>
+    </record>
+
+      <record id="event_type_cultural" model="event.type">
+      <field name="name">Cultural</field>
+    </record>
+
+        <record id="event_type_cultural" model="event.type">
+      <field name="name">Cultural</field>
+    </record>
+
+      <record id="event_type_exhibicion" model="event.type">
+      <field name="name">Exhibición</field>
+    </record>
+
+      <record id="event_type_formacion" model="event.type">
+      <field name="name">Formación</field>
+    </record>
+  </data>
+</odoo>

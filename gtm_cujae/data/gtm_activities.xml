@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record id="activity_type_pcc_validation" model="mail.activity.type">
+            <field name="name">Validación por PCC</field>
+            <field name="summary">Revisión por parte del PCC</field>
+            <field name="icon">fa-code</field>
+            <field name="sequence">10</field>
+            <field name="res_model">helpdesk.ticket</field>
+        </record>
+
+        <record id="activity_type_ujc_validation" model="mail.activity.type">
+            <field name="name">Validación por UJC</field>
+            <field name="summary">Revisión por parte de la UJC</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">20</field>
+            <field name="res_model">helpdesk.ticket</field>
+        </record>
+
+        <record id="activity_type_verbal_note_MES" model="mail.activity.type">
+            <field name="name">Nota verbal del MES</field>
+            <field name="summary">Confección de la nota verbal</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">30</field>
+            <field name="res_model">helpdesk.ticket</field>
+        </record>
+
+        <record id="activity_type_verbal_note_MINREX" model="mail.activity.type">
+            <field name="name">Nota verbal del MINREX</field>
+            <field name="summary">Solicitud de la nota verbal</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">40</field>
+            <field name="res_model">helpdesk.ticket</field>
+        </record>
+    </data>
+</odoo>

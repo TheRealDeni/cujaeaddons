@@ -57,12 +57,12 @@
                 <br/>
                 <div id="fileList" class="o_survey_upload_list"/>
                 <t t-if="question.upload_multiple_file == False">
-                    <div class="o_survey_upload_note">Nota: Solamente puedes subir uno
+                    <div class="o_survey_upload_note">Note: You can only upload 1
                         file.
                     </div>
                 </t>
                 <t t-if="question.upload_multiple_file == True">
-                    <div class="o_survey_upload_note">Nota: Puedes subir varios archivos
+                    <div class="o_survey_upload_note">Note: You can  upload multiple files
                     </div>
                 </t>
             </div>

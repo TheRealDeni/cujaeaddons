@@ -1,146 +1,139 @@
+from build import _logger
 from odoo import fields, models, api
+from odoo import exceptions
 from odoo.exceptions import UserError
 from datetime import datetime, timedelta
 from odoo.tools import is_html_empty
 
-
 class Channel(models.Model):
     _inherit = 'slide.channel'
 
-    nbr_exam = fields.Integer("Número de exámenes", compute='_compute_slides_statistics', store=True)
-    company_id = fields.Many2one('res.company', string='Company',  default=lambda self: self.env.company)
-    availability_start_date = fields.Datetime(string="Fecha de Inicio de Disponibilidad", default=fields.Datetime.now)  # Cambio a Datetime
-    availability_end_date = fields.Datetime(string="Fecha de Fin de Disponibilidad")  # Cambio a Datetime
-    user_ids = fields.Many2many('res.users', string='Responsibles',  default=lambda self: [(4, self.env.user.id)] )
+    nbr_exam = fields.Integer("Number of exams", compute='_compute_slides_statistics', store=True)
+    availability_start_date = fields.Datetime(string="Availability Start Date", default=fields.Datetime.now)
+    availability_end_date = fields.Datetime(string="Availability End Date")
+    user_ids = fields.Many2many('res.users', string='Responsibles', default=lambda self: [(4, self.env.user.id)])
+    manual_override = fields.Boolean(
+        string="Publicación Manual",
+        help="Si está activo, el estado de publicación no se actualizará automáticamente basado en fechas.",
+        default=False
+    )
 
     @api.model
     def _cron_check_course_availability(self):
-        """
-        Función que se ejecuta diariamente mediante un cron job para verificar la disponibilidad de los cursos.
-        Actualiza el campo 'is_published' basándose en las fechas de disponibilidad.
-        """
-        now = datetime.now()  # Usamos datetime.now() para incluir la hora actual
-        courses = self.search([])  # Busca todos los cursos (slide.channel)
+        """ Verificación de disponibilidad respetando sobreescritura manual """
+        now = datetime.now()
+        courses = self.search([])
         for course in courses:
+            if course.manual_override:  # Ignorar cursos con sobreescritura manual
+                continue
+                
+            new_status = course.is_published
             if course.availability_start_date and course.availability_end_date:
-                if course.availability_start_date <= now <= course.availability_end_date:
-                    if not course.is_published:
-                        course.write({'is_published': True})
-                else:
-                    if course.is_published:
-                        course.write({'is_published': False})
-            elif course.availability_start_date: #Solo fecha de inicio
-                if course.availability_start_date <= now:
-                    if not course.is_published:
-                        course.write({'is_published': True})
-                else:
-                    if course.is_published:
-                        course.write({'is_published': False})
-            elif course.availability_end_date: #Solo fecha de fin
-                if now <= course.availability_end_date:
-                    if not course.is_published:
-                        course.write({'is_published': True})
-                else:
-                    if course.is_published:
-                        course.write({'is_published': False})
+                new_status = course.availability_start_date <= now <= course.availability_end_date
+            elif course.availability_start_date:
+                new_status = now >= course.availability_start_date
+            elif course.availability_end_date:
+                new_status = now <= course.availability_end_date
 
+            if course.is_published != new_status:
+                course.with_context(auto_publish_update=True).write({'is_published': new_status})
 
     @api.constrains('availability_start_date', 'availability_end_date')
     def _check_availability_dates(self):
-        """
-        Validación para asegurar que la fecha de inicio no sea posterior a la fecha de fin.
-        """
         for record in self:
             if record.availability_start_date and record.availability_end_date and record.availability_start_date > record.availability_end_date:
                 raise UserError("La fecha de inicio de disponibilidad no puede ser posterior a la fecha de fin.")
 
-
     @api.onchange('availability_start_date', 'availability_end_date')
     def _onchange_availability_dates(self):
-        """
-        Actualiza el estado de 'is_published' cuando cambian las fechas de disponibilidad directamente en el formulario.
-        """
-        now = datetime.now() # Usamos datetime.now() para incluir la hora actual
+        if self.manual_override:
+            return  # No hacer cambios si hay sobreescritura manual
+            
+        now = datetime.now()
         if self.availability_start_date and self.availability_end_date:
-            if self.availability_start_date <= now <= self.availability_end_date:
-                self.is_published = True
-            else:
-                self.is_published = False
-        elif self.availability_start_date: #Solo fecha de inicio
-            if self.availability_start_date <= now:
-                self.is_published = True
-            else:
-                self.is_published = False
-        elif self.availability_end_date: #Solo fecha de fin
-            if now <= self.availability_end_date:
-                self.is_published = True
-            else:
-                self.is_published = False
-        else:
-            # Si no hay fechas, no cambiar el estado actual
-            pass
+            self.is_published = self.availability_start_date <= now <= self.availability_end_date
+        elif self.availability_start_date:
+            self.is_published = now >= self.availability_start_date
+        elif self.availability_end_date:
+            self.is_published = now <= self.availability_end_date
 
-
-    #cambios a user id
-    
-    @api.depends('upload_group_ids', 'user_ids')  # Cambiar user_id -> user_ids
+    # Campos computados y métodos de permisos
+    @api.depends('upload_group_ids', 'user_ids')
     @api.depends_context('uid')
     def _compute_can_upload(self):
         for record in self:
-            # Verificar si el usuario actual está en user_ids o es superuser
             if self.env.user in record.user_ids or self.env.is_superuser():
                 record.can_upload = True
             elif record.upload_group_ids:
                 record.can_upload = bool(record.upload_group_ids & self.env.user.groups_id)
             else:
                 record.can_upload = self.env.user.has_group('website_slides.group_website_slides_manager')
-    
-    @api.depends('channel_type', 'user_ids', 'can_upload')  # Cambiar user_id -> user_ids
+                record.can_upload = self.env.user.has_group('website_slides.group_website_slides_officer')
+        super(Channel,self)._compute_can_upload()
+
+    @api.depends('channel_type', 'user_ids', 'can_upload')
     @api.depends_context('uid')
     def _compute_can_publish(self):
         for record in self:
             if not record.can_upload:
                 record.can_publish = False
-            # Verificar si el usuario actual está en user_ids o es superuser
             elif self.env.user in record.user_ids or self.env.is_superuser():
                 record.can_publish = True
             else:
                 record.can_publish = self.env.user.has_group('website_slides.group_website_slides_manager')
-    
+                record.can_upload = self.env.user.has_group('website_slides.group_website_slides_officer')
+        super(Channel,self)._compute_can_publish()
+
     @api.model_create_multi
     def create(self, vals_list):
-        for vals in vals_list:
-            if not vals.get('channel_partner_ids') and not self.env.is_superuser():
-                vals['channel_partner_ids'] = [(0, 0, {'partner_id': self.env.user.partner_id.id})]
-            if not is_html_empty(vals.get('description')) and is_html_empty(vals.get('description_short')):
-                vals['description_short'] = vals['description']
+        
+        try:  
+            for vals in vals_list:
+                if not vals.get('channel_partner_ids') and not self.env.is_superuser():
+                    vals['channel_partner_ids'] = [(0, 0, {'partner_id': self.env.user.partner_id.id})]
+                if not is_html_empty(vals.get('description')) and is_html_empty(vals.get('description_short')):
+                    vals['description_short'] = vals['description']
+                vals['user_ids'] = [(4, self.env.user.id)]
 
-        channels = super().create(vals_list)
+            channels = super(Channel, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
 
-        for channel in channels:
-            # Agregar todos los usuarios en user_ids como miembros
-            if channel.user_ids:  # <--- Cambiar user_id -> user_ids
-                partners = channel.user_ids.mapped('partner_id')
-                channel._action_add_members(partners)
-            if channel.enroll_group_ids:
-                channel._add_groups_members()
+            for channel in channels:
+                if channel.user_ids:
+                    partners = channel.user_ids.mapped('partner_id')
+                    channel._action_add_members(partners)
+                if channel.enroll_group_ids:
+                    channel._add_groups_members()
 
-        return channels
-    
+            return channels
+        except exceptions.ValidationError as e:
+            _logger.error("Error de validación: %s", e)
+            raise
+        except exceptions.UserError as e:
+            _logger.error("Error de usuario: %s", e)
+            raise
+        except Exception as e:
+            _logger.error("Error inesperado: %s", e)
+            raise
+
     def write(self, vals):
+        # Resetear sobreescritura manual si cambian las fechas
+        if 'availability_start_date' in vals or 'availability_end_date' in vals:
+            vals['manual_override'] = False
+            
+        # Activar sobreescritura manual si se cambia manualmente is_published
+        if 'is_published' in vals and not self.env.context.get('auto_publish_update'):
+            vals['manual_override'] = True
+
         if 'description' in vals and not is_html_empty(vals['description']) and self.description == self.description_short:
             vals['description_short'] = vals['description']
 
         res = super().write(vals)
 
-        # Manejar cambios en user_ids (Many2many)
         if 'user_ids' in vals:
-            # Obtener todos los partners de los nuevos usuarios
-            new_users = self.user_ids - self._origin.user_ids  # Usuarios agregados
+            new_users = self.user_ids - self._origin.user_ids
             partners = new_users.mapped('partner_id')
             self._action_add_members(partners)
             
-            # Reagendar actividades para todos los user_ids
             for user in self.user_ids:
                 self.activity_reschedule(
                     ['website_slides.mail_activity_data_access_request'], 
@@ -151,33 +144,32 @@ class Channel(models.Model):
             self._add_groups_members()
 
         return res
-    
+
+    # Resto de métodos sin cambios
     def action_grant_access(self, partner_id):
         partner = self.env['res.partner'].browse(partner_id).exists()
         if partner and self._action_add_members(partner):
-            # Buscar actividades para todos los user_ids
             activities = self.activity_search(
                 ['website_slides.mail_activity_data_access_request'],
                 additional_domain=[
                     ('request_partner_id', '=', partner.id),
-                    ('user_id', 'in', self.user_ids.ids)  # <--- Filtrar por todos los responsables
+                    ('user_id', 'in', self.user_ids.ids)
                 ]
             )
             activities.action_feedback(feedback=_('Access Granted'))
-    
+
     def action_refuse_access(self, partner_id):
         partner = self.env['res.partner'].browse(partner_id).exists()
         if partner:
-            # Buscar actividades para todos los responsables (user_ids)
             activities = self.activity_search(
                 ['website_slides.mail_activity_data_access_request'],
                 additional_domain=[
                     ('request_partner_id', '=', partner.id),
-                    ('user_id', 'in', self.user_ids.ids)  # <--- Filtrar por todos los responsables
-            ]
-        )
-        activities.action_feedback(feedback=_('Access Refused'))
-    
+                    ('user_id', 'in', self.user_ids.ids)
+                ]
+            )
+            activities.action_feedback(feedback=_('Access Refused'))
+
     def _action_request_access(self, partner):
         activities = self.env['mail.activity']
         requested_cids = self.sudo().activity_search(
@@ -186,20 +178,19 @@ class Channel(models.Model):
         ).mapped('res_id')
         
         for channel in self:
-            if channel.id not in requested_cids and channel.user_ids:  # <--- Cambiar user_id -> user_ids
-                # Crear una actividad para cada responsable
+            if channel.id not in requested_cids and channel.user_ids:
                 for user in channel.user_ids:
                     activities += channel.activity_schedule(
                         'website_slides.mail_activity_data_access_request',
-                        note=_('<b>%s</b> is requesting access to this course. Responsible: %s') % (  # Nota mejorada
+                        note=_('<b>%s</b> is requesting access to this course. Responsible: %s') % (
                             partner.name, 
                             ", ".join(channel.user_ids.mapped('name'))
                         ),
-                        user_id=user.id,  # <--- Asignar a cada responsable
+                        user_id=user.id,
                         request_partner_id=partner.id
                     )
         return activities
-        
+
 class ChannelUsersRelation(models.Model):
         _inherit = 'slide.channel.partner'
 

@@ -11,27 +11,25 @@ _logger = logging.getLogger(__name__)
 class Event(models.Model):
     _inherit = 'event.event'
 
-    organizer_faculty = fields.Many2one(
-        'university.faculty',
-        string='Facultad Organizadora',
-        required=True,
-        help='Seleccione la facultad organizadora del evento.'
+
+    name = fields.Char(
+        string='Nombre del Evento',
+        required=True,  # Campo requerido
+        help='Proporcione el nombre del evento.'
     )
-    responsible_faculty = fields.Many2one(
-        'faculty.responsible',
-        string="Responsable",
-        required=True,
-        help='Seleccione el responsable del evento.'
+    date_begin = fields.Datetime(
+        string='Fecha de Inicio',
+        required=True,  # Campo requerido
+        help='Proporcione la fecha de inicio del evento.'
     )
+
     descripcion = fields.Text(
         string="Descripción",
         help="Proporcione una descripción detallada del evento."
     )
     event_type_name = fields.Char(
         string='Nombre del Tipo de Evento',
-        compute='_compute_event_type_name',
-        store=True,
-    )
+        related= 'event_type_id.name', store=True)
 
     speaker_ids = fields.Many2many('res.partner', string='Ponentes')
     submission_page_url = fields.Char(string='URL para subir trabajos')
@@ -46,30 +44,46 @@ class Event(models.Model):
         for record in self:
             if record.event_type_id.name == 'Conferencia':
                 record.submission_page_url = False
-                return {
-                    'domain': {},
-                    'warning': {},
-                    'value': {
-                        'speaker_ids': [(6, 0, [])],
-                    },
-                }
             elif record.event_type_id.name == 'Científico':
                 record.speaker_ids = [(6, 0, [])]
-                return {
-                    'domain': {},
-                    'warning': {},
-                    'value': {
-                        'submission_page_url': '',
-                    },
-                }
 
     @api.model
     def create(self, vals):
         event = super(Event, self).create(vals)
-        if event.event_type_id.name == 'Científico':
+        # Manejar evento científico
+        if event.submission_page_url:
+            self._create_scientific_url()
+        elif event.event_type_id.name == 'Científico' and not event.submission_page_url:
             self._create_submission_page()
-        self._post_to_telegram(event)
+        # Manejar evento de conferencia
+        elif event.event_type_id.name == 'Conferencia':
+            self._create_conference_page()
+        # Publicar en Telegram
+        event._post_to_telegram()
         return event
+
+    def write(self, vals):
+        # Guardar estado anterior de cada evento
+        old_stages = {ev.id: ev.stage_id.id for ev in self}
+        res = super(Event, self).write(vals)
+
+        if 'stage_id' in vals:
+ 
+            canceled_stage_id = self.env['event.stage'].search([
+                ('name', '=', 'Cancelado'),
+            ]).id
+            finished_stage_id = self.env['event.stage'].search([
+                ('name', '=', 'Finalizado'),
+            ]).id
+            for ev in self:
+                old_stage = old_stages.get(ev.id)
+                new_stage = ev.stage_id.id
+
+                # Notificar solo si NO venía de "Finalizado" y fue cambiado a "Cancelado"
+                if old_stage != finished_stage_id and new_stage == canceled_stage_id:
+                    ev._post_cancel_to_telegram()
+
+        return res
 
     @staticmethod
     def _clean_html(html_content):
@@ -79,41 +93,100 @@ class Event(models.Model):
         text = soup.get_text(separator="\n")
         return unescape(text.strip())
 
-
-
-    def _post_to_telegram(self, event):
+    def _post_to_telegram(self):
+        """Publicar evento en Telegram"""
         telegram_bot_token = "7396987561:AAGMjZ-fvWcOFCtk_YILIWAxVLLWdumWHKY"
         telegram_chat_id = "@OdooEvent"
 
-        descripcion = self._clean_html(event.descripcion)
-        message = f'📢 ¡Nuevo evento publicado!\n\n' \
-                  f'🎉 {event.name}\n' \
-                  f'📅 Fecha: {event.date_begin.strftime("%d/%m/%Y %H:%M")}\n' \
-                  f'📝 Descripción:\n\n{descripcion}'
-
-        url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
-        data = {
-            "chat_id": telegram_chat_id,
-            "text": message,
-            "parse_mode": "Markdown",
-        }
+        descripcion = self._clean_html(self.descripcion)
+        message = (
+            f'📢 ¡Nuevo evento publicado!\n\n'
+            f'🎉 {self.name}\n'
+            f'📅 Fecha: {self.date_begin.strftime("%d/%m/%Y %H:%M")}\n'
+            f'📝 Descripción:\n{descripcion}'
+        )
 
         try:
-            response = requests.post(url, data=data)
+            response = requests.post(
+                f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage",
+                data={"chat_id": telegram_chat_id, "text": message, "parse_mode": "Markdown"}
+            )
             if response.status_code != 200:
-                raise ValueError(f"Error al publicar en Telegram: {response.text}")
+                _logger.error("Error en Telegram: %s", response.text)
         except requests.ConnectionError:
-            raise ValidationError("No se pudo publicar en Telegram porque no hay conexión a internet.")
-            event = super(Event, self).create(vals)
-            if event.event_type_id.name == 'Científico':
-                self._create_submission_page()
+            _logger.warning("Falló la conexión a Telegram")
+
+    def _post_cancel_to_telegram(self):
+        """Publicar notificación de cancelación en Telegram"""
+        telegram_bot_token = "7396987561:AAGMjZ-fvWcOFCtk_YILIWAxVLLWdumWHKY"
+        telegram_chat_id = "@OdooEvent"
+
+        # Construir mensaje
+        message = (
+            f'⚠️ <b>Evento Cancelado</b>\n\n'
+            f'❌ {self.name}\n'
+            f'📅 Fecha original: {self.date_begin.strftime("%d/%m/%Y %H:%M")}\n\n'
+            f'Este evento ha sido cancelado. Disculpa las molestias.'
+        )
+
+        try:
+            response = requests.post(
+                f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage",
+                data={
+                    "chat_id": telegram_chat_id,
+                    "text": message,
+                    "parse_mode": "HTML",
+                }
+            )
+            if response.status_code != 200:
+                _logger.error("Error en Telegram (cancelación): %s", response.text)
+        except requests.ConnectionError:
+            _logger.warning("Falló la conexión a Telegram al notificar la cancelación")
+
+        for registration in self.registration_ids:
+            partner = registration.partner_id
+            if partner.email:
+                mail_values = {
+                    'subject': f'Cancelación del evento: {self.name}',
+                    'body_html': f"""
+                           <p>Estimado/a {partner.name},</p>
+                           <p>Lamentamos informarle que el evento <strong>{self.name}</strong> programado para el día 
+                           <strong>{self.date_begin.strftime('%d/%m/%Y %H:%M')}</strong> ha sido cancelado.</p>
+                           <p>Disculpe las molestias ocasionadas.</p>
+                           <p>Atentamente,<br/>Equipo organizador de eventos CUJAE</p>
+                       """,
+                    'email_to': partner.email,
+                    'auto_delete': True,
+                }
+                self.env['mail.mail'].create(mail_values).send()
 
     def _create_submission_page(self):
         website = self.env['website'].get_current_website()
-        page = self.env['website.page'].create({
-            'name': f'Subida de Trabajos - {self.name}',
-            'url': f'/event/{self.id}',
+
+        # ejemplo de creación de página o vista
+        self.env['website.page'].create({
+            'name': 'Página de Envío de Trabajos',
+            'url': f'/event/submit_work/{self.id}',
             'website_id': website.id,
-            'view_id': self.env.ref('event_cujae.view_submission_page').id,
+            # otros campos que necesites
         })
-        self.submission_page_url = f"{website.domain}{page.url}"
+
+    def _create_conference_page(self):
+        """Crear página web con información de ponentes"""
+        website = self.env['website'].get_current_website()
+        self.env['website.page'].create({
+            'name': f'Ponentes - {self.name}',
+            'url': f'/conferencia/{self.id}',
+            'website_id': website.id,
+            'view_id': self.env.ref('event_cujae.view_conference_speakers').id,
+        })
+
+    def _create_scientific_url(self):
+        """Crear página web con información de ponentes"""
+        website = self.env['website'].get_current_website()
+        self.env['website.page'].create({
+            'name': f'URL - {self.name}',
+            'url': f'/cientifico/{self.id}',
+            'website_id': website.id,
+            'view_id': self.env.ref('event_cujae.scientific_url_views').id,
+        })

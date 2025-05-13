@@ -7,18 +7,18 @@ class SurveyQuestion(models.Model):
     valid_answer_ids = fields.One2many(
         'survey.question.valid.answer',  # Nuevo modelo para respuestas válidas
         'question_id',
-        string='Respuestas Válidas',
-        help="Lista de respuestas aceptables (ignorando mayúsculas/espacios)."
+        string='Valid answers',
+        
     )
     max_score = fields.Float(
-        string='Puntuación Máxima',
+        string='Max score',
         compute='_compute_question_max_score',
         store=True  # Opcional: Almacena el valor en la BD para mejor rendimiento
     )
     question_type = fields.Selection(
-        selection_add=[('upload_file', 'Subir archivo')],
+        selection_add=[('upload_file', 'Upload file')],
         help='Select the type of question to create.')
-    upload_multiple_file = fields.Boolean(string='Subir múltiples archivos',
+    upload_multiple_file = fields.Boolean(string='Upload multiple files',
                                           help='Check this box if you want to '
                                                'allow users to upload '
                                                'multiple files')

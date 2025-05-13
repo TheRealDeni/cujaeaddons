@@ -1,0 +1,56 @@
+<odoo>
+  <data>
+    <template id="view_conference_speakers" name="Conferencia – Ponentes" >
+      <t t-call="website.layout">
+        <div class="container mt-5">
+          <h1 t-field="event.name" class="mb-4"/>
+          <div class="row">
+            <div class="col-md-8">
+              <h3>Detalles del Evento</h3>
+              <p>
+                <strong>Fecha de inicio:</strong>
+                <span t-field="event.date_begin"
+                      t-options='{"format": "dd/MM/yyyy HH:mm"}'/>
+              </p>
+              <t t-if="event.descripcion">
+                <div t-field="event.descripcion" class="mb-4"/>
+              </t>
+              <h3>Ponentes</h3>
+              <div t-if="event.speaker_ids" class="row">
+                <t t-foreach="event.speaker_ids" t-as="speaker">
+                  <div class="col-md-6 mb-4">
+                    <div class="card">
+                      <div class="row no-gutters">
+                        <div class="col-md-4">
+                         <img t-if="speaker.image_128"
+     t-att-src="'data:image/png;base64,' + speaker.image_128.decode('utf-8')"
+     class="card-img"
+     alt="Foto del ponente"/>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="card-body">
+                            <h5 t-field="speaker.name" class="card-title"/>
+                            <t t-if="speaker.function">
+                              <p t-field="speaker.function" class="card-text"/>
+                            </t>
+                            <t t-if="speaker.comment">
+                              <p t-field="speaker.comment"
+                                 class="card-text text-muted"/>
+                            </t>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </t>
+              </div>
+              <div t-else="" class="alert alert-info">
+                No hay ponentes registrados para este evento.
+              </div>
+            </div>
+          </div>
+        </div>
+        </t>
+    </template>
+  </data>
+</odoo>

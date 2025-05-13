@@ -4,10 +4,11 @@ class SurveyUserInput(models.Model):
     _inherit = 'survey.user_input'
 
     grade = fields.Integer(string="Grade",default=2, compute='_compute_grade', store=True)
-    professor_check = fields.Boolean(related='survey_id.professor_check', string='Revisado por el profesor', store=True, readonly=True)
+    professor_check = fields.Boolean(related='survey_id.professor_check', string='Checked by teacher', store=True, readonly=True)
     checked= fields.Boolean(string='Checked')
     email_sent = fields.Boolean(string='Email Sent', default=False, copy=False)
-
+    is_exam= fields.Boolean(related='survey_id.exam', string='Is an exam', store=True, readonly=True)
+    is_certification= fields.Boolean(related='survey_id.certification', string='Is a certification', store=True, readonly=True)
     def write(self, vals):
         res = super(SurveyUserInput, self).write(vals)
         records_to_send = self.env['survey.user_input']

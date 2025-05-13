@@ -5,7 +5,7 @@
             <div class="container mt-4">
                 <h1>¡Gracias por tu participación!</h1>
                 <p>Tu trabajo ha sido enviado correctamente.</p>
-                <a href="/" class="btn btn-primary">Volver al inicio</a>
+                <a href="/" class="btn btn-primary mb-3">Volver al inicio</a>
             </div>
         </t>
     </template>

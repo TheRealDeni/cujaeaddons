@@ -7,39 +7,23 @@ class TravelForm(models.Model):
     _name = 'travel.form'
     _description = "Formulario de solicitud de viaje"
 
-    name = fields.Char(
-        string="Código",
-        readonly=True,
-        default=lambda self: self.env['ir.sequence'].next_by_code('travel.form'),
-        copy=False
-    )
-    #datos personales
-    traveler_name = fields.Many2one('res.partner', string="Nombre y apellidos", required=True, store=True)
-    id_number = fields.Char(
-        string="Carnet de identidad",
-        compute="_compute_id_number",
-        store=True,
-        required=True
-    )
+    name = fields.Char(string="Código", readonly=True, default=lambda self: self.env['ir.sequence'].next_by_code('travel.form'), copy=False)
+    traveler_name = fields.Many2one('res.partner',string="Nombre y apellidos",required=True,store=True,ondelete='restrict')
+    traveler_employee_reference = fields.Many2one('hr.employee',string="Empleado asociado",
+                                                  domain="[('work_contact_id', '=', traveler_name)]",
+                                                  help="Se autocompleta al seleccionar el viajero", store=True)
+    id_number = fields.Char(string="Carnet de identidad",  required=False)
     gender = fields.Selection(related="traveler_name.gender", string="Sexo", store=True)
     personal_address = fields.Char(related="traveler_name.address", string="Dirección particular", required=True)
     personal_email = fields.Char(related="traveler_name.email", string="Correo electrónico personal", store=True)
-    work_email = fields.Char(string="Correo electrónico institucional", required=True, compute='_compute_work_email', store=True)
+    work_email = fields.Char(string="Correo electrónico institucional", compute='_compute_work_email', store=True, required=False, default='')
     personal_telephone_number = fields.Char(related="traveler_name.mobile", string="Teléfono personal", store=True)
     applicant_type = fields.Selection(related="traveler_name.cujae_user_type", string="Tipo de solicitante", store=True)
-    applicant_area = fields.Selection(
-        selection=[("cemat", "CEMAT"), ("ceis", "CEIS"), ("citi", "CITI")], required=True,
-        string="Área a la que peretenece")  # esto tiene que salir de los usuarios del sistema
-    teaching_category = fields.Char(string="Categoría docente", store=True)
-    academic_category = fields.Char(string="Categoría científica", store=True)
-    #civil_status = fields.Selection(
-    #    selection=[("married","Casado"),("single","Soltero"),("divorced","Divorciado"),("widow","Viudo")],
-    #    required=True,
-    #    string="Estado Civil"
-    #)  # esto tiene que salir de los usuarios del sistema
-    #has_child = fields.Boolean(string="Tiene hijos", required=True)  # esto tiene que salir de los usuarios del sistema
-    #children_situation = fields.Char(
-    #    string="Persona que se encargará de cuidar a los hijos")  # hay que poner un required condicional
+    applicant_area = fields.Many2one('hr.department',related='traveler_employee_reference.department_id',
+                                     string="Área a la que pertenece", domain="[]", store=True, readonly=False)
+    job_position = fields.Many2one('hr.job', related='traveler_employee_reference.job_id',
+                                   string="Categoría docente o plaza de trabajo", domain="[]", store=True, readonly=False)
+    academic_level = fields.Selection(related='traveler_employee_reference.certificate',string="Nivel Escolar", store=True, readonly=False)
 
     #datos del viaje
     country = fields.Many2one("res.country", string="País de destino", required=True)
@@ -60,68 +44,59 @@ class TravelForm(models.Model):
     sub_teacher = fields.Text(string="Sustituto en la docencia")
     sub_researcher = fields.Text(string="Sustituto en la investigación")
     rank_n_subs = fields.Text(string="Cargos que ocupa y sustitutos en cada uno")
-    records = fields.Html(string="Antecedentes")#esto es many2one con este mismo modelo validando que sea el mismo viajero
+    records = fields.Html(string="Antecedentes")
     invitation_letter = fields.Binary(
         string="Carta de invitación",
         attachment=True,
         required=False
     )
-    #el objetivo de la estancia se ponen en el campo descripición, hay que hacerlo reuired para este proceso
-    # si es militante pcc o ujc tiene que salir de los usuarios del sistema
 
     ticket_id = fields.Many2one(
         'helpdesk.ticket',
         string="Ticket asociado",
         readonly=True,
+        ondelete='restrict'
     )
+
+    @api.onchange('traveler_name')
+    def _onchange_traveler_name(self):
+        if self.traveler_name:
+            id_number = self.traveler_name.id_numbers.filtered(
+                lambda r: r.category_id.code == 'c_id'
+            )
+            self.id_number = id_number[0].name if id_number else False
+        else:
+            self.id_number = False
 
     @api.model_create_multi
     def create(self, vals_list):
         travel_forms = super().create(vals_list)
-
         for form in travel_forms:
-            # Generar una descripción básica con datos del formulario
             description = f"""
                 <p><strong>Solicitud de viaje creada automáticamente</strong></p>
                 <ul>
                     <li><b>Viajero:</b> {form.traveler_name.name or 'N/A'}</li>
                     <li><b>Motivo:</b> {dict(form._fields['travel_concept'].selection).get(form.travel_concept) or 'N/A'}</li>
                     <li><b>País:</b> {form.country.name or 'N/A'}</li>
-                    <li><b>Área:</b> {dict(form._fields['applicant_area'].selection).get(form.applicant_area) or 'N/A'}</li>
+                    <li><b>Área:</b> {form.applicant_area.name or 'N/A'}</li>
                 </ul>
                 <p>Este ticket fue generado desde el formulario de viaje.</p>
             """
-            # Obtener el ID del equipo "Grupo de Trámites Migratorios" (usando su XML ID)
-            team_id = self.env.ref('gtm_cujae.team_grupo_tramites_migratorios').id
-            type_id = self.env.ref('gtm_cujae.type_tramites_migratorios').id  # Tipo "Solicitud de viaje al exterior"
-            category_id = self.env.ref('gtm_cujae.category_viaje_exterior').id
 
-            # Crear el ticket con solo los campos obligatorios + travel_form_id
+            team_id = self.env.ref('gtm_cujae.team_grupo_tramites_migratorios').id
+            type_id = self.env.ref('gtm_cujae.type_tramites_migratorios').id
+            category_id = self.env.ref('gtm_cujae.category_viaje_exterior').id
             ticket = self.env['helpdesk.ticket'].create({
                 'name': f"Solicitud de viaje - {form.traveler_name.name or 'Nuevo'}",
-                'description': description,  # Campo requerido
+                'description': description,
                 'travel_form_id': form.id,  # Asignar el formulario al ticket
-                'team_id': team_id,  # Asignación fija al equipo gtm
-                'type_id': type_id,  # Tipo fijo para trámites migratorios
-                'category_id': category_id,  # Categoría fija para viajes
-                # (El resto de campos se dejan con valores por defecto)
+                'team_id': team_id,
+                'type_id': type_id,
+                'category_id': category_id,
+                'partner_id': form.traveler_name.id,
             })
-
-            form.ticket_id = ticket.id  # Opcional: Guardar referencia inversa
-
+            form.ticket_id = ticket.id  #Guardar referencia inversa
         return travel_forms
-
-    @api.depends('traveler_name.id_numbers')
-    def _compute_id_number(self):
-        for record in self:
-            if record.traveler_name:
-                # Busca el registro con categoría c_id (Carnet de identidad)
-                id_number = record.traveler_name.id_numbers.filtered(
-                    lambda r: r.category_id.code == 'c_id'
-                )
-                record.id_number = id_number[0].name if id_number else False
-            else:
-                record.id_number = False
 
     @api.constrains('departure_date', 'return_date')
     def _check_dates(self):
@@ -139,14 +114,18 @@ class TravelForm(models.Model):
                 name = unicodedata.normalize('NFKD', record.traveler_name.name) \
                     .encode('ASCII', 'ignore') \
                     .decode('ASCII')
-
                 # Convertir a minúsculas y eliminar espacios
                 email_name = name.lower().replace(' ', '')
-
                 # Eliminar caracteres extraños
                 email_name = ''.join(c for c in email_name if c.isalnum())
-
                 # Construir el email
                 record.work_email = f"{email_name}@cujae.edu.cu"
             else:
                 record.work_email = ''
+
+    @api.constrains('traveler_name')
+    def _check_traveler(self):
+        for record in self:
+            if not record.id_number:
+                raise ValidationError("No se encontró número de identidad para el viajero seleccionado")
+

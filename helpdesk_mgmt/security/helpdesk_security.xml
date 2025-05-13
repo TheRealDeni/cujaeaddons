@@ -26,7 +26,7 @@
             />
         </record>
     </data>
-    <data noupdate="1">
+    <data noupdate="0">
         <record id="helpdesk_ticket_personal_rule" model="ir.rule">
             <field name="name">Personal Tickets</field>
             <field ref="model_helpdesk_ticket" name="model_id" />
