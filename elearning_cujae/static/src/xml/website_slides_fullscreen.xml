@@ -6,7 +6,7 @@
             <div t-if="widget.get('slide').category === 'exam' &amp;&amp; !widget.get('slide').completed" class="">
                 <a class="btn btn-primary" t-att-href="'/slides_survey/slide/get_exam_url?slide_id=' + widget.get('slide').id" target="_blank">
                     <i class="fa fa-graduation-cap"/>
-                    <span t-if="widget.get('slide').isMember"> Begin exam</span>
+                    <span t-if="widget.get('slide').isMember">Begin exam</span>
                     <span t-else="">Test exam</span>
                 </a>
             </div>
