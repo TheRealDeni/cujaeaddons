@@ -34,11 +34,7 @@ class Conference(http.Controller):
     def submit_work_form(self, event, **kw):
         return request.render('event_cujae.view_submission_page', {'event': event})
 
-    # POST del formulario
-    @http.route('/event/submit_work', type='http', auth='public', website=True, methods=['POST'])
-    def submit_work(self, **post):
-        # tu lógica de creación de scientific.work…
-        return request.redirect('/event/submission_confirmation')
+   
     
 
 
