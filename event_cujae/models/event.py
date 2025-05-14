@@ -98,7 +98,7 @@ class Event(models.Model):
         telegram_bot_token = "7396987561:AAGMjZ-fvWcOFCtk_YILIWAxVLLWdumWHKY"
         telegram_chat_id = "@OdooEvent"
 
-        descripcion = self._clean_html(self.descripcion)
+        descripcion = self._clean_html(self.description)
         message = (
             f'📢 ¡Nuevo evento publicado!\n\n'
             f'🎉 {self.name}\n'

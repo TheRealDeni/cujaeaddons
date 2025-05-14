@@ -14,8 +14,8 @@
                                   t-options='{"format": "dd/MM/yyyy HH:mm"}'/>
                         </p>
 
-                        <t t-if="event.descripcion">
-                            <div t-field="event.descripcion" class="mb-4"/>
+                        <t t-if="event.description">
+                            <div t-field="event.description" class="mb-4"/>
                         </t>
 
                         <p>
