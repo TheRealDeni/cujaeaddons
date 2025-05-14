@@ -87,4 +87,6 @@ class SurveyUserInput(models.Model):
                 attachment_ids.append(attachment.id)
             vals['value_file_data_ids'] = attachment_ids
         return vals
-           
+    
+    def mark_as_checked(self):
+        self.checked = True

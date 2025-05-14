@@ -52,7 +52,7 @@
                 <attribute name="attrs">
                     {
                         'readonly': [
-                            ('answer_type', 'not in', ['text_box', 'char_box', 'matrix'])
+                            ('answer_type', 'not in', ['text_box', 'char_box', 'matrix','upload_file'])
                         ]
                     }
                 </attribute>
@@ -77,8 +77,15 @@
                         <attribute name="attrs">{'readonly': False}</attribute>
                    </xpath>
                    <xpath expr="//field[@name='create_date']" position="after">
-                        <field name="checked"/>
-                   </xpath>                   
+                        <field name="checked" invisible="1"/>
+                   </xpath> 
+                   <xpath expr="//header" position="inside">
+                        <button name="mark_as_checked" 
+                                string="Marcar como Verificado" 
+                                type="object" 
+                                class="oe_highlight" 
+                                attrs="{'invisible': [('checked', '=', True)]}"/>
+                   </xpath>                  
                </field>
     </record>
 

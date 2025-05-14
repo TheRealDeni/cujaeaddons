@@ -1,18 +1,17 @@
 <odoo>
     <data>
-        <!-- Vista principal del cuestionario -->
-        <record id="view_question_form_inherit" model="ir.ui.view">
+         <record id="view_question_form_inherit" model="ir.ui.view">
             <field name="name">question_form_inherit</field>
             <field name="model">survey.question</field>
-            <field name="inherit_id" ref="survey.survey_question_form"/>
+            <field name="inherit_id" ref="survey.survey_question_form" />
             <field name="arch" type="xml">
-                <xpath expr="//page[@name='answers']" position="attributes">
-                    <attribute name="attrs">{'invisible': ['&amp;',
-                        ('scoring_type', '=', 'no_scoring'),
-                        ('is_page', '=', True)
-                    ]}</attribute>
-                </xpath>
                 
+                    <xpath expr="//page[@name='answers']" position="attributes">
+                        <attribute name="attrs">{'invisible': ['&amp;',
+                            ('scoring_type', '=', 'no_scoring'),
+                            ('is_page', '=', True)
+                        ]}</attribute>
+                    </xpath>
                 <xpath expr="//page[@name='answers']" position="inside">
                     <field name="valid_answer_ids" string="Correct Answers"
                         attrs="{
@@ -23,27 +22,21 @@
                             <field name="value"/>
                         </tree>
                     </field>
-                </xpath>
-                
-                <xpath expr="//group[contains(@attrs, 'scoring_type')]" position="attributes">
+                </xpath>            
+                 <xpath expr="//group[contains(@attrs, 'scoring_type')]" position="attributes">
                     <attribute name="attrs">{'invisible': ['|', ('scoring_type', '=', 'no_scoring'), ('question_type', 'not in', ['numerical_box', 'date', 'datetime','char_box', 'text_box','upload_file'])]}</attribute>
-                </xpath>
-                
-                <xpath expr="//div[hasclass('o_preview_questions')]" position="inside">
+                </xpath>   
+                <xpath expr="//div[hasclass('o_preview_questions')]"
+                    position="inside">
                     <div attrs="{'invisible': [('question_type', '!=', 'upload_file')]}">
                         <p class="o_upload_file">Subir archivo
                             <i class="fa fa-upload"/>
-                            <span class="text-muted ml-2">
-                                (Formatos permitidos: DOC, DOCX, PPT, PPTX, XLS, XLSX, PDF, JPG, PNG, GIF, ZIP, RAR. Máx. 10MB)
-                            </span>
                         </p>
                     </div>
                 </xpath>
-                
                 <xpath expr="//field[@name='constr_mandatory']" position="after">
-                    <field name="upload_multiple_file" 
-                        attrs="{'invisible': [('question_type', '!=', 'upload_file')]}"
-                        help="Permitir múltiples archivos en la misma pregunta"/>
+                    <field name="upload_multiple_file"
+                        attrs="{'invisible': [('question_type', '!=', 'upload_file')]}"/>
                 </xpath>
             </field>
         </record>
