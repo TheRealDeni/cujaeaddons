@@ -15,7 +15,9 @@
                     </group>
                     <group name="basic_info">
                         <group string="Información personal">
-                            <field name="traveler_name"/>
+                            <field name="company_id" />
+                            <field name="company_parent_id" />
+                            <field name="traveler_name" domain="[('parent_id', '=', company_parent_id)]"/>
                             <field name="id_number"/>
                             <field name="gender"/>
                             <field name="personal_address"/>
