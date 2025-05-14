@@ -6,13 +6,13 @@ class Slide(models.Model):
 
 
     slide_category = fields.Selection(selection_add=[
-        ('glossary', 'Glosario')
+        ('glossary', 'Glossary')
     ], ondelete={'glossary': 'set default'})
     slide_type = fields.Selection(selection_add=[
-        ('glossary', 'Glosario')
+        ('glossary', 'Glossary')
     ], ondelete={'glossary': 'set null'})
-    glossary_id = fields.Many2one('glossary.glossary', string='Glosario')
-    nbr_glossary = fields.Integer("Número de glosarios", compute='_compute_slides_statistics', store=True)
+    glossary_id = fields.Many2one('glossary.glossary', string='Glossary', ondelete='restrict')
+    nbr_glossary = fields.Integer("Number of glossaries", compute='_compute_slides_statistics', store=True)
 
     
     @api.depends('glossary_id')

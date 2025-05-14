@@ -5,10 +5,10 @@ class GlossaryTerm(models.Model):
     _description = 'Glossary Term'
     _order = 'name asc'
 
-    name = fields.Char(string='Término', required=True, translate=True)
-    description = fields.Html(string='Descripción', required=True, translate=True)  # Cambiado a HTML
-    glossary_id = fields.Many2one('glossary.glossary', string='Glosario', ondelete='cascade')
-    initial_letter = fields.Char(string='Letra inicial', compute='_compute_initial_letter', store=True)
+    name = fields.Char(string='Term', required=True, translate=True)
+    description = fields.Html(string='Description', required=True, translate=True)  # Cambiado a HTML
+    glossary_id = fields.Many2one('glossary.glossary', string='Glossary', ondelete='cascade')
+    initial_letter = fields.Char(string='Inicial Letter', compute='_compute_initial_letter', store=True)
     
     @api.depends('name')
     def _compute_initial_letter(self):

@@ -1,0 +1,190 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: NEW\n"
+"Language: es\n"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_slide_slide__slide_category
+msgid "Category"
+msgstr "Categoría"
+
+#. module: glossary
+#: model:ir.model,name:glossary.model_slide_channel
+msgid "Course"
+msgstr "Curso"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary__create_uid
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary__create_date
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary__description
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__description
+msgid "Description"
+msgstr "Descripción"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary__display_name
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__display_name
+msgid "Display Name"
+msgstr "Nombre para mostrar"
+
+#. module: glossary
+#: model:ir.actions.act_window,name:glossary.action_glossary
+msgid "Glosarios"
+msgstr "Glosarios"
+
+#. module: glossary
+#: model:ir.ui.menu,name:glossary.menu_glossary
+#: model_terms:ir.ui.view,arch_db:glossary.view_glossary_tree
+msgid "Glossaries"
+msgstr "Glosarios"
+
+#. module: glossary
+#: model_terms:ir.ui.view,arch_db:glossary.slide_sidebar_done_button_glossary
+msgid "Glossaries you have not viewed cannot be marked as completed."
+msgstr "Los glosarios que no has visto no se pueden marcar como completados."
+
+#. module: glossary
+#. odoo-javascript
+#: code:addons/glossary/static/src/js/slides_upload.js:0
+#: code:addons/glossary/static/src/js/slides_upload.js:0
+#: code:addons/glossary/static/src/xml/website_slide_upload.xml:0
+#: model:ir.model,name:glossary.model_glossary_glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__glossary_id
+#: model:ir.model.fields,field_description:glossary.field_slide_slide__glossary_id
+#: model:ir.model.fields.selection,name:glossary.selection__slide_slide__slide_category__glossary
+#: model:ir.model.fields.selection,name:glossary.selection__slide_slide__slide_type__glossary
+#: model_terms:ir.ui.view,arch_db:glossary.view_glossary_glossary_form
+msgid "Glossary"
+msgstr "Glosario"
+
+#. module: glossary
+#: model:ir.model,name:glossary.model_glossary_term
+msgid "Glossary Term"
+msgstr "Término del glosario"
+
+#. module: glossary
+#. odoo-javascript
+#: code:addons/glossary/static/src/xml/website_slide_upload.xml:0
+msgid "How to upload a glossary"
+msgstr "Cómo cargar un glosario"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary__id
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__id
+msgid "ID"
+msgstr "IDENTIFICACIÓN"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__initial_letter
+msgid "Inicial Letter"
+msgstr "Letra inicial"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary____last_update
+#: model:ir.model.fields,field_description:glossary.field_glossary_term____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary__write_uid
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary__write_date
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_slide_channel__nbr_glossary
+#: model:ir.model.fields,field_description:glossary.field_slide_slide__nbr_glossary
+msgid "Number of glossaries"
+msgstr "Número de glosarios"
+
+#. module: glossary
+#: model_terms:ir.ui.view,arch_db:glossary.slide_content_detailed_glossary
+msgid "Open glossary"
+msgstr "Glosario abierto"
+
+#. module: glossary
+#: model_terms:ir.ui.view,arch_db:glossary.action_glossary
+msgid "Glossaries"
+msgstr "Glosarios"
+
+#. module: glossary
+#. odoo-javascript
+#: code:addons/glossary/static/src/xml/website_slide_upload.xml:0
+msgid "Select a glossary"
+msgstr "Seleccione un glosario"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_slide_slide__slide_type
+msgid "Slide Type"
+msgstr "Tipo de diapositiva"
+
+#. module: glossary
+#: model:ir.model,name:glossary.model_slide_slide
+msgid "Slides"
+msgstr "Diapositivas"
+
+#. module: glossary
+#: model:ir.model.fields,help:glossary.field_slide_slide__slide_type
+msgid "Subtype of the slide category, allows more precision on the actual file type / source type."
+msgstr "Subtipo de la categoría de diapositiva, permite mayor precisión en el tipo de archivo/tipo de fuente real."
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_term__name
+msgid "Term"
+msgstr "Término"
+
+#. module: glossary
+#: model:ir.model.fields,field_description:glossary.field_glossary_glossary__term_ids
+#: model_terms:ir.ui.view,arch_db:glossary.view_glossary_glossary_form
+msgid "Terms"
+msgstr "Términos"
+
+#. module: glossary
+#. odoo-python
+#: code:addons/glossary/controllers/slides.py:0
+msgid "You are not allowed to create a glossary."
+msgstr "No está permitido crear un glosario."
+
+#. module: glossary
+#. odoo-python
+#: code:addons/glossary/controllers/slides.py:0
+msgid "You are not allowed to link a glossary."
+msgstr "No está permitido vincular un glosario."
+
+#. module: glossary
+#. odoo-javascript
+#: code:addons/glossary/static/src/xml/website_slide_upload.xml:0
+msgid "You can create your glossary from here, to edit configure it in the backend"
+msgstr "Puedes crear tu glosario desde aquí, para editarlo configúralo en el backend"
+
+#. module: glossary
+#. odoo-python
+#: code:addons/glossary/controllers/slides.py:0
+msgid "exam slides are completed when the glossary is seen."
+msgstr "Las diapositivas del examen se completan cuando se ve el glosario."
+

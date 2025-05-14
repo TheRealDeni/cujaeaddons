@@ -29,10 +29,7 @@ class Event(models.Model):
     )
     event_type_name = fields.Char(
         string='Nombre del Tipo de Evento',
-        compute='_compute_event_type_name',
-        store=True,
-        required=True,
-    )
+        related= 'event_type_id.name', store=True)
 
     speaker_ids = fields.Many2many('res.partner', string='Ponentes')
     submission_page_url = fields.Char(string='URL para subir trabajos')
@@ -71,9 +68,13 @@ class Event(models.Model):
         res = super(Event, self).write(vals)
 
         if 'stage_id' in vals:
-            canceled_stage_id = self.env.ref('event_cujae.event_stage_canceled').id
-            finished_stage_id = self.env.ref('event_cujae.event_stage_finalized').id
-
+ 
+            canceled_stage_id = self.env['event.stage'].search([
+                ('name', '=', 'Cancelado'),
+            ]).id
+            finished_stage_id = self.env['event.stage'].search([
+                ('name', '=', 'Finalizado'),
+            ]).id
             for ev in self:
                 old_stage = old_stages.get(ev.id)
                 new_stage = ev.stage_id.id

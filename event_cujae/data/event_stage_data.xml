@@ -1,5 +1,5 @@
 <odoo>
-  <data noupdate="0">
+  <data noupdate="1">
 
     <record id="event_stage_draft" model="event.stage">
       <field name="name">Borrador</field>

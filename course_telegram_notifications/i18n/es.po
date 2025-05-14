@@ -1,0 +1,58 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: project\n"
+"Language: es\n"
+
+#. module: course_telegram_notifications
+#. odoo-python
+#: code:addons/course_telegram_notifications/models/slide_slide.py:0
+msgid "\n"
+"            📢 New post in the course <b>%s</b>:\n"
+"            🏷️ <b>Topic:</b> %s\n"
+"            📄 <b>Content Type:</b> %s\n"
+"            🔗 <b>Link:</b> %s\n"
+"            "
+msgstr "\n"
+"            📢 Nueva publicación en el curso <b>%s</b> : 🏷️ <b>Título:</b> %s 📄 <b>Tipo de Contenido:</b> %s 🔗 <b>Enlace:</b> %s\n"
+"            "
+
+#. module: course_telegram_notifications
+#: model:ir.model.fields,field_description:course_telegram_notifications.field_slide_channel__enable_telegram
+msgid "Activate Telegram"
+msgstr "Activar Telegram"
+
+#. module: course_telegram_notifications
+#: model:ir.model.fields,field_description:course_telegram_notifications.field_slide_channel__telegram_bot_token
+msgid "Bot Token"
+msgstr "Token de bot"
+
+#. module: course_telegram_notifications
+#: model:ir.model,name:course_telegram_notifications.model_slide_channel
+msgid "Course"
+msgstr "Curso"
+
+#. module: course_telegram_notifications
+#: model:ir.model.fields,field_description:course_telegram_notifications.field_slide_channel__telegram_channel_id
+msgid "Group/Channel ID"
+msgstr "ID de grupo/canal"
+
+#. module: course_telegram_notifications
+#: model:ir.model.fields,help:course_telegram_notifications.field_slide_channel__telegram_channel_id
+msgid "Group/channel ID is required the @ before the ID"
+msgstr "Se requiere el ID del grupo/canal con la @ antes del ID"
+
+
+#. module: course_telegram_notifications
+#: model_terms:ir.ui.view,arch_db:course_telegram_notifications.slide_channel_view_form_inherit
+msgid "Telegram notifications"
+msgstr "Notificaciones de Telegram"
+
+#. module: course_telegram_notifications
+#: model:ir.model.fields,help:course_telegram_notifications.field_slide_channel__telegram_bot_token
+msgid "Token obtained from @BotFather. E.g.: '1234567890:ABCdefGhIJKLMNopqrstUVWXYZ'"
+msgstr "Token obtenido de @BotFather. Ejemplo: &#39;1234567890:ABCdefGhIJKLMNopqrstUVWXYZ&#39;"
+

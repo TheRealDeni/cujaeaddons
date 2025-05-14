@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="website_slides.view_slide_channel_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='options']" position="inside">
-                <group string="Notificaciones por Telegram" colspan="2">
+                <group string="Telegram notifications" colspan="2">
                     <field name="enable_telegram"/>
                     <field name="telegram_bot_token" 
                            widget="password"
