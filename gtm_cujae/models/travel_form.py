@@ -8,10 +8,23 @@ class TravelForm(models.Model):
     _description = "Formulario de solicitud de viaje"
 
     name = fields.Char(string="Código", readonly=True, default=lambda self: self.env['ir.sequence'].next_by_code('travel.form'), copy=False)
-    traveler_name = fields.Many2one('res.partner',string="Nombre y apellidos",required=True,store=True,ondelete='restrict')
-    traveler_employee_reference = fields.Many2one('hr.employee',string="Empleado asociado",
-                                                  domain="[('work_contact_id', '=', traveler_name)]",
-                                                  help="Se autocompleta al seleccionar el viajero", store=True)
+
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    company_parent_id = fields.Many2one(related='company_id.partner_id', string='Company contact')
+    traveler_name = fields.Many2one(
+        'res.partner',
+        string="Nombre y apellidos",
+        required=True,
+        ondelete='restrict',
+        domain="[('is_company', '!=', True)]"
+    )
+
+    traveler_employee_reference = fields.Many2one(
+        'hr.employee',string="Empleado asociado",
+        domain="[('work_contact_id', '=', traveler_name)]",
+        help="Se autocompleta al seleccionar el viajero",
+        store=True
+    )
     id_number = fields.Char(string="Carnet de identidad",  required=False)
     gender = fields.Selection(related="traveler_name.gender", string="Sexo", store=True)
     personal_address = fields.Char(related="traveler_name.address", string="Dirección particular", required=True)
@@ -94,6 +107,7 @@ class TravelForm(models.Model):
                 'type_id': type_id,
                 'category_id': category_id,
                 'partner_id': form.traveler_name.id,
+                'partner_name': form.traveler_name.name,
             })
             form.ticket_id = ticket.id  #Guardar referencia inversa
         return travel_forms

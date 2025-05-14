@@ -23,7 +23,7 @@ class Event(models.Model):
         help='Proporcione la fecha de inicio del evento.'
     )
 
-    descripcion = fields.Text(
+    description = fields.Text(
         string="Descripción",
         help="Proporcione una descripción detallada del evento."
     )
@@ -71,10 +71,10 @@ class Event(models.Model):
  
             canceled_stage_id = self.env['event.stage'].search([
                 ('name', '=', 'Cancelado'),
-            ]).id
+            ], order="sequence asc", limit=1).id
             finished_stage_id = self.env['event.stage'].search([
                 ('name', '=', 'Finalizado'),
-            ]).id
+            ], order="sequence asc", limit=1).id
             for ev in self:
                 old_stage = old_stages.get(ev.id)
                 new_stage = ev.stage_id.id
@@ -98,7 +98,7 @@ class Event(models.Model):
         telegram_bot_token = "7396987561:AAGMjZ-fvWcOFCtk_YILIWAxVLLWdumWHKY"
         telegram_chat_id = "@OdooEvent"
 
-        descripcion = self._clean_html(self.descripcion)
+        descripcion = self._clean_html(self.description)
         message = (
             f'📢 ¡Nuevo evento publicado!\n\n'
             f'🎉 {self.name}\n'
@@ -162,17 +162,13 @@ class Event(models.Model):
 
     def _create_submission_page(self):
         website = self.env['website'].get_current_website()
-
-        # ejemplo de creación de página o vista
         self.env['website.page'].create({
             'name': 'Página de Envío de Trabajos',
             'url': f'/event/submit_work/{self.id}',
             'website_id': website.id,
-            # otros campos que necesites
         })
 
     def _create_conference_page(self):
-        """Crear página web con información de ponentes"""
         website = self.env['website'].get_current_website()
         self.env['website.page'].create({
             'name': f'Ponentes - {self.name}',
@@ -182,7 +178,6 @@ class Event(models.Model):
         })
 
     def _create_scientific_url(self):
-        """Crear página web con información de ponentes"""
         website = self.env['website'].get_current_website()
         self.env['website.page'].create({
             'name': f'URL - {self.name}',
@@ -190,3 +185,5 @@ class Event(models.Model):
             'website_id': website.id,
             'view_id': self.env.ref('event_cujae.scientific_url_views').id,
         })
+
+
