@@ -6,9 +6,9 @@
                     <h1>Subir Trabajo para el Evento:
                         <t t-esc="event.name"/>
                     </h1>
-                     <t t-if="event.description">
-                            <div t-field="event.description" class="mb-4"/>
-                     </t>
+                    <t t-if="event.description">
+                        <div t-field="event.description" class="mb-4"/>
+                    </t>
                     <form action="/event/submit_work" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="event_id" t-att-value="event.id"/>
                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>

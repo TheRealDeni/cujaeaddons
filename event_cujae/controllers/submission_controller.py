@@ -6,7 +6,7 @@ class SubmissionController(http.Controller):
 
     @http.route('/event/submit_work', type='http', auth='public', website=True, methods=['POST'])
     def submit_work(self, **post):
-        # Obtener los datos del formularioo
+        # Obtener los datos del formulario
         event_id = int(post.get('event_id', 0))  # Asegurar que sea un número
         author_name = post.get('author_name', '')
         work_title = post.get('work_title', '')

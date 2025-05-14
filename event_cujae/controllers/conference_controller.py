@@ -33,18 +33,3 @@ class Conference(http.Controller):
     @http.route('/event/submit_work/<model("event.event"):event>', type='http', auth='public', website=True)
     def submit_work_form(self, event, **kw):
         return request.render('event_cujae.view_submission_page', {'event': event})
-
-   
-    
-
-
-    def _prepare_event_register_values(self, event, **post):
-        """Return the require values to render the template."""
-        urls = lazy(event._get_event_resource_urls)
-        return {
-            'event': event,
-            'main_object': event,
-            'range': range,
-            'google_url': lazy(lambda: urls.get('google_url')),
-            'iCal_url': lazy(lambda: urls.get('iCal_url')),
-        }

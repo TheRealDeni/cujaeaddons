@@ -1,4 +1,3 @@
-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 import logging
@@ -8,9 +7,9 @@ from bs4 import BeautifulSoup
 
 _logger = logging.getLogger(__name__)
 
+
 class Event(models.Model):
     _inherit = 'event.event'
-
 
     name = fields.Char(
         string='Nombre del Evento',
@@ -29,7 +28,14 @@ class Event(models.Model):
     )
     event_type_name = fields.Char(
         string='Nombre del Tipo de Evento',
-        related= 'event_type_id.name', store=True)
+        related='event_type_id.name', store=True)
+
+    is_published = fields.Boolean(
+        string='Publicado en el sitio web',
+        copy=False,
+        default=False,
+        help="Controla la visibilidad pública del evento"
+    )
 
     speaker_ids = fields.Many2many('res.partner', string='Ponentes')
     submission_page_url = fields.Char(string='URL para subir trabajos')
@@ -63,21 +69,31 @@ class Event(models.Model):
         return event
 
     def write(self, vals):
-        # Guardar estado anterior de cada evento
+
         old_stages = {ev.id: ev.stage_id.id for ev in self}
         res = super(Event, self).write(vals)
 
         if 'stage_id' in vals:
- 
+
+            published_stage_id = self.env['event.stage'].search([
+                ('name', '=', 'Publicado'),
+            ], order="sequence asc", limit=1).id
             canceled_stage_id = self.env['event.stage'].search([
                 ('name', '=', 'Cancelado'),
             ], order="sequence asc", limit=1).id
             finished_stage_id = self.env['event.stage'].search([
                 ('name', '=', 'Finalizado'),
             ], order="sequence asc", limit=1).id
+
             for ev in self:
                 old_stage = old_stages.get(ev.id)
                 new_stage = ev.stage_id.id
+
+                if new_stage == published_stage_id:
+                    ev.write({'website_published': True})  # Usamos el campo nativo de Odoo
+                    _logger.info(f"Evento {ev.name} publicado en el sitio web")
+                elif old_stage == published_stage_id and new_stage != published_stage_id:
+                    ev.write({'website_published': False})
 
                 # Notificar solo si NO venía de "Finalizado" y fue cambiado a "Cancelado"
                 if old_stage != finished_stage_id and new_stage == canceled_stage_id:
@@ -185,5 +201,3 @@ class Event(models.Model):
             'website_id': website.id,
             'view_id': self.env.ref('event_cujae.scientific_url_views').id,
         })
-
-
