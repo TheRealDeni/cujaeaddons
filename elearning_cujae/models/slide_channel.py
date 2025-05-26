@@ -1,4 +1,3 @@
-from build import _logger
 from odoo import fields, models, api,_
 from odoo import exceptions
 from odoo.exceptions import UserError
@@ -106,13 +105,13 @@ class Channel(models.Model):
 
             return channels
         except exceptions.ValidationError as e:
-            _logger.error("Error de validación: %s", e)
+            print("Error de validación: %s", e)
             raise
         except exceptions.UserError as e:
-            _logger.error("Error de usuario: %s", e)
+            print("Error de usuario: %s", e)
             raise
         except Exception as e:
-            _logger.error("Error inesperado: %s", e)
+            print("Error inesperado: %s", e)
             raise
 
     def write(self, vals):

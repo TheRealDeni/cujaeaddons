@@ -25,7 +25,7 @@
 
     # always loaded
     # xd
-    'data': [        
+    'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/gamification_data.xml',
@@ -56,10 +56,6 @@
         'views/slide_channel_partner_views.xml',
         'wizard/question_wizard_views.xml',
         'views/action_open_question_wizard.xml'
-        
-
-        'security/security.xml',
-        
     ],
     'images':[
         'static/description/icon.png',
@@ -71,6 +67,7 @@
 
      'assets': {
         'web.assets_frontend': [
+          'elearning_cujae/static/src/scss/survey_templates.scss',
           'elearning_cujae/static/src/scss/website_slides_survey.scss',
           'elearning_cujae/static/src/scss/website_slides_list.scss',
           'elearning_cujae/static/src/js/slides_upload.js',

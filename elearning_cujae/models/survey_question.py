@@ -1,6 +1,6 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-
+from random import sample
 
 class SurveyQuestion(models.Model):
     _inherit= 'survey.question'
@@ -11,21 +11,58 @@ class SurveyQuestion(models.Model):
         string='Valid answers',
         
     )
+
     max_score = fields.Float(
         string='Max score',
         compute='_compute_question_max_score',
         store=True  # Opcional: Almacena el valor en la BD para mejor rendimiento
     )
+
     question_type = fields.Selection(
         selection_add=[
             ('upload_file', 'Upload file'),
             ('true_false', 'Verdadero o Falso'),
+            ('link', 'Enlaza'),
+            # ('clasification', 'Clasificación'),
         ],
         help='Select the type of question to create.')
+
     upload_multiple_file = fields.Boolean(string='Upload multiple files',
                                           help='Check this box if you want to '
                                                'allow users to upload '
                                                'multiple files')
+
+    link_items = fields.One2many(
+        'survey.link_item',
+        'question_id',
+        string='Link Items',
+    )
+
+    shuffled_link_items = fields.One2many(
+        'survey.link_item',
+        compute='_compute_shuffled_link_items',
+        string='Link Items Desordenados',
+        help="Lista aleatoria de elementos para enlazar"
+    )
+
+    true_false_items = fields.One2many(
+        'survey.true_false_item',
+        'question_id',
+        string='True/False Items',
+        help="List of True/False statements for this question.",
+    )
+
+    answer_score_calculated = fields.Float(string="Puntaje Calculado", compute='_compute_answer_score_calculated',
+                                           store=True)
+
+    answer_score = fields.Float('Score', help="Score value for a correct answer to this question.")
+
+    @api.depends('link_items')
+    def _compute_shuffled_link_items(self):
+        for question in self:
+            # Se asegura de que el resultado se vea distinto cada vez
+            question.shuffled_link_items = sample(question.link_items, len(question.link_items)) if question.link_items else self.env['survey.link_item']
+            print(question.shuffled_link_items)
 
     @api.depends('answer_score', 'suggested_answer_ids', 'suggested_answer_ids.answer_score', 'suggested_answer_ids.is_correct')
     def _compute_question_max_score(self):
@@ -40,9 +77,6 @@ class SurveyQuestion(models.Model):
             ) or 0
             
             question.max_score = question_score + suggested_scores
-
-
-
     
     @api.depends('true_false_items.score')
     def _compute_answer_score_calculated(self):
@@ -70,17 +104,36 @@ class SurveyQuestion(models.Model):
             if question.question_type=='char_box' or question.question_type=='text_box' or question.question_type=='upload_file':
                 question.is_scored_question = True
                 question.scoring_type= 'scoring_with_answers'
-                print("hello")
             elif question.question_type == 'date':
                 question.is_scored_question = bool(question.answer_date)
             elif question.question_type == 'datetime':
                 question.is_scored_question = bool(question.answer_datetime)
             elif question.question_type == 'numerical_box' and question.answer_numerical_box:
                 question.is_scored_question = True 
-            elif question.question_type in ['simple_choice', 'multiple_choice', 'true_false']: 
+            elif question.question_type in ['simple_choice', 'multiple_choice', 'true_false', 'link']:
                 question.is_scored_question = True
             else:
                 question.is_scored_question = False
+
+    def validate_question(self, answer, comment=None):
+        if answer or self.question_type in ['true_false', 'link']:
+            if self.question_type == 'ture_false':
+                pass
+            elif self.question_type == 'link':
+                return self._validate_link(answer)
+        return super().validate_question(answer, comment)
+
+    def _validate_true_false(self, answer):
+        print(answer)
+        if self.constr_mandatory and not answer:
+            return {self.id: self.constr_error_msg or _('This question requires an answer.')}
+        return {}
+
+    def _validate_link(self, answer):
+        print(answer)
+        if self.constr_mandatory and not answer:
+            return {self.id: self.constr_error_msg or _('This question requires an answer.')}
+        return {}
             
     def action_add_question(self):
         """Summary:
@@ -94,7 +147,8 @@ class SurveyQuestion(models.Model):
             'res_model': 'question.wizard',
             'type': 'ir.actions.act_window',
             'target': 'new',
-        }  
+        }
+
     def write(self, vals):
         res = super(SurveyQuestion, self).write(vals)
         for question in self:
