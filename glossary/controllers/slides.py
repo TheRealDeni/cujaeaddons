@@ -12,6 +12,7 @@ from odoo.addons.website_slides.controllers.main import WebsiteSlides
 from odoo.addons.website_slides_survey.controllers.slides import WebsiteSlidesSurvey
 from odoo.addons.elearning_cujae.controllers.slides import WebsiteSlidesSurveyExam
 class WebsiteSlidesGlossary(WebsiteSlides):           
+   # Modifica el método slide_get_glossary_url
     @http.route(route='/slide/get_glossary_url', type='json', auth='user', website=True)
     def slide_get_glossary_url(self, slide_id, **kw):
         fetch_res = self._fetch_slide(slide_id)
@@ -19,14 +20,28 @@ class WebsiteSlidesGlossary(WebsiteSlides):
             raise werkzeug.exceptions.NotFound()
         slide = fetch_res['slide']
         glossary = slide.glossary_id
-        terms = [{'name': term.name, 'description': term.description} for term in glossary.term_ids]
-
+        
+        # Agrupar términos por letra inicial
+        groups = {}
+        for term in glossary.term_ids.sorted(key=lambda r: r.name):
+            initial_letter = term.initial_letter
+            if initial_letter not in groups:
+                groups[initial_letter] = []
+            groups[initial_letter].append({
+                'id': term.id,
+                'name': term.name,
+                'description': term.description
+            })
+        
         values = {
-            'glossary': glossary,
-            'terms': terms,
+            'glossary': {
+                'name': glossary.name,
+                'description': glossary.description
+            },
+            'groups': groups
         }
-
-        return values  # Retornar como JSON
+    
+        return values
 
     @http.route(['/slides/add_slide'], type='json', auth='user', methods=['POST'], website=True)
     def create_slide(self, *args, **post):

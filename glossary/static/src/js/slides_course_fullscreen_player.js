@@ -13,23 +13,34 @@ odoo.define('glossary.fullscreen', function (require) {
 
             if (this.get('slide').category === "glossary") {
                 var slideId = this.get('slide').id;
-                console.log(this.get('slide'));    
                 
-                // Hacer una llamada AJAX para obtener los términos del glosario
-                return ajax.rpc('/slide/get_glossary_url', { slide_id: slideId }).then(function (data) {
-                    // Renderizar la plantilla con los datos recibidos
-                    $content.html(QWeb.render('website.slides.fullscreen.glossary', { widget: this, terms: data.terms, glossary: data.glossary }));
-
-                    // Marcar el slide como completado
-                    return ajax.rpc('/slide/complete_slide', { slide_id: slideId });
+                return ajax.rpc('/slide/get_glossary_url', { 
+                    slide_id: slideId 
+                }).then(function (data) {
+                    $content.html(QWeb.render('website.slides.fullscreen.glossary', {
+                        widget: this,
+                        groups: data.groups,
+                        glossary: data.glossary
+                    }));
+                    
+                    this._initAccordions(); // Inicializar acordeones
+                    
+                    return ajax.rpc('/slide/complete_slide', { 
+                        slide_id: slideId 
+                    });
                 }.bind(this)).then(function () {
-                    // Actualizar el atributo completed del slide en el cliente
                     this.get('slide').completed = true;
                 }.bind(this));
             }
 
             return Promise.all([def]);
         },
-        
+
+        _initAccordions: function() {
+            // Inicializar acordeones usando jQuery (Bootstrap)
+            $('.accordion .collapse').collapse({
+                toggle: false
+            });
+        }
     });
 });

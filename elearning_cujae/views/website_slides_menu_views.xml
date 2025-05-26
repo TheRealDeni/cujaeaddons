@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Exámenes"
-        id="website_slides_menu_courses_exam"
-        parent="website_slides.website_slides_menu_courses"
+    <menuitem name="Evaluations"
+        id="website_slides_menu_evaluations"
+        parent="website_slides.website_slides_menu_root"
         sequence="4"
-        action="survey_survey_action_slides_exam"/>
-    <menuitem name="Revisión respuestas"
-        id="survey_menu_questions_inherit_answers"
-        parent="website_slides.website_slides_menu_root"
-        sequence="90"
-        action="survey.survey_user_input_line_action"/>
-    <menuitem name="Banco de preguntas"
+        groups="website_slides.group_website_slides_officer"
+        />   
+    <menuitem name="Exams"
+        id="website_slides_menu_courses_exam"
+        parent="website_slides_menu_evaluations"
+        sequence="4"
+        action="survey_survey_action_slides_exam"/>    
+    <menuitem name="Questions"
         id="survey_menu_questions_inherit"
-        parent="website_slides.website_slides_menu_root"
+        parent="website_slides_menu_evaluations"
         sequence="91"
         action="survey.action_survey_question_form"/>
-    <menuitem name="Intentos de prueba de asistentes"
+    
+    <menuitem name="Reporting"
+        id="website_slides.website_slides_menu_report"
+        parent="website_slides.website_slides_menu_root"
+        groups="website_slides.group_website_slides_officer"
+        sequence="9"/>
+    <menuitem name="Atendees attempts"
         id="survey_menu_questions_inherit_attempts"
-        parent="website_slides.website_slides_menu_report"
+        parent="website_slides_menu_evaluations"
         sequence="20"
-        action="survey.action_survey_user_input"/> 
+        action="survey.action_survey_user_input"
+        groups="website_slides.group_website_slides_officer"/> 
+    
+    <menuitem name="Certifications"
+        id="website_slides_survey.website_slides_menu_courses_certification"
+        parent="website_slides_menu_evaluations"
+        sequence="3"
+        action="website_slides_survey.survey_survey_action_slides"/>
 </odoo>

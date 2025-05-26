@@ -1,24 +1,7 @@
 <odoo>
-<template id="terms_table" inherit_id="website.slide_fullscreen">
-    <xpath expr="//div[@id='wrapwrap']" position="inside">
-        <div class="container">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <td>Término</td>
-                        <td>Descripción</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <t t-foreach="terms" t-as="term">
-                        <tr>
-                            <td><t t-esc="term.name"/></td>
-                            <td><t t-esc="term.description"/></td>
-                        </tr>
-                    </t>
-                </tbody>
-            </table>             
-        </div>
-    </xpath>
-</template>
+    <!-- Template para el glosario en eLearning - Versión adaptada del glosario único -->
+    <template id="elearning_glossary_adapted" inherit_id="website.slide_fullscreen">
+        <xpath expr="//div[hasclass('o_wslides_js_slide_fullscreen')]" position="before">
+        </xpath>
+    </template>
 </odoo>

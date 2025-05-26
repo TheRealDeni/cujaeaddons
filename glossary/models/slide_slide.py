@@ -6,19 +6,18 @@ class Slide(models.Model):
 
 
     slide_category = fields.Selection(selection_add=[
-        ('glossary', 'Glosario')
+        ('glossary', 'Glossary')
     ], ondelete={'glossary': 'set default'})
     slide_type = fields.Selection(selection_add=[
-        ('glossary', 'Glosario')
+        ('glossary', 'Glossary')
     ], ondelete={'glossary': 'set null'})
-    glossary_id = fields.Many2one('glossary.glossary', string='Glossary')
-    nbr_glossary = fields.Integer("Número de glosarios", compute='_compute_slides_statistics', store=True)
+    glossary_id = fields.Many2one('glossary.glossary', string='Glossary', ondelete='restrict')
+    nbr_glossary = fields.Integer("Number of glossaries", compute='_compute_slides_statistics', store=True)
 
-
-   
     
     @api.depends('glossary_id')
     def _compute_name(self):
+        super(Slide, self)._compute_name()
         for slide in self:
             if not slide.name and slide.glossary_id:
                 slide.name = slide.glossary_id.name
@@ -31,6 +30,7 @@ class Slide(models.Model):
 
     @api.depends('slide_category')
     def _compute_is_preview(self):
+        super(Slide, self)._compute_is_preview()
         for slide in self:
             if slide.slide_category == 'glossary' or not slide.is_preview:
                 slide.is_preview = False

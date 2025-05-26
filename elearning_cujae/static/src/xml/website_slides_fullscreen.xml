@@ -6,16 +6,16 @@
             <div t-if="widget.get('slide').category === 'exam' &amp;&amp; !widget.get('slide').completed" class="">
                 <a class="btn btn-primary" t-att-href="'/slides_survey/slide/get_exam_url?slide_id=' + widget.get('slide').id" target="_blank">
                     <i class="fa fa-graduation-cap"/>
-                    <span t-if="widget.get('slide').isMember"> Empezar examen</span>
+                    <span t-if="widget.get('slide').isMember">Comenzar examen</span>
                     <span t-else="">Probar examen</span>
                 </a>
             </div>
             <div t-if="widget.get('slide').category === 'exam' &amp;&amp; widget.get('slide').completed">
-                <h4 class="mb-3 text-white">Felicidades, aprobaste el examen!</h4>                
+                <h4 class="mb-3 text-white">Felicidades, aprobaste el examen</h4>                
             </div>
             <div t-if="widget.get('slide').category === 'exam' &amp;&amp; widget.get('slide').canUpload" class="mt-3 h6">
                 <a t-att-href="'/web#id=' + widget.get('slide').examId + '&amp;model=survey.survey&amp;view_type=form'">
-                    <i class="fa fa-arrow-right me-1"/>Añadir preguntas a esta encuesta
+                    <i class="fa fa-arrow-right me-1"/>Añadir preguntas a este examen
                 </a>
             </div>
         </div>

@@ -1,0 +1,42 @@
+<odoo>
+    <record id="view_event_form_custom" model="ir.ui.view">
+        <field name="name">event.event.form.inherit</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form"/>
+        <field name="arch" type="xml">
+            <!-- Agregar el campo descripción después del nombre -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="description" placeholder="Escribe la descripción del evento..." style="font-size: 12px;"/>
+            </xpath>
+
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="website_published" invisible="1"/>
+            </xpath>
+
+            <!-- Ocultar el campo date_tz -->
+            <xpath expr="//field[@name='date_tz']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='date_tz']" position="after">
+                <field name="event_type_name" invisible="1"></field>
+            </xpath>
+            <xpath expr="//field[@name='website_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+
+            <!-- Agregar campos dinámicos después de un campo existente en la vista padre -->
+            <xpath expr="//field[@name='tag_ids']" position="after">
+
+                <field name="speaker_ids"
+                       widget="many2many_tags"
+                       domain="[('is_company', '=', False)]"
+                       attrs="{'invisible': [('event_type_name', '!=', 'Conferencia')]}"/>
+
+                <field name="submission_page_url"
+                       attrs="{'invisible': [('event_type_name', '!=', 'Científico')]}"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

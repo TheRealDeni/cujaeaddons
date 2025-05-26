@@ -1,31 +1,68 @@
 <templates>
-    <t t-name="website.slides.fullscreen.glossary">
-        <div class="glossary-container">
-            <h3 t-esc="glossary.name"/>  <!-- Mostrar el nombre del glosario -->
-       
-
-            <table class="table table-bordered" id="glossary-table">
-                <thead>
-                    <tr>
-                        <th>Término</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <t t-foreach="terms" t-as="term">
-                        <tr class="term-row" t-att-data-letter="term.name.charAt(0).toUpperCase()">
-                            <td><t t-esc="term.name"/></td>
-                            <td class="description-cell"><t t-esc="term.description"/></td> 
-                        </tr>
-                    </t>
-                </tbody>
-            </table>
-        </div>
-    </t>
-
-    <t t-extend="website.slides.fullscreen.title">
-        <t t-jquery=".o_wslides_fs_slide_title_span" t-operation="before">
-            <i t-if="widget.get('slide').category === 'glossary'" class="fa fa-trophy me-2 text"></i>
+        <t t-name="website.slides.fullscreen.glossary">
+           <div class="glosarry-container glossary-scroll-container">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <section class="s_title blue_title">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 mt32 mb48">
+                                    <h1 class="text-center" t-esc="glossary.name"/>
+                                    <h3 class="text-center text-muted" t-esc="glossary.description"/>
+                                </div>
+                            </div>
+                        </div> 
+                    </section>
+                    <section class="s_faq_collapse pb64">
+                        <div class="container">
+                            <!-- Navegación por letras -->
+                            <div class="alphabet mt-3 text-center">
+                                <t t-foreach="groups" t-as="letter">
+                                    <a t-att-href="'#' + letter" class="mx-1 btn btn-outline-primary">
+                                        <t t-esc="letter"/>
+                                    </a>
+                                </t>
+                            </div>
+                            <div>
+                                <!-- Listado de términos agrupados -->
+                                <t t-foreach="groups" t-as="group">
+                                    <div t-att-id="group" class="letter-group">
+                                        <h2 class="page-header w-100 mt32" style="text-align: center;">
+                                            <t t-esc="group"/>
+                                        </h2>
+                                        <div class="accordion">
+                                            <t t-foreach="groups[group]" t-as="term">
+                                                <div class="accordion-item">
+                                                    <h4 class="accordion-header">
+                                                        <button class="accordion-button collapsed" 
+                                                                type="button" 
+                                                                data-bs-toggle="collapse" 
+                                                                t-att-data-bs-target="'#collapse_' + term.id">
+                                                            <t t-esc="term.name"/>
+                                                        </button>
+                                                    </h4>
+                                                    <div t-att-id="'collapse_' + term.id" 
+                                                         class="accordion-collapse collapse" 
+                                                         t-att-data-bs-parent="'.accordion'">
+                                                        <div class="accordion-body">
+                                                            <t t-raw="term.description"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </t>
-    </t>
+
+        <t t-extend="website.slides.fullscreen.title">
+            <t t-jquery=".o_wslides_fs_slide_title_span" t-operation="before">
+                <i t-if="widget.get('slide').category === 'glossary'" 
+                   class="fa fa-book me-2 text-primary"></i>
+            </t>
+        </t>
 </templates>
