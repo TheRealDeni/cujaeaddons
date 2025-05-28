@@ -156,5 +156,3 @@ class SurveyQuestion(models.Model):
                 raise ValidationError("A 'True or False' question must have at least one item.")
         return res
 
-
-    

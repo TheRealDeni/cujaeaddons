@@ -20,8 +20,8 @@
     ],
 
     'data':[
-        'security/ir.model.access.csv',
         'data/security.xml',
+        'security/ir.model.access.csv',
         'data/gtm_activities.xml',
         'data/gtm_sequence.xml',
         'data/gtm_data.xml',

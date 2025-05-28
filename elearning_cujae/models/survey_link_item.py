@@ -14,7 +14,6 @@ class SurveyLinkItem(models.Model):
         ondelete='cascade',
         required=True,
         default=lambda self: self._context.get('active_id'),
-        index=True
     )
 
     @api.constrains('score')

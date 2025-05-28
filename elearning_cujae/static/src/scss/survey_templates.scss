@@ -1,36 +1,53 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-    <data>
-        <record id="view_survey_question_form_inherit" model="ir.ui.view">
-            <field name="name">survey.question.form.inherit.true_false</field>
-            <field name="model">survey.question</field>
-            <field name="inherit_id" ref="survey.survey_question_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//page[@name='answers']" position="inside">
-                    <group attrs="{'invisible': [('question_type', '!=', 'true_false')]}">
-                        <field name="true_false_items" string="">
-                            <tree editable="bottom" create="true">
-                                <!-- Mostrar los campos 'name' y 'answer' -->
-                                <field name="name"/>
-                                <field name="answer"/>
-                                <field name="score"/>
-                            </tree>
-                        </field>
-                    </group>
+.o_survey_link_container {
+    margin: 1.5rem 0;
 
-                    <group attrs="{'invisible': [('question_type', '!=', 'link')]}">
-                        <field name="link_items" string="">
-                            <tree editable="bottom" create="true">
-                                <!-- Mostrar los campos 'name' y 'answer' -->
-                                <field name="name"/>
-                                <field name="answer"/>
-                                <field name="score"/>
-                            </tree>
-                        </field>
-                    </group>
-                </xpath>
+    .o_survey_link_item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        background-color: $o-gray-100;
+        border-radius: $border-radius;
+        border-left: 4px solid $o-brand-primary;
 
-            </field>
-        </record>
-    </data>
-</odoo>
+        .o_survey_link_question {
+            flex: 1;
+            padding-right: 1.25rem;
+            font-weight: $font-weight-bold;
+        }
+
+        .o_survey_link_select {
+            min-width: 18rem;
+
+            .o_survey_link_dropdown {
+                padding: 0.5rem 0.75rem;
+                border-radius: $border-radius-sm;
+                border: 1px solid $border-color;
+
+                &:focus {
+                    border-color: $o-brand-primary;
+                    box-shadow: 0 0 0 0.2rem rgba($o-brand-primary, 0.25);
+                }
+            }
+        }
+    }
+
+    // Estilos responsivos
+    @include media-breakpoint-down(md) {
+        .o_survey_link_item {
+            flex-direction: column;
+            align-items: flex-start;
+
+            .o_survey_link_question {
+                padding-right: 0;
+                padding-bottom: 0.75rem;
+                width: 100%;
+            }
+
+            .o_survey_link_select {
+                min-width: 100%;
+                width: 100%;
+            }
+        }
+    }
+}

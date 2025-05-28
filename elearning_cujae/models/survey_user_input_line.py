@@ -11,6 +11,7 @@ class SurveyUserInputLine(models.Model):
         selection_add=[
             ('upload_file', 'Upload file'),
             ('true_false', 'Verdadero o Falso'),
+            ('link', 'Enlaza'),
         ],
         help="The type of answer for this question (upload_file if the user "
              "is uploading a file).")
