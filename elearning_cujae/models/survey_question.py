@@ -64,19 +64,26 @@ class SurveyQuestion(models.Model):
             question.shuffled_link_items = sample(question.link_items, len(question.link_items)) if question.link_items else self.env['survey.link_item']
             print(question.shuffled_link_items)
 
-    @api.depends('answer_score', 'suggested_answer_ids', 'suggested_answer_ids.answer_score', 'suggested_answer_ids.is_correct')
+    @api.depends('answer_score', 'suggested_answer_ids', 'suggested_answer_ids.answer_score', 'suggested_answer_ids.is_correct', 'link_items', 'link_items.score')
     def _compute_question_max_score(self):
         """Calcula la puntuación máxima sumando el answer_score de la pregunta y sus suggested_answer_ids que tengan is_correct en True."""
         for question in self:
             # Suma del answer_score de la pregunta (0 si no está definido)
             question_score = question.answer_score or 0
-            
-            # Suma de los answer_score de todas las respuestas sugeridas CORRECTAS
-            suggested_scores = sum(
-                answer.answer_score for answer in question.suggested_answer_ids if answer.is_correct
-            ) or 0
-            
-            question.max_score = question_score + suggested_scores
+
+            if question.question_type == 'link':
+                link_items_score = sum(
+                    item.score for item in question.link_items
+                ) or 0
+
+                question.max_score = question_score + link_items_score
+            else:
+                # Suma de los answer_score de todas las respuestas sugeridas CORRECTAS
+                suggested_scores = sum(
+                    answer.answer_score for answer in question.suggested_answer_ids if answer.is_correct
+                ) or 0
+
+                question.max_score = question_score + suggested_scores
     
     @api.depends('true_false_items.score')
     def _compute_answer_score_calculated(self):
@@ -124,13 +131,11 @@ class SurveyQuestion(models.Model):
         return super().validate_question(answer, comment)
 
     def _validate_true_false(self, answer):
-        print(answer)
         if self.constr_mandatory and not answer:
             return {self.id: self.constr_error_msg or _('This question requires an answer.')}
         return {}
 
     def _validate_link(self, answer):
-        print(answer)
         if self.constr_mandatory and not answer:
             return {self.id: self.constr_error_msg or _('This question requires an answer.')}
         return {}

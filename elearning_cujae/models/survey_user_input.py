@@ -51,10 +51,14 @@ class SurveyUserInput(models.Model):
         old_answers = self.env['survey.user_input.line'].search([
             ('user_input_id', '=', self.id),
             ('question_id', '=', question.id), ])
+
+        print(question)
+        print(answer)
+
         if question.question_type in 'upload_file':
             return self._save_line_file(question, old_answers, answer)
         elif question.question_type in 'link':
-            pass
+            self._save_line_link(question, old_answers, answer)
         elif question.question_type in 'true_false':
             if answer:
                 print('Es Verdadero o Falso')
@@ -67,6 +71,27 @@ class SurveyUserInput(models.Model):
                 self.score_true_false = score_tf
         else:
             return super().save_lines(question, answer, comment)
+
+    def _save_line_link(self, question, old_answers, answers):
+        # Limpiar respuestas anteriores
+        old_answers.sudo().unlink()
+        vals_list = []
+
+        for answer in answers:
+            link_item_id = answer.get('link_item_id')
+            link_item_answer_id = int(answer.get('link_item_answer_id'))
+            vals = {
+                'user_input_id': self.id,
+                'question_id': question.id,
+                'answer_type': 'link',
+                'link_item_id': link_item_id,
+                'link_item_answer_id': link_item_answer_id,
+                'skipped': False,
+            }
+            vals_list.append(vals)
+
+        if vals_list:
+            self.env['survey.user_input.line'].create(vals_list)
 
     def _save_line_file(self, question, old_answers, answer):
         """ Save the user's file upload answer for the given question."""

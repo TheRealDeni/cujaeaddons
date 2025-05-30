@@ -1,6 +1,8 @@
 from Tools.scripts.dutree import store
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+
+from odoo.tools import float_is_zero
 
 class SurveyUserInputLine(models.Model):
     _inherit = ['survey.user_input.line']
@@ -25,12 +27,27 @@ class SurveyUserInputLine(models.Model):
         string="True/False Item"
     )
 
+    link_item_id = fields.Many2one(
+        'survey.link_item',
+        string='Inciso de pregunta tipo Link',
+    )
+    link_item_answer_id = fields.Many2one(
+        'survey.link_item',
+        string='Respuesta al inciso de pregunta tipo link',
+    )
+
     @api.constrains('skipped', 'answer_type')
     def _check_answer_type_skipped(self):
         """ Check that a line's answer type is not set to 'upload_file' if
         the line is skipped."""
         for line in self:
-            if line.answer_type != 'upload_file':
+            if line.answer_type == 'link':
+                print(line.link_item_id)
+                print(line.link_item_answer_id)
+                print("check")
+                if not line.link_item_id or not line.link_item_answer_id:
+                    raise ValidationError(_('The answer must be in the right type'))
+            elif line.answer_type != 'upload_file':
                 super(SurveyUserInputLine, line)._check_answer_type_skipped()
 
 
@@ -44,16 +61,22 @@ class SurveyUserInputLine(models.Model):
                     % line.question_id.max_score  # <--- Aquí está la corrección
                 )
 
-
-
     @api.model
     def _get_answer_score_values(self, vals, compute_speed_score=True):
+        res = super(SurveyUserInputLine, self)._get_answer_score_values(vals, compute_speed_score)
+
         question_id=vals.get('question_id')
+        answer_type = vals.get('answer_type')
+        link_item_id = vals.get('link_item_id')
+        link_item_answer_id = vals.get('link_item_answer_id')
+
+        if not question_id or not answer_type:
+            return res
+
         question = self.env['survey.question'].browse(int(question_id))
 
         answer_is_correct = False
         answer_score = 0
-        res=super(SurveyUserInputLine, self)._get_answer_score_values(vals, compute_speed_score)
 
         if question.question_type in ['char_box']:
             answer=vals['value_char_box']
@@ -64,10 +87,18 @@ class SurveyUserInputLine(models.Model):
                 answer_is_correct=True
                 answer_score = question.answer_score
             return {
-            'answer_is_correct': answer_is_correct,
-            'answer_score': answer_score
+                'answer_is_correct': answer_is_correct,
+                'answer_score': answer_score
             }
+        elif question.question_type == 'link':
+            if link_item_answer_id and link_item_id:
+                link_item = self.env['survey.link_item'].browse(link_item_id)
+
+                answer_is_correct = link_item_answer_id == link_item_id
+
+                return {
+                    'answer_is_correct': answer_is_correct,
+                    'answer_score': link_item.score if answer_is_correct else 0
+                }
         else:
             return res
-
-

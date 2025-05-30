@@ -126,7 +126,10 @@
         </template>
 
         <template id="question_link" name="Question: Link">
-            <div class="o_survey_link_container" t-attf-id="link_question_container_#{question.id}">
+            <div class="o_survey_link_container"
+                 t-attf-id="link_question_container_#{question.id}"
+                 t-att-data-name="question.id"
+                 data-question-type="link">
                 <t t-foreach="question.link_items" t-as="item" t-if="item.name">
                     <div class="o_survey_link_item" t-att-data-item-id="item.id">
                         <div class="o_survey_link_question">

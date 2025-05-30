@@ -22,8 +22,36 @@ class SurveyLinkQuestion(main.Survey):
         else:
             survey_content = request.env['ir.qweb']._render('survey.survey_fill_form_in_progress', survey_data)
 
+        survey_progress = False
+        if answer_sudo.state == 'in_progress' and not survey_data.get('question',
+                                                                      request.env['survey.question']).is_page:
+            if survey_sudo.questions_layout == 'page_per_section':
+                page_ids = survey_sudo.page_ids.ids
+                survey_progress = request.env['ir.qweb']._render('survey.survey_progression', {
+                    'survey': survey_sudo,
+                    'page_ids': page_ids,
+                    'page_number': page_ids.index(survey_data['page'].id) + (
+                        1 if survey_sudo.progression_mode == 'number' else 0)
+                })
+            elif survey_sudo.questions_layout == 'page_per_question':
+                page_ids = (answer_sudo.predefined_question_ids.ids
+                            if not answer_sudo.is_session_answer and survey_sudo.questions_selection == 'random'
+                            else survey_sudo.question_ids.ids)
+                survey_progress = request.env['ir.qweb']._render('survey.survey_progression', {
+                    'survey': survey_sudo,
+                    'page_ids': page_ids,
+                    'page_number': page_ids.index(survey_data['question'].id)
+                })
+
+        background_image_url = survey_sudo.background_image_url
+        if 'question' in survey_data:
+            background_image_url = survey_data['question'].background_image_url
+        elif 'page' in survey_data:
+            background_image_url = survey_data['page'].background_image_url
+
         return {
             'survey_content': survey_content,
+            'survey_progress': survey_progress,
             'survey_navigation': request.env['ir.qweb']._render('survey.survey_navigation', survey_data),
-            'background_image_url': survey_sudo.background_image_url,
+            'background_image_url': background_image_url
         }
