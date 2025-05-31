@@ -100,7 +100,10 @@
         </template>
 
         <template id="question_true_false" name="Question: True or False">
-            <div class=" p-0" t-attf-id="vf_question_container_#{question.id}">
+            <div class="o_survey_true_false_container"
+                 t-attf-id="vf_question_container_#{question.id}"
+                 t-att-data-name="question.id"
+                 data-question-type="true_false">
                 <div t-foreach="question.true_false_items" t-as="item" t-att-data-inciso-id="item.id" class="vf-item" style="display: flex; align-items: center; margin-bottom: 10px;">
 
                     <div style="margin-right: 20px;">

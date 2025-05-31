@@ -27,6 +27,8 @@ class SurveyUserInputLine(models.Model):
         string="True/False Item"
     )
 
+    true_false_item_answer = fields.Char('V or F answer')
+
     link_item_id = fields.Many2one(
         'survey.link_item',
         string='Inciso de pregunta tipo Link',
@@ -42,9 +44,6 @@ class SurveyUserInputLine(models.Model):
         the line is skipped."""
         for line in self:
             if line.answer_type == 'link':
-                print(line.link_item_id)
-                print(line.link_item_answer_id)
-                print("check")
                 if not line.link_item_id or not line.link_item_answer_id:
                     raise ValidationError(_('The answer must be in the right type'))
             elif line.answer_type != 'upload_file':
@@ -67,8 +66,12 @@ class SurveyUserInputLine(models.Model):
 
         question_id=vals.get('question_id')
         answer_type = vals.get('answer_type')
+
         link_item_id = vals.get('link_item_id')
         link_item_answer_id = vals.get('link_item_answer_id')
+
+        true_false_item_id = vals.get('true_false_item_id')
+        true_false_item_answer = vals.get('true_false_item_answer')
 
         if not question_id or not answer_type:
             return res
@@ -93,12 +96,20 @@ class SurveyUserInputLine(models.Model):
         elif question.question_type == 'link':
             if link_item_answer_id and link_item_id:
                 link_item = self.env['survey.link_item'].browse(link_item_id)
-
                 answer_is_correct = link_item_answer_id == link_item_id
 
                 return {
                     'answer_is_correct': answer_is_correct,
                     'answer_score': link_item.score if answer_is_correct else 0
+                }
+        elif question.question_type == 'true_false':
+            if true_false_item_answer and true_false_item_id:
+                true_false_item = self.env['survey.true_false_item'].browse(true_false_item_id)
+                answer_is_correct = true_false_item.answer == true_false_item_answer
+
+                return {
+                    'answer_is_correct': answer_is_correct,
+                    'answer_score': true_false_item.score if answer_is_correct else 0
                 }
         else:
             return res

@@ -52,9 +52,6 @@ class SurveyQuestion(models.Model):
         help="List of True/False statements for this question.",
     )
 
-    answer_score_calculated = fields.Float(string="Puntaje Calculado", compute='_compute_answer_score_calculated',
-                                           store=True)
-
     answer_score = fields.Float('Score', help="Score value for a correct answer to this question.")
 
     @api.depends('link_items')
@@ -77,6 +74,12 @@ class SurveyQuestion(models.Model):
                 ) or 0
 
                 question.max_score = question_score + link_items_score
+            elif question.question_type == 'true_false':
+                true_false_items_score = sum(
+                    item.score for item in question.true_false_items
+                ) or 0
+
+                question.max_score = question_score + true_false_items_score
             else:
                 # Suma de los answer_score de todas las respuestas sugeridas CORRECTAS
                 suggested_scores = sum(
@@ -84,18 +87,6 @@ class SurveyQuestion(models.Model):
                 ) or 0
 
                 question.max_score = question_score + suggested_scores
-    
-    @api.depends('true_false_items.score')
-    def _compute_answer_score_calculated(self):
-        for question in self:
-            if question.question_type == 'true_false':
-                score = 0
-                for item in question.true_false_items:
-                    score += item.score
-                question.answer_score_calculated = score
-                question.answer_score = score
-            else:
-                question.answer_score_calculated = 0
 
     @api.depends('question_type', 'scoring_type', 'answer_date', 'answer_datetime', 'answer_numerical_box')
     def _compute_is_scored_question(self):
@@ -124,8 +115,8 @@ class SurveyQuestion(models.Model):
 
     def validate_question(self, answer, comment=None):
         if answer or self.question_type in ['true_false', 'link']:
-            if self.question_type == 'ture_false':
-                pass
+            if self.question_type == 'true_false':
+                return self._validate_true_false(answer)
             elif self.question_type == 'link':
                 return self._validate_link(answer)
         return super().validate_question(answer, comment)
