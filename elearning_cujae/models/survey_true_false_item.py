@@ -8,7 +8,7 @@ class SurveyTrueFalseItem(models.Model):
 
     name = fields.Char(string='Pregunta', required=True, help="The statement for this item.")
     answer = fields.Selection(
-        [('true', 'V'), ('false', 'F')],
+        [('V', 'V'), ('F', 'F')],
         string='Respuesta correcta',
         required=True,
         help="Respuesta correcta para esta pregunta"

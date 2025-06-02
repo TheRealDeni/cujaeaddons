@@ -132,7 +132,6 @@ class SurveyUserInput(models.Model):
             }
             vals_list.append(vals)
 
-
         old_answers.sudo().unlink()
         self.env['survey.user_input.line'].create(vals_list)
 
@@ -195,6 +194,8 @@ class SurveyUserInput(models.Model):
                     answer_result_key = super(SurveyUserInput, self)._choice_question_answer_result(user_input_lines, question_correct_suggested_answers)
                 elif question.question_type == 'link':
                     answer_result_key = self._link_question_answer_result(user_input_lines, link_items)
+                elif question.question_type == 'true_false':
+                    answer_result_key = self._true_false_question_answer_result(user_input_lines, true_false_items)
                 else:
                     answer_result_key = super(SurveyUserInput, self)._simple_question_answer_result(user_input_lines)
 
@@ -237,6 +238,18 @@ class SurveyUserInput(models.Model):
         if link_items and correct_user_input_lines == link_items:
             return 'correct'
         elif correct_user_input_lines and correct_user_input_lines < link_items:
+            return 'partial'
+        elif not correct_user_input_lines and incorrect_user_input_lines:
+            return 'incorrect'
+        else:
+            return 'skipped'
+
+    def _true_false_question_answer_result(self, user_input_lines, true_false_items):
+        correct_user_input_lines = user_input_lines.filtered(lambda line: line.answer_is_correct and not line.skipped).mapped('true_false_item_id')
+        incorrect_user_input_lines = user_input_lines.filtered(lambda line: not line.answer_is_correct and not line.skipped)
+        if true_false_items and correct_user_input_lines == true_false_items:
+            return 'correct'
+        elif correct_user_input_lines and correct_user_input_lines < true_false_items:
             return 'partial'
         elif not correct_user_input_lines and incorrect_user_input_lines:
             return 'incorrect'

@@ -51,3 +51,60 @@
         }
     }
 }
+
+.o_survey_true_false_container {
+    margin: 1.5rem 0;
+
+    .o_survey_true_false_item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        background-color: $o-gray-100;
+        border-radius: $border-radius;
+        border-left: 4px solid $o-brand-primary;
+
+        .o_survey_true_false_question {
+            flex: 1;
+            padding-left: 1.25rem;
+            font-weight: $font-weight-bold;
+            color: $body-color;
+        }
+
+        .o_survey_true_false_select {
+            min-width: 10rem;
+
+            .o_survey_true_false_dropdown {
+                padding: 0.5rem 0.75rem;
+                border-radius: $border-radius-sm;
+                border: 1px solid $border-color;
+                background-color: $white;
+                color: $body-color;
+
+                &:focus {
+                    border-color: $o-brand-primary;
+                    box-shadow: 0 0 0 0.2rem rgba($o-brand-primary, 0.25);
+                }
+            }
+        }
+    }
+
+    // Estilos responsivos
+    @include media-breakpoint-down(md) {
+        .o_survey_true_false_item {
+            flex-direction: column;
+            align-items: flex-start;
+
+            .o_survey_true_false_question {
+                padding-right: 0;
+                padding-bottom: 0.75rem;
+                width: 100%;
+            }
+
+            .o_survey_true_false_select {
+                min-width: 100%;
+                width: 100%;
+            }
+        }
+    }
+}

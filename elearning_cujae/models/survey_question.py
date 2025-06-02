@@ -61,7 +61,7 @@ class SurveyQuestion(models.Model):
             question.shuffled_link_items = sample(question.link_items, len(question.link_items)) if question.link_items else self.env['survey.link_item']
             print(question.shuffled_link_items)
 
-    @api.depends('answer_score', 'suggested_answer_ids', 'suggested_answer_ids.answer_score', 'suggested_answer_ids.is_correct', 'link_items', 'link_items.score')
+    @api.depends('answer_score', 'suggested_answer_ids', 'suggested_answer_ids.answer_score', 'suggested_answer_ids.is_correct', 'link_items', 'link_items.score', 'true_false_items', 'true_false_items.score')
     def _compute_question_max_score(self):
         """Calcula la puntuación máxima sumando el answer_score de la pregunta y sus suggested_answer_ids que tengan is_correct en True."""
         for question in self:

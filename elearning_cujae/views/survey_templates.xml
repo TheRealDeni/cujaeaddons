@@ -104,21 +104,20 @@
                  t-attf-id="vf_question_container_#{question.id}"
                  t-att-data-name="question.id"
                  data-question-type="true_false">
-                <div t-foreach="question.true_false_items" t-as="item" t-att-data-inciso-id="item.id" class="vf-item" style="display: flex; align-items: center; margin-bottom: 10px;">
+                <t t-foreach="question.true_false_items" t-as="item">
+                    <div class="o_survey_true_false_item" t-att-data-item-id="item.id">
+                        <div class="o_survey_true_false_select">
+                            <select class="form-select o_survey_true_false_dropdown" t-att-name="'true_false_answer_' + str(item.id)">
+                                <option value="V">Verdadero</option>
+                                <option value="F">Falso</option>
+                            </select>
+                        </div>
 
-                    <div style="margin-right: 20px;">
-                        <select class="form-select" style="padding: 5px;">
-                            <option value="true">Verdadero</option>
-                            <option value="false">Falso</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <p style="margin: 0;">
+                        <div class="o_survey_true_false_question">
                             <span t-esc="item.name"/>
-                        </p>
+                        </div>
                     </div>
-                </div>
+                </t>
             </div>
         </template>
 

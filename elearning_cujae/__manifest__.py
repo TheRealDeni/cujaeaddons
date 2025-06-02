@@ -52,7 +52,7 @@
         'views/gamification_menu.xml',
         'views/survey_user_views.xml',
         'views/survey_templates_print.xml',
-       # 'views/survey_form.xml',
+        'views/survey_form.xml',
         'views/slide_channel_partner_views.xml',
         'wizard/question_wizard_views.xml',
         'views/action_open_question_wizard.xml'
