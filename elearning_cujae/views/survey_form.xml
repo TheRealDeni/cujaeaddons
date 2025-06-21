@@ -6,16 +6,12 @@
             <field name="model">survey.user_input</field>
             <field name="inherit_id" ref="survey.survey_user_input_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='user_input_line_ids']/tree/field[@name='question_id']" position="attributes">
-                    <attribute name="attrs">{'invisible': [('answer_type', 'in', ['link', 'true_false'])]}</attribute>
+                <xpath expr="//field[@name='user_input_line_ids']/tree/field[@name='question_id']" position="after">
+                    <field name="true_false_item_id" string="Inciso" attrs="{'invisible': [('answer_type', '!=', 'true_false')]}"/>
                 </xpath>
 
                 <xpath expr="//field[@name='user_input_line_ids']/tree/field[@name='question_id']" position="after">
-                    <field name="true_false_item_id" string="Pregunta" attrs="{'invisible': [('answer_type', '!=', 'true_false')]}"/>
-                </xpath>
-
-                <xpath expr="//field[@name='user_input_line_ids']/tree/field[@name='question_id']" position="after">
-                    <field name="link_item_id" string="Pregunta" attrs="{'invisible': [('answer_type', '!=', 'link')]}"/>
+                    <field name="link_item_id" string="Inciso" attrs="{'invisible': [('answer_type', '!=', 'link')]}"/>
                 </xpath>
             </field>
         </record>

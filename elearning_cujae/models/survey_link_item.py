@@ -5,8 +5,10 @@ class SurveyLinkItem(models.Model):
     _name = 'survey.link_item'
     _description = 'Link Question Item'
 
-    name = fields.Char(string='Pregunta', help="La orden de la pregunta, puede dejarse en blanco y poner solamente una respuesta que no pertenecerá a ninguna pregunta")
-    answer = fields.Char(string='Respuesta', required=True, help="La respuesta a una pregunta dada o respuesta de relleno en caso de que no se ponga una pregunta")
+    name = fields.Char(string='Pregunta', help="La orden de la pregunta, puede dejarse en blanco y poner "
+                                               "solamente una respuesta que no pertenecerá a ninguna pregunta")
+    answer = fields.Char(string='Respuesta', required=True, help="La respuesta a una pregunta dada o respuesta de "
+                                                                 "relleno en caso de que no se ponga una pregunta")
     score = fields.Float(string="Puntuación", required=True, default=0, help="La puntuación de este inciso")
     question_id = fields.Many2one(
         'survey.question',

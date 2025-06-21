@@ -6,21 +6,14 @@ import textwrap
 class SurveyUserInputLine(models.Model):
     _inherit = ['survey.user_input.line']
 
-    max_score= fields.Float(related='question_id.max_score', string='Question score')
-
     answer_type = fields.Selection(
         selection_add=[
             ('upload_file', 'Upload file'),
             ('true_false', 'Verdadero o Falso'),
             ('link', 'Enlaza'),
         ],
-        help="The type of answer for this question (upload_file if the user "
-             "is uploading a file).")
+    )
 
-    value_file_data_ids = fields.Many2many('ir.attachment',
-                                           help="The attachments "
-                                                "corresponding to the user's "
-                                                "file upload answer, if any.")
     true_false_item_id = fields.Many2one(
         'survey.true_false_item',
         string="Inciso V o F"
@@ -32,10 +25,18 @@ class SurveyUserInputLine(models.Model):
         'survey.link_item',
         string='Inciso de enlaza',
     )
+
     link_item_answer_id = fields.Many2one(
         'survey.link_item',
         string='Respuesta al inciso de pregunta tipo link',
     )
+
+    max_score= fields.Float(related='question_id.max_score', string='Question score')
+
+    value_file_data_ids = fields.Many2many('ir.attachment',
+                                           help="The attachments "
+                                                "corresponding to the user's "
+                                                "file upload answer, if any.")
 
     @api.depends('answer_type')
     def _compute_display_name(self):

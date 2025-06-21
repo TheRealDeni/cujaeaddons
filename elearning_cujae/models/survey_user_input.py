@@ -4,8 +4,6 @@ from odoo.exceptions import ValidationError
 class SurveyUserInput(models.Model):
     _inherit = 'survey.user_input'
 
-    score_true_false = fields.Float('Score True False')
-
     grade = fields.Integer(string="Grade", default=2, compute='_compute_grade', store=True)
     professor_check = fields.Boolean(related='survey_id.professor_check', string='Checked by teacher', store=True,
                                      readonly=True)
@@ -83,9 +81,6 @@ class SurveyUserInput(models.Model):
         old_answers = self.env['survey.user_input.line'].search([
             ('user_input_id', '=', self.id),
             ('question_id', '=', question.id), ])
-
-        print(question)
-        print(answer)
 
         if question.question_type in 'upload_file':
             return self._save_line_file(question, old_answers, answer)
@@ -177,11 +172,13 @@ class SurveyUserInput(models.Model):
             'by_section': {}
         }) for user_input in self)
 
-        scored_questions = self.mapped('predefined_question_ids').filtered(lambda question: question.is_scored_question)
+        scored_questions = self.mapped('predefined_question_ids').filtered(lambda question:
+                                                                           question.is_scored_question)
 
         for question in scored_questions:
             if question.question_type in ['simple_choice', 'multiple_choice']:
-                question_correct_suggested_answers = question.suggested_answer_ids.filtered(lambda answer: answer.is_correct)
+                question_correct_suggested_answers = question.suggested_answer_ids.filtered(lambda answer:
+                                                                                            answer.is_correct)
             elif question.question_type == 'link':
                 link_items = question.link_items.filtered(lambda link_item: link_item.name)
             elif question.question_type == 'true_false':
@@ -191,7 +188,8 @@ class SurveyUserInput(models.Model):
             for user_input in self:
                 user_input_lines = user_input.user_input_line_ids.filtered(lambda line: line.question_id == question)
                 if question.question_type in ['simple_choice', 'multiple_choice']:
-                    answer_result_key = super(SurveyUserInput, self)._choice_question_answer_result(user_input_lines, question_correct_suggested_answers)
+                    answer_result_key = (super(SurveyUserInput, self)._choice_question_answer_result
+                                         (user_input_lines, question_correct_suggested_answers))
                 elif question.question_type == 'link':
                     answer_result_key = self._link_question_answer_result(user_input_lines, link_items)
                 elif question.question_type == 'true_false':
@@ -233,8 +231,10 @@ class SurveyUserInput(models.Model):
         return res
 
     def _link_question_answer_result(self, user_input_lines, link_items):
-        correct_user_input_lines = user_input_lines.filtered(lambda line: line.answer_is_correct and not line.skipped).mapped('link_item_id')
-        incorrect_user_input_lines = user_input_lines.filtered(lambda line: not line.answer_is_correct and not line.skipped)
+        correct_user_input_lines = user_input_lines.filtered(lambda line: line.answer_is_correct and
+                                                                          not line.skipped).mapped('link_item_id')
+        incorrect_user_input_lines = user_input_lines.filtered(lambda line: not line.answer_is_correct and
+                                                                            not line.skipped)
         if link_items and correct_user_input_lines == link_items:
             return 'correct'
         elif correct_user_input_lines and correct_user_input_lines < link_items:
@@ -245,8 +245,10 @@ class SurveyUserInput(models.Model):
             return 'skipped'
 
     def _true_false_question_answer_result(self, user_input_lines, true_false_items):
-        correct_user_input_lines = user_input_lines.filtered(lambda line: line.answer_is_correct and not line.skipped).mapped('true_false_item_id')
-        incorrect_user_input_lines = user_input_lines.filtered(lambda line: not line.answer_is_correct and not line.skipped)
+        correct_user_input_lines = user_input_lines.filtered(lambda line: line.answer_is_correct and
+                                                                          not line.skipped).mapped('true_false_item_id')
+        incorrect_user_input_lines = user_input_lines.filtered(lambda line: not line.answer_is_correct and
+                                                                            not line.skipped)
         if true_false_items and correct_user_input_lines == true_false_items:
             return 'correct'
         elif correct_user_input_lines and correct_user_input_lines < true_false_items:
